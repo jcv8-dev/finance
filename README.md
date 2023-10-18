@@ -1,1 +1,1 @@
-A replacement for my financing Excel sheet 
+A replacement for the Excel sheet i use for accounting
