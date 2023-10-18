@@ -3,7 +3,6 @@ require 'assets/scripts/helper.php';
 header("Cache-Control: no-cache, must-revalidate"); //HTTP 1.1
 
 ?>
-
 <!doctype html>
 <html lang="de">
     <head>

@@ -107,6 +107,8 @@ function kontoCards() {
             <div class="col-6 text-end pe-3 ps-0 pe-1"><p>'.ff($einnahmen).'€</p></div>
             <div class="col-6 text-end pe-2 ps-1"><p>Ausgaben</p></div>
             <div class="col-6 text-end pe-3 ps-0 pe-1"><p>'.ff($ausgaben).'€</p></div>
+            <div class="col-6 text-end pe-2 ps-1"><p>Übertrag</p></div>
+            <div class="col-6 text-end pe-3 ps-0 pe-1"><p>'.("xx,xx").'€</p></div>
             <div class="col-6 text-end pe-2 ps-1"><p>Aktuell</p></div>
             <div class="col-6 text-end pe-3 ps-0 pe-1"><p>'.ff($startbetrag + $einnahmen - abs($ausgaben)).'€</p></div>
             </div>
@@ -115,7 +117,33 @@ function kontoCards() {
             </div>';
         }
     }
+}
 
+function listUebertraege(){
+    echo '<table class="table table-striped">
+              <thead>
+              <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Datum</th>
+                  <th scope="col">Betrag</th>
+                  <th scope="col">Von</th>
+                  <th scope="col">Nach</th>
+                  <th class="px-0" scope="col" style="width: 1rem;"> </th>
+              </tr>
+              </thead>
+              <tbody>';
+    for($i = 0; $i < 2; $i++){
+        echo '<tr>
+                  <th scope="row">1</th>
+                  <td>01.01.2024</td>
+                  <td>123,25€</td>
+                  <td>Girokonto</td>
+                  <td>Bar</td>
+                  <td class="px-0" id="edit"><button type="button" onclick="editEntry("'.$i.'") class="btn p-2"><img src="assets/img/edit.svg" height="22px"></button></td>
+                 </tr>';
+    }
+    echo '</tbody>
+         </table>';
 }
 
 function listKategorien($einnahme) {

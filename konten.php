@@ -23,65 +23,32 @@ header("Cache-Control: no-cache, must-revalidate"); //HTTP 1.1
         </div>
       </div>
       <div class="container py-2 px-3 mt-2 border rounded border-dark-subtle shadow-box">
-        <form>
+        <form id="uebertragForm">
           <div class="row">
             <div class="col-md-3 col-6 pb-2 px-1">
-              <input type="date" id="datePicker" class="form-control shadow-box-sm" aria-label="Date">
+              <input type="date" id="uebertragFormDate" class="form-control shadow-box-sm" aria-label="Date">
             </div>
             <div class="col-md-3 col-6 pb-2 px-1">
-              <input type="text" class="form-control shadow-box-sm" placeholder="Betrag" aria-label="Betrag">
+              <input type="text" id="uebertragFormBetrag" class="form-control shadow-box-sm" placeholder="Betrag" aria-label="Betrag">
             </div>
             <div class="col-md-3 col-6 pb-2 px-1">
-              <?php selectKonto("Von"); ?>
+              <?php selectKonto("Von", $id="uebertragFormSource"); ?>
             </div>
             <div class="col-md-3 col-6 pb-2 px-1">
-              <?php selectKonto("Nach"); ?>
+              <?php selectKonto("Nach", $id="uebertragFormDestination"); ?>
             </div>
           </div>
           <div class="row">
             <div class="col-md-9 col-sm-8 px-1"></div>
             <div class="col-md-3 col-sm-4 px-1">
-              <button type="submit" class="btn btn-outline-primary w-100 shadow-box-sm">Übertrag buchen</button>
+              <button type="button" onclick="addUebertrag()" class="btn btn-outline-primary w-100 shadow-box-sm">Übertrag buchen</button>
             </div>
           </div>
         </form>
       </div>
       <div class="container-sm py-2 px-3 mt-2 border rounded border-dark-subtle shadow-box">
         <div class="container p-0 overflow-x-auto">
-          <table class="table table-striped">
-              <thead>
-              <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">Datum</th>
-                  <th scope="col">Betrag</th>
-                  <th scope="col">Von</th>
-                  <th scope="col">Nach</th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr>
-                  <th scope="row">1</th>
-                  <td>01.01.2024</td>
-                  <td>123,25€</td>
-                  <td>Girokonto</td>
-                  <td>Bar</td>
-              </tr>
-              <tr>
-                  <th scope="row">2</th>
-                  <td>02.01.2024</td>
-                  <td>135.456,55€</td>
-                  <td>Bar</td>
-                  <td>Kreditkarte</td>
-              </tr>
-              <tr>
-                  <th scope="row">3</th>
-                  <td>03.01.2024</td>
-                  <td>6,90€</td>
-                  <td>Kreditkarte</td>
-                  <td>Girokonto 2</td>
-              </tr>
-              </tbody>
-            </table>
+          <?php listUebertraege(); ?>
         </div>
       </div>
     </div>
@@ -89,8 +56,8 @@ header("Cache-Control: no-cache, must-revalidate"); //HTTP 1.1
   </body>
   <script>
     $(document).ready(function() {
-        document.getElementById('datePicker').valueAsDate = new Date();
+        document.getElementById('uebertragFormDate').valueAsDate = new Date();
     });
-    
   </script>
+  <script src="assets/scripts/scripts.js"></script>
 </html>

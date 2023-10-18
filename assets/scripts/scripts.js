@@ -3,12 +3,19 @@ function validateForm() {
     var b = document.forms["neueBuchungForm"]["selectKonto"].value;
     var c = document.forms["neueBuchungForm"]["selectKategorie"].value;
     var d = document.forms["neueBuchungForm"]["kommentar"].value;
-    if(!a.match(/^\d*([.,]{1}\d{1,2}){0,1}€?$/g)){
-        alert("Ungültiger Betrag");
+    if(!validateBetrag(a)){
         return false;
     }
     if ((a == null || a == "") || (b == null || b == 0) || (c == null || c == 0) || (d == null || d == "")) {
         alert("Nicht alle Felder ausgefüllt.");
+        return false;
+    }
+    return true;
+}
+
+function validateBetrag(betrag){
+    if(!betrag.match(/^\d*([.,]{1}\d{1,2}){0,1}€?$/g)){
+        alert("Ungültiger Betrag");
         return false;
     }
     return true;
@@ -139,4 +146,27 @@ function submitEditBuchung(id){
     let data = "type=editBuchung&einnahme=1&id="+id+"&date="+curDate+"&betrag="+curBetrag+"&kontoid="+curKonto+"&kategorieid="+curKategorie+"&kommentar="+curKommentar;
     console.log(data);
     xhttp.send(data);
+}
+
+function addUebertrag(){
+    let date = $('#uebertragFormDate')[0].value
+    let betrag = $('#uebertragFormBetrag')[0].value
+    let source = $('#uebertragFormSource')[0].value
+    let destination = $('#uebertragFormDestination')[0].value
+    if((date==null || date === "") ||
+        (betrag==null || betrag === "") ||
+        (source == null || source <= 0) ||
+        (destination == null || destination <= 0)){
+        alert("Nicht alle Felder korrekt ausgefüllt")
+        return false
+    }
+    if(!validateBetrag(betrag)){
+        return false
+    }
+    //TODO insert into DB
+
+    // reset form
+    $('#uebertragForm').trigger("reset")
+    //reload page
+    location.reload()
 }
