@@ -170,3 +170,62 @@ function addUebertrag(){
     //reload page
     location.reload()
 }
+
+function addEinnahmeKategorie(){
+    let name = document.getElementById("einnahmeKategorieName").value;
+    if(name != null || name != ""){
+        const xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if(this.status == 200){
+                console.log(this.responseText);
+                $('#newEinnahmenKategorie').modal('hide');
+                $('#einnahmenKategorieForm').trigger("reset");
+                location.reload();
+            }
+        };
+        xhttp.open("POST", "assets/scripts/api", true);
+        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        let data = "type=addKategorie&name="+name+"&einnahme=1";
+        console.log(data);
+        xhttp.send(data);
+    }
+}
+function addAusgabeKategorie(){
+    let name = document.getElementById("ausgabeKategorieName").value;
+    if(name != null || name != ""){
+        const xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if(this.status == 200){
+                console.log(this.responseText);
+                $('#newEinnahmenKategorie').modal('hide');
+                $('#einnahmenKategorieForm').trigger("reset");
+                location.reload();
+            }
+        };
+        xhttp.open("POST", "assets/scripts/api", true);
+        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        let data = "type=addKategorie&name="+name+"&einnahme=0";
+        console.log(data);
+        xhttp.send(data);
+    }
+}
+function addKonto(){
+    let name = document.getElementById("kontoName").value;
+    let startbetrag = document.getElementById("startBetrag").value;
+    if(name != "" && startbetrag.match(/^\d*([.,]{1}\d{1,2}){0,1}€?$/g)){
+        const xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if(this.status == 200){
+                console.log(this.responseText);
+                $('#newKonto').modal('hide');
+                $('#kontoForm').trigger("reset");
+                location.reload();
+            }
+        };
+        xhttp.open("POST", "assets/scripts/api", true);
+        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        let data = "type=addKonto&name="+name+"&startbetrag="+startbetrag;
+        console.log(data);
+        xhttp.send(data);
+    }
+}
