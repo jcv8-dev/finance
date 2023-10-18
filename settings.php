@@ -20,15 +20,30 @@ header("Cache-Control: no-cache, must-revalidate"); //HTTP 1.1
         <div class="container px-2">
             <div class="container py-1 px-3 mt-2 border rounded border-dark-subtle shadow-box">
                 <div class="row">
+                    <h2 class="mt-2">Kategorisierung</h2>
+                </div>
+                <div class="row">
                     <div class="col-lg-3 col-md-4 col-sm-6 col-12 py-1 px-1">
                         <?php listKategorien(1); ?>
                     </div>
                     <div class="col-lg-3 col-md-4 col-sm-6 col-12 py-1 px-1">
                         <?php listKategorien(0); ?>
                     </div>
-
                     <div class="col-lg-3 col-md-4 col-sm-6 col-12 py-1 px-1">
                         <?php listKonten(); ?>
+                    </div>
+                </div>
+            </div>
+            <div class="container py-1 px-3 mt-2 border rounded border-dark-subtle shadow-box">
+                <div class="row">
+                    <h2 class="mt-1">Angezeigte Daten</h2>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6 col-sm-6 col-12 py-1 px-1">
+                        <?php yearRadio(); ?>
+                    </div>
+                    <div class="col-lg-6 col-sm-6 col-12 py-1 px-1 ">
+                            <?php hideSensitive(); ?>
                     </div>
                 </div>
             </div>

@@ -230,7 +230,23 @@ function selectOrder($einnahme, $id = "filterReihenfolge"){
     echo "</select>";
 }
 
+function yearRadio(){
+    //TODO Funktionalität
+    for($i = 0; $i < 5; $i++){
+        $year = 2023 + $i;
+        echo "<input type='checkbox' class='btn-check' id='$year' autocomplete='off'>
+        <label class='btn btn-outline-primary mb-1' for='$year'>".$year."</label>";
+    }
+}
 
+function hideSensitive(){
+    //TODO Funktionalität
+    echo '<div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+          <label class="form-check-label" for="flexSwitchCheckDefault">Sensitive Daten ausblenden</label>
+        </div>
+        ';
+}
 
 function ff($float){
     // format Float as 1.234,56

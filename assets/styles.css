@@ -29,3 +29,8 @@ a.nav-link.active {
 div.card-body div.row p {
     font-size: 12pt;
 }
+
+.light-border {
+    border: var(--bs-border-width) solid var(--bs-border-color);
+    border-radius: var(--bs-border-radius);
+}
