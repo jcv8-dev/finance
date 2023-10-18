@@ -162,7 +162,7 @@ function listKategorien($einnahme) {
     foreach($kategorien as $id => $kategorie){
         echo '<button class="list-group-item list-group-item-action container py-1"><div class="row"><div class="col-10 p-1 d-flex align-items-center"><p>'.$kategorie. '</p></div><div class="col-2 p-0"><img src="assets/img/edit.svg" height="22px" class="m-1 "> </div></div></button>';
     }
-    echo '<button type="button" data-bs-toggle="modal" data-bs-target="'; echo $einnahme == 0 ? "#newAusgabenKategorie" : "#newEinnahmenKategorie"; echo '" class="list-group-item list-group-item-action container py-1"><div class="row"><div class="col-10 p-1 d-flex align-items-center"><p>+ Hinzufügen</p></div></div></button>';
+    echo '<button type="button" onclick="prepareKategorieModal('; echo $einnahme == 0 ? "false" : "true"; echo ')" class="list-group-item list-group-item-action container py-1"><div class="row"><div class="col-10 p-1 d-flex align-items-center"><p>+ Hinzufügen</p></div></div></button>';
     echo '</ul>';
 }
 

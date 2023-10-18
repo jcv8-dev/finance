@@ -93,6 +93,31 @@ header("Cache-Control: no-cache, must-revalidate"); //HTTP 1.1
                 </div>
             </div>
         </div>
+        <div class="modal" tabindex="-1" id="addKategorieModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addKategorieModalTitle"></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="addKategorieForm">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <input type="text" id="addKategorieName" class="form-control shadow-box-sm" placeholder="Name der Kategorie" aria-label="Kommentar" required>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" onclick="" id="addKategorieModalSubmit" class="btn btn-primary">Speichern</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="modal" tabindex="-1" id="newKonto">
             <div class="modal-dialog">
                 <div class="modal-content">

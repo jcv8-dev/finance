@@ -171,43 +171,46 @@ function addUebertrag(){
     location.reload()
 }
 
-function addEinnahmeKategorie(){
-    let name = document.getElementById("einnahmeKategorieName").value;
+function addKategorie(einnahme){
+    $('#addKategorieModal').modal('show')
+    let name = document.getElementById("addKategorieName").value;
+    console.log(name)
     if(name != null || name != ""){
         const xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function () {
             if(this.status == 200){
                 console.log(this.responseText);
-                $('#newEinnahmenKategorie').modal('hide');
-                $('#einnahmenKategorieForm').trigger("reset");
+                $('#addKategorieModal').modal('hide');
+                $('#addKategorieForm').trigger("reset");
                 location.reload();
             }
         };
         xhttp.open("POST", "assets/scripts/api", true);
         xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        let data = "type=addKategorie&name="+name+"&einnahme=1";
+        let e
+        if(einnahme){
+            e = 1
+        } else {
+            e = 0
+        }
+        let data = "type=addKategorie&name="+name+"&einnahme="+e;
         console.log(data);
         xhttp.send(data);
     }
 }
-function addAusgabeKategorie(){
-    let name = document.getElementById("ausgabeKategorieName").value;
-    if(name != null || name != ""){
-        const xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function () {
-            if(this.status == 200){
-                console.log(this.responseText);
-                $('#newEinnahmenKategorie').modal('hide');
-                $('#einnahmenKategorieForm').trigger("reset");
-                location.reload();
-            }
-        };
-        xhttp.open("POST", "assets/scripts/api", true);
-        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        let data = "type=addKategorie&name="+name+"&einnahme=0";
-        console.log(data);
-        xhttp.send(data);
+
+function prepareKategorieModal(einnahme){
+    $('#addKategorieModal').modal('show')
+    console.log(einnahme)
+    if(einnahme){
+        $('#addKategorieModalTitle')[0].innerText = "Neue Kategorie für Einnahmen"
+        $('#addKategorieModalSubmit')[0].onclick = function() { addKategorie(true)}
+    } else {
+        $('#addKategorieModalTitle')[0].innerText = "Neue Kategorie für Ausgaben"
+        $('#addKategorieModalSubmit')[0].onclick = function(einnahme) { addKategorie(false)}
     }
+
+
 }
 function addKonto(){
     let name = document.getElementById("kontoName").value;
