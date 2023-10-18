@@ -17,45 +17,6 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-function getBuchungen($conn){
-    $sql = "SELECT datum, betrag, konten.kontenBezeichnung FROM buchungen inner join konten on konten.id = buchungen.kontenid";
-    $result = $conn->query($sql);
-    if ($result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-            print_r($row);
-        }
-    }
-}
-
-function editBuchung(mysqli $conn, $einnahme)
-{
-    $sql = "UPDATE buchungen SET datum = ?, betrag = ?, kontoid = ?, kategorieid = ?, kommentar = ? where id = ?;";
-    $stmt = $conn->prepare($sql);
-    $betrag = abs(floatval(str_replace(",", ".",$_POST["betrag"])));
-    echo "Konto: ".$_POST["kontoid"]." Kategorie: ". $_POST["kategorieid"];
-    $kommentar = $_POST["kommentar"];
-    $kategorieid = intval($_POST["kategorieid"]);
-    $kontoid = intval($_POST["kontoid"]);
-    if(!$einnahme){
-        $betrag = -$betrag;
-    }
-    $stmt->bind_param("sdiisi",$_POST["date"], $betrag, $kontoid, $kategorieid, $kommentar, $_POST["id"]);
-    echo "Konto".$kategorieid. " Kategorie: ", $kontoid;
-    $disableChecks = "SET foreign_key_checks = 0;";
-    $enableChecks = "SET foreign_key_checks = 1;";
-    $disableChecksStmt = $conn->prepare($disableChecks);
-    $enableChecksStmt = $conn->prepare($enableChecks);
-    $disableChecksStmt->execute();
-    if ($stmt->execute()) {
-        echo "Row updated successfully!";
-    } else {
-        echo "Error: " . $stmt->error;
-    }
-    $enableChecksStmt->execute();
-    $stmt->close();
-    $conn->close();
-}
-
 if(isset($_POST["type"])){
     echo "It's Alive\n";
     if($_POST["type"] == "einnahme"){
@@ -77,14 +38,59 @@ if(isset($_POST["type"])){
     echo "not triggered";
 }
 
-function insertBuchung($conn, $einnahme){
-    $sql = "INSERT INTO buchungen (datum, betrag, kategorieid, kontoid, kommentar) VALUES (?, ?, ?, ?, ?)";
-    $stmt = $conn->prepare($sql);
+function getBuchungen($conn){
+    $sql = "SELECT datum, betrag, konten.kontenBezeichnung FROM buchungen inner join konten on konten.id = buchungen.kontenid";
+    $result = $conn->query($sql);
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            print_r($row);
+        }
+    }
+}
 
+function editBuchung(mysqli $conn, $einnahme)
+{
+    $sql = "UPDATE buchungen SET datum = ?, betrag = ?, kontoid = ?, kategorieid = ?, kommentar = ? where id = ?;";
+    $stmt = $conn->prepare($sql);
+    // Werte aus $_POST[] lesen
+    //TODO Sanitize + Userfeedback
     $betrag = abs(floatval(str_replace(",", ".",$_POST["betrag"])));
     $kommentar = $_POST["kommentar"];
     $kategorieid = intval($_POST["kategorieid"]);
     $kontoid = intval($_POST["kontoid"]);
+    // Differenzierung nach Einnahme/Ausgabe
+    if(!$einnahme){
+        $betrag = -$betrag;
+    }
+    $stmt->bind_param("sdiisi",$_POST["date"], $betrag, $kontoid, $kategorieid, $kommentar, $_POST["id"]);
+    //echo "Konto".$kategorieid. " Kategorie: ", $kontoid;
+
+    // Disable Foreign Key Checks //TODO warum gehts ned mit?
+    $disableChecks = "SET foreign_key_checks = 0;";
+    $enableChecks = "SET foreign_key_checks = 1;";
+    $disableChecksStmt = $conn->prepare($disableChecks);
+    $enableChecksStmt = $conn->prepare($enableChecks);
+
+    $disableChecksStmt->execute();
+    if ($stmt->execute()) {
+        echo "Row updated successfully!";
+    } else {
+        echo "Error: " . $stmt->error;
+    }
+    $enableChecksStmt->execute();
+    $stmt->close();
+    $conn->close();
+}
+
+function insertBuchung($conn, $einnahme){
+    $sql = "INSERT INTO buchungen (datum, betrag, kategorieid, kontoid, kommentar) VALUES (?, ?, ?, ?, ?)";
+    $stmt = $conn->prepare($sql);
+    // Werte aus $_POST[] lesen //TODO Sanitize & Userfeedback
+    $betrag = abs(floatval(str_replace(",", ".",$_POST["betrag"])));
+    $kommentar = $_POST["kommentar"];
+    $kategorieid = intval($_POST["kategorieid"]);
+    $kontoid = intval($_POST["kontoid"]);
+    //Differenzierung Einnahme/Ausgabe
     if(!$einnahme){
         $betrag = -$betrag;
     }

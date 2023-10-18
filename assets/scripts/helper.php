@@ -17,6 +17,7 @@ if ($conn->connect_error) {
 }
 
 function printHeader($active){
+    // associate url with Title
     $sites = array(
         "/finance" => "Übersicht",
         "einnahmen" => "Einnahmen",
@@ -25,7 +26,8 @@ function printHeader($active){
         "settings" => "Einstellungen"
     );
     echo '<h1 class="p-2">One of the Tools of all Time</h1>
-    <ul class="nav nav-tabs ps-2">';
+        <ul class="nav nav-tabs ps-2">';
+    // navbar with tabs
     foreach($sites as $url => $title){
         echo '<li class="nav-item">';
         if($active == $url){
@@ -39,6 +41,7 @@ function printHeader($active){
 }
 
 function selectKonto($title, $id = "selectKonto") {
+    // Input Select für alle Konten. Title = Vorausgewählte Disabled Option
     global $conn;
     $sql = "SELECT id, kontoBezeichnung FROM konten";
     $result = $conn->query($sql);
@@ -58,7 +61,7 @@ function selectKonto($title, $id = "selectKonto") {
 
 
 function selectKategorie($title, $einnahme, $id = "selectKategorie") {
-
+    // Input Select für alle Kategorien (Differenzierung nach Einnahme/Ausgabe mit 1/0). Title = Vorausgewählte Disabled Option
     global $conn;
     $sql = "SELECT id, kategorieBezeichnung FROM kategorie where einnahme = $einnahme";
     $result = $conn->query($sql);
@@ -76,6 +79,7 @@ function selectKategorie($title, $einnahme, $id = "selectKategorie") {
 }
 
 function kontoCards() {
+    // Bootstrap Cards für alle Konten
     global $conn;
     $sql = "SELECT * FROM konten";
     $result = $conn->query($sql);
@@ -115,6 +119,7 @@ function kontoCards() {
 }
 
 function listKategorien($einnahme) {
+    // Erzeuge liste aller Kategorien (Differenzierung nach Einnahme/Ausgabe mit 1/0)
     global $conn;
     $sql = "SELECT id, kategorieBezeichnung FROM kategorie WHERE einnahme = $einnahme";
     $result = $conn->query($sql);
@@ -134,6 +139,7 @@ function listKategorien($einnahme) {
 }
 
 function listKonten() {
+    // Erzeuge liste aller Konten
     global $conn;
     $sql = "SELECT id, kontoBezeichnung FROM konten";
     $result = $conn->query($sql);
@@ -151,6 +157,8 @@ function listKonten() {
 }
 
 function listBuchungen($einnahme) {
+    // Erzeuge liste aller Buchungen (Differenzierung nach Einnahme/Ausgabe mit 1/0)
+    // Reihenfolge andersherum weil ausgabe als negativer Betrag gespeichert wird.
     if($einnahme == "1"){
         $einnahmeModifier = "> 0";
         $order = "ASC";
@@ -160,6 +168,7 @@ function listBuchungen($einnahme) {
     }
     global $conn;
 
+    // sortierung aus cookie lesen
     $col = readCookie("order".$einnahme);
     if($col == ""){$col = "datum";}
     
@@ -195,6 +204,7 @@ function listBuchungen($einnahme) {
             "</tr>";
             $i++;
         }
+        //ergebniszeile
         echo "<th scope=\"row\"></th>";
         echo "<td>Summe</td>".
             "<td class='text-end'>".ff(abs($sum))."€</td>".
@@ -208,6 +218,7 @@ function listBuchungen($einnahme) {
 }
 
 function selectOrder($einnahme, $id = "filterReihenfolge"){
+    // Select für Reihenfolge von Buchungen. Liest Wert aus Cookie.
     $selected = readCookie("order".$einnahme);
     echo '<select class="form-select shadow-box-sm" aria-label="Reihenfolge" id="'.$id.'">
         <option disabled value="0">Reihenfolge</option>';
@@ -220,8 +231,9 @@ function selectOrder($einnahme, $id = "filterReihenfolge"){
 }
 
 
-// format Float
+
 function ff($float){
+    // format Float as 1.234,56
     return number_format($float, "2", ",", ".");
 }
 
