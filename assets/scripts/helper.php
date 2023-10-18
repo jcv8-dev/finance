@@ -219,13 +219,6 @@ function selectOrder($einnahme, $id = "filterReihenfolge"){
     echo "</select>";
 }
 
-<<<<<<< HEAD
-function listUebertraege(){
-    global $conn;
-
-}
-=======
->>>>>>> 0d4e05f (Initial commit)
 
 // format Float
 function ff($float){
