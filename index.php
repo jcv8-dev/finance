@@ -39,6 +39,7 @@ header("Cache-Control: no-cache, must-revalidate"); //HTTP 1.1
         });
         function colorizeTable(id, aufsteigend) {
             $("#"+id+" tr").each(function() {
+                console.log(this.innerHTML)
                 let columnValues = [];
                 $(this).find("td").each(function() {
                     let valueWithSymbol = $(this).text();
@@ -53,21 +54,28 @@ header("Cache-Control: no-cache, must-revalidate"); //HTTP 1.1
                     let valueWithSymbol = $(this).text();
                     let numericValue = parseFloat(valueWithSymbol.replace(/[^0-9.-]+/g,""))/100;
                     let relativeValue = (numericValue - min) / (max - min);
-                    console.log("min: "+min)
-                    console.log("max: "+max)
-                    console.log("relativeValue: "+relativeValue)
-                    console.log("numericValue: "+numericValue)
                     let red = Math.floor(255 * (1 - relativeValue)* 1.9 + 50);
                     let green = Math.floor(255 * relativeValue * 1.9 + 50);
-                    console.log("red: "+red)
-                    console.log("green: "+green)
+                    if(numericValue > 0){
+                        console.log("min: "+min)
+                        console.log("max: "+max)
+                        console.log("relativeValue: "+relativeValue)
+                        console.log("numericValue: "+numericValue)
+                        // console.log("red: "+red)
+                        // console.log("green: "+green)
+                    }
+
+
+
                     if(!aufsteigend){
                         let temp = red
                         red = green
                         green = temp
                     }
+                    if(numericValue !== 0){
+                        $(this).css("background-color", `rgba(${red}, ${green}, 20, 0.7)`);
+                    }
 
-                    $(this).css("background-color", `rgba(${red}, ${green}, 20, 0.7)`);
                     //TODO fix colors
                 });
             });

@@ -336,8 +336,12 @@ function monthlyCategory($einnahme, $id="monthlyTable"){
 }
 
 function sumByKategorieMonat($kategorie, $monat){
+    $num = mt_rand(1,500);
+    if(mt_rand(0,100) > 70){
+        $num = 0;
+    }
     //TODO
-    return ff(mt_rand(0,500))."€";
+    return ff($num)."€";
 }
 
 function ff($float){
