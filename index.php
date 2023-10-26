@@ -15,7 +15,7 @@ header("Cache-Control: no-cache, must-revalidate"); //HTTP 1.1
     </head>
     <body>
         <?php printHeader("/finance"); ?>
-        <div class="container px-2">
+        <div class="container px-2 mb-4">
             <div class="container py-1 px-3 mt-2 border rounded border-dark-subtle shadow-box">
                 <img src="assets/img/stonks.bmp" class="img-fluid rounded shadow-box-sm" style="width: 100%;">
             </div>
@@ -67,7 +67,7 @@ header("Cache-Control: no-cache, must-revalidate"); //HTTP 1.1
                         green = temp
                     }
 
-                    $(this).css("background-color", `rgba(${red}, ${green}, 20, 0.6)`);
+                    $(this).css("background-color", `rgba(${red}, ${green}, 20, 0.7)`);
                     //TODO fix colors
                 });
             });

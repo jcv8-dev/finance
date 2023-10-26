@@ -300,7 +300,7 @@ function monthlyCategory($einnahme, $id="monthlyTable"){
     $sql = "select kategorieBezeichnung from kategorie where kategorie.einnahme = $e;";
     $result = $conn->query($sql);
     echo '<div class="container py-1 px-3 mt-2 border rounded border-dark-subtle shadow-box overflow-x-auto">';
-    echo "<h2>$title nach Monat</h2>";
+    echo "<h2 class='pt-2'>$title nach Monat</h2>";
     echo '
     <table class="table" id="'.$id.'">
       <thead>
