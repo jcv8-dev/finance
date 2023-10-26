@@ -293,6 +293,53 @@ function hideSensitive(){
         ';
 }
 
+function monthlyCategory($einnahme, $id="monthlyTable"){
+    global $conn;
+    $title = $einnahme == true ? "Einnahmen" : "Ausgaben";
+    $e = $einnahme == true ? "1" : "0";
+    $sql = "select kategorieBezeichnung from kategorie where kategorie.einnahme = $e;";
+    $result = $conn->query($sql);
+    echo '<div class="container py-1 px-3 mt-2 border rounded border-dark-subtle shadow-box overflow-x-auto">';
+    echo "<h2>$title nach Monat</h2>";
+    echo '
+    <table class="table" id="'.$id.'">
+      <thead>
+        <tr>
+          <th scope="col">Kategorie</th>
+          <th scope="col">Jan.</th>
+          <th scope="col">Feb.</th>
+          <th scope="col">Mär.</th>
+          <th scope="col">Apr.</th>
+          <th scope="col">Mai</th>
+          <th scope="col">Jun.</th>
+          <th scope="col">Jul.</th>
+          <th scope="col">Aug.</th>
+          <th scope="col">Sept.</th>
+          <th scope="col">Okt.</th>
+          <th scope="col">Nov.</th>
+          <th scope="col">Dez.</th>
+        </tr>
+      </thead>
+      <tbody>';
+    if($result->num_rows > 0){
+        while($row = $result->fetch_assoc()){
+            $kategorie = $row["kategorieBezeichnung"];
+            echo "<tr><th scope='row'>$kategorie</th>";
+
+            for($monat = 1; $monat <= 12; $monat++){
+                echo "<td>".sumByKategorieMonat($kategorie, $monat)."</td>";
+            }
+            echo "</tr>";
+        }
+    }
+    echo "</tbody></table></div>";
+}
+
+function sumByKategorieMonat($kategorie, $monat){
+    //TODO
+    return ff(mt_rand(0,500))."€";
+}
+
 function ff($float){
     // format Float as 1.234,56
     return number_format($float, "2", ",", ".");
