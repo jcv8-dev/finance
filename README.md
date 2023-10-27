@@ -1,1 +1,19 @@
-A replacement for the Excel sheet i use for accounting
+Ersatz für Buchhaltungsexceltabelle
+
+Anforderungen
+- [X] Einnahmen/Ausgaben buchen
+  - [X] Mit Kategorie, Konto, Kommentar
+    - [X] Hinzufügen von Kategorien & Konten
+  - [ ] Filtern von Buchungen
+    - [X] Sortieren
+    - [ ] Suchen
+    - [ ] Filter
+  - [X] Buchungen bearbeiten
+  - [ ] Konten bearbeiten
+- [ ] Auflistung von Monatlichen Summen nach Kategorie
+  - [ ] Tabelle
+  - [ ] Graph
+    - [ ] Nach Kategorien
+    - [ ] Nach Substring in Kommentar
+- [ ] Prognosen für Jahr
+- [ ] Monatliche Sparrate/Restbudget
