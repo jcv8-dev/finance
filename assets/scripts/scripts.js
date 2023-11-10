@@ -107,7 +107,7 @@ function getIdFromSelect(object,textToFind){
     }
 }
 
-function editEntry(id){
+function editEntry(id, einnahme){
     console.log(id);
     $('#editEntryModal').modal('show');
     $('#updateEntryForm').trigger("reset")
@@ -116,7 +116,7 @@ function editEntry(id){
     let curKonto = $('#'+id + " > td#konto")[0].textContent
     let curKategorie = $('#'+id + " > td#kategorie")[0].textContent
     let curKommentar = $('#'+id + " > td#kommentar")[0].textContent
-    $('#submitEditBuchung')[0].onclick = function(){submitEditBuchung(id)}
+    $('#submitEditBuchung')[0].onclick = function(){submitEditBuchung(id, einnahme)}
     // set fields tu current values of entry
     setField("editFormDate", curDate);
     setField("editFormBetrag", curBetrag);
@@ -125,7 +125,7 @@ function editEntry(id){
     setField("editFormKommentar", curKommentar);
 }
 
-function submitEditBuchung(id){
+function submitEditBuchung(id, einnahme){
     console.log("SubmitEdit")
     let curDate = $('#editFormDate')[0].value
     let curBetrag = $('#editFormBetrag')[0].value
@@ -143,7 +143,7 @@ function submitEditBuchung(id){
     };
     xhttp.open("POST", "assets/scripts/api", true);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    let data = "type=editBuchung&einnahme=1&id="+id+"&date="+curDate+"&betrag="+curBetrag+"&kontoid="+curKonto+"&kategorieid="+curKategorie+"&kommentar="+curKommentar;
+    let data = "type=editBuchung&einnahme="+einnahme+"&id="+id+"&date="+curDate+"&betrag="+curBetrag+"&kontoid="+curKonto+"&kategorieid="+curKategorie+"&kommentar="+curKommentar;
     console.log(data);
     xhttp.send(data);
 }

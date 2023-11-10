@@ -228,7 +228,7 @@ function listBuchungen($einnahme) {
             "<td class='px-2' id='konto'>".$row["kontoBezeichnung"]."</td>".
             "<td class='px-2 atext-center' id='kategorie'>".$row["kategorieBezeichnung"]."</td>".
             "<td class='px-2' id='kommentar'>".$row["kommentar"]."</td>".
-            "<td class='px-0' id='edit'><button type='button' onclick='editEntry(".$row["id"]. ")' class='btn p-2'><img src='assets/img/edit.svg' height='22px'></button></td>" .
+            "<td class='px-0' id='edit'><button type='button' onclick='editEntry(".$row["id"]. ",".$einnahme.")' class='btn p-2'><img src='assets/img/edit.svg' height='22px'></button></td>" .
             "</tr>";
             $i++;
         }
@@ -346,7 +346,7 @@ function sumByKategorieMonat($kategorie, $monat){
     $result = $conn->query($sql);
     $sum = 0;
     foreach ($result as $id =>$value){
-        $sum += $value["betrag"];
+        $sum += abs($value["betrag"]);
     }
     return ff($sum)."€";
 }
