@@ -299,7 +299,7 @@ function monthlyCategory($einnahme, $id="monthlyTable"){
     $e = $einnahme == true ? "1" : "0";
     $sql = "select kategorieBezeichnung,id from kategorie where kategorie.einnahme = $e;";
     $result = $conn->query($sql);
-    echo '<div class="container py-1 px-3 mt-2 border rounded border-dark-subtle shadow-box overflow-x-auto">';
+    echo '<div class="container-xl py-1 px-3 mt-2 border rounded border-dark-subtle shadow-box overflow-x-auto">';
     echo "<h2 class='pt-2'>$title nach Monat</h2>";
     echo '
     <table class="table" id="'.$id.'">
@@ -366,7 +366,7 @@ function monthlyTotal($einnahme, $monat){
 function printMonthlyBudget(){
     $month = date("m");
     $restbudget = ff(monthlyTotal(1, $month) - monthlyTotal(0, $month) - 100);
-    echo "<div class=\'\'><h2 class='text-center'>Diesen Monat noch verfügbar: $restbudget €</h2></div>";
+    echo "<div class=\'\'><h2 class='text-center my-2'>Diesen Monat noch verfügbar: $restbudget €</h2></div>";
 }
 
 function ff($float){
