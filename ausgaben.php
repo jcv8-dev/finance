@@ -83,8 +83,10 @@ header("Cache-Control: no-cache, must-revalidate"); //HTTP 1.1
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button id="deleteBuchung" type="button" onclick="notImplemented()" class="btn btn-outline-danger">Löschen</button>
-                        <button id="submitEditBuchung" type="button" onclick="" class="btn btn-primary">Speichern</button>
+                        <div class="row">
+                            <button id="deleteBuchung" type="button" onclick="notImplemented()" class="btn btn-outline-danger col me-2">Löschen</button>
+                            <button id="submitEditBuchung" type="button" class="btn btn-primary col">Speichern</button>
+                        </div>
                     </div>
                 </div>
             </div>
