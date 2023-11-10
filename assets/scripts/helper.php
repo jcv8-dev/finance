@@ -363,6 +363,12 @@ function monthlyTotal($einnahme, $monat){
     return $sum;
 }
 
+function printMonthlyBudget(){
+    $month = date("m");
+    $restbudget = ff(monthlyTotal(1, $month) - monthlyTotal(0, $month) - 100);
+    echo "<div class=\'\'><h2 class='text-center'>Diesen Monat noch verfügbar: $restbudget €</h2></div>";
+}
+
 function ff($float){
     // format numbers as 1.234,56
     return number_format($float, "2", ",", ".");
