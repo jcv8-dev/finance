@@ -338,10 +338,6 @@ function monthlyCategory($einnahme, $id="monthlyTable"){
 
 function sumByKategorieMonat($kategorie, $monat){
     global $conn;
-    $num = mt_rand(1,500);
-    if(mt_rand(0,100) > 70){
-        $num = 0;
-    }
     $sql = "SELECT betrag from buchungen where kategorieid = $kategorie and MONTH(datum) = $monat and YEAR(datum) = YEAR(CURDATE())";
     $result = $conn->query($sql);
     $sum = 0;
@@ -349,6 +345,22 @@ function sumByKategorieMonat($kategorie, $monat){
         $sum += abs($value["betrag"]);
     }
     return ff($sum)."€";
+}
+
+function monthlyTotal($einnahme, $monat){
+    global $conn;
+    if($einnahme == "1"){
+        $einnahmeModifier = "> 0";
+    } else {
+        $einnahmeModifier = "< 0";
+    }
+    $sql = "SELECT betrag from buchungen where betrag $einnahmeModifier and MONTH(datum) = $monat and YEAR(datum) = YEAR(CURDATE())";
+    $result = $conn->query($sql);
+    $sum = 0;
+    foreach ($result as $key=>$value){
+        $sum += abs($value["betrag"]);
+    }
+    return $sum;
 }
 
 function ff($float){
