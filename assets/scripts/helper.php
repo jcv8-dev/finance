@@ -297,7 +297,7 @@ function monthlyCategory($einnahme, $id="monthlyTable"){
     global $conn;
     $title = $einnahme == true ? "Einnahmen" : "Ausgaben";
     $e = $einnahme == true ? "1" : "0";
-    $sql = "select kategorieBezeichnung from kategorie where kategorie.einnahme = $e;";
+    $sql = "select kategorieBezeichnung,id from kategorie where kategorie.einnahme = $e;";
     $result = $conn->query($sql);
     echo '<div class="container py-1 px-3 mt-2 border rounded border-dark-subtle shadow-box overflow-x-auto">';
     echo "<h2 class='pt-2'>$title nach Monat</h2>";
@@ -324,10 +324,11 @@ function monthlyCategory($einnahme, $id="monthlyTable"){
     if($result->num_rows > 0){
         while($row = $result->fetch_assoc()){
             $kategorie = $row["kategorieBezeichnung"];
+            $id = $row["id"];
             echo "<tr><th scope='row'>$kategorie</th>";
 
             for($monat = 1; $monat <= 12; $monat++){
-                echo "<td>".sumByKategorieMonat($kategorie, $monat)."</td>";
+                echo "<td>".sumByKategorieMonat($id, $monat)."</td>";
             }
             echo "</tr>";
         }
@@ -336,16 +337,22 @@ function monthlyCategory($einnahme, $id="monthlyTable"){
 }
 
 function sumByKategorieMonat($kategorie, $monat){
+    global $conn;
     $num = mt_rand(1,500);
     if(mt_rand(0,100) > 70){
         $num = 0;
     }
-    //TODO
-    return ff($num)."€";
+    $sql = "SELECT betrag from buchungen where kategorieid = $kategorie and MONTH(datum) = $monat and YEAR(datum) = YEAR(CURDATE())";
+    $result = $conn->query($sql);
+    $sum = 0;
+    foreach ($result as $id =>$value){
+        $sum += $value["betrag"];
+    }
+    return ff($sum)."€";
 }
 
 function ff($float){
-    // format Float as 1.234,56
+    // format numbers as 1.234,56
     return number_format($float, "2", ",", ".");
 }
 
