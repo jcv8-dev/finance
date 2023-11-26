@@ -40,6 +40,17 @@ function printHeader($active){
     echo '</ul>';
 }
 
+function head($title){
+    echo '<head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="assets/scripts/3rdparty/bootstrap-5.3.2.min.css" rel="stylesheet">
+        <script src="assets/scripts/3rdparty/bootstrap-5.3.2.bundle.min.js"></script>
+        <title>'.$title.'</title>
+        <link rel="stylesheet" href="assets/styles.css">
+    </head>';
+}
+
 function selectKonto($title, $id = "selectKonto") {
     // Input Select für alle Konten. Title = Vorausgewählte Disabled Option
     global $conn;
