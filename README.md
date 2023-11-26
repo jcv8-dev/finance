@@ -11,9 +11,13 @@ Anforderungen
   - [X] Buchungen bearbeiten
   - [ ] Konten bearbeiten
 - [ ] Auflistung von Monatlichen Summen nach Kategorie
-  - [ ] Tabelle
+  - [X] Tabelle
   - [ ] Graph
     - [ ] Nach Kategorien
     - [ ] Nach Substring in Kommentar
 - [ ] Prognosen für Jahr
 - [ ] Monatliche Sparrate/Restbudget
+  - [ ] Sparrate festlegen
+    - [ ] pauschal
+    - [ ] prozentual
+  - [X] Monatliches Restbudget anzeigen
