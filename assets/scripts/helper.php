@@ -114,15 +114,15 @@ function kontoCards() {
             <div class="card-body p-2">
             <div class="row">
             <div class="col-6 text-end pe-2 ps-1"><p>Jahresbeginn</p></div>
-            <div class="col-6 text-end pe-3 ps-0 pe-1"><p>'.ff($startbetrag).'€</p></div>
+            <div class="col-6 text-end pe-3 ps-0 pe-1"><p>'.ff($startbetrag).'&nbsp;€</p></div>
             <div class="col-6 text-end pe-2 ps-1"><p>Einnahmen</p></div>
-            <div class="col-6 text-end pe-3 ps-0 pe-1"><p>'.ff($einnahmen).'€</p></div>
+            <div class="col-6 text-end pe-3 ps-0 pe-1"><p>'.ff($einnahmen).'&nbsp;€</p></div>
             <div class="col-6 text-end pe-2 ps-1"><p>Ausgaben</p></div>
-            <div class="col-6 text-end pe-3 ps-0 pe-1"><p>'.ff($ausgaben).'€</p></div>
+            <div class="col-6 text-end pe-3 ps-0 pe-1"><p>'.ff($ausgaben).'&nbsp;€</p></div>
             <div class="col-6 text-end pe-2 ps-1"><p>Übertrag</p></div>
-            <div class="col-6 text-end pe-3 ps-0 pe-1"><p>'.("xx,xx").'€</p></div>
+            <div class="col-6 text-end pe-3 ps-0 pe-1"><p>'.("xx,xx").'&nbsp;€</p></div>
             <div class="col-6 text-end pe-2 ps-1"><p>Aktuell</p></div>
-            <div class="col-6 text-end pe-3 ps-0 pe-1"><p>'.ff($startbetrag + $einnahmen - abs($ausgaben)).'€</p></div>
+            <div class="col-6 text-end pe-3 ps-0 pe-1"><p>'.ff($startbetrag + $einnahmen - abs($ausgaben)).'&nbsp;€</p></div>
             </div>
             </div>
             </div>
@@ -153,7 +153,7 @@ function listUebertraege(){
             echo '<tr>
                       <th scope="row">'.$i++.'</th>
                       <td>'.$row["datum"].'</td>
-                      <td>'.$row["betrag"].' €</td>
+                      <td>'.$row["betrag"].'&nbsp;€</td>
                       <td>'.$row["quellKonto"].'</td>
                       <td>'.$row["zielKonto"].'</td>
                       <td class="px-0" id="edit"><button type="button" onclick=editEntry("'.$row["id"].'") class="btn p-2"><img src="assets/img/edit.svg" height="22px"></button></td>
@@ -242,7 +242,7 @@ function listBuchungen($einnahme) {
             echo "<tr id=".$row["id"].">";
             echo "<th scope=\"row\">$i</th>";
             echo "<td class='px-2' id='datum'>".$row["datum"]."</td>".
-            "<td class='px-2 text-end' id='betrag'>".ff(abs($betrag))."€</td>".
+            "<td class='px-2 text-end' id='betrag'>".ff(abs($betrag))."&nbsp;€</td>".
             "<td class='px-2' id='konto'>".$row["kontoBezeichnung"]."</td>".
             "<td class='px-2 atext-center' id='kategorie'>".$row["kategorieBezeichnung"]."</td>".
             "<td class='px-2' id='kommentar'>".$row["kommentar"]."</td>".
@@ -253,7 +253,7 @@ function listBuchungen($einnahme) {
         //ergebniszeile
         echo "<th scope=\"row\"></th>";
         echo "<td>Summe</td>".
-            "<td class='text-end'>".ff(abs($sum))."€</td>".
+            "<td class='text-end'>".ff(abs($sum))."&nbsp;€</td>".
             "<td></td>".
             "<td></td>".
             "<td></td>".
@@ -362,7 +362,7 @@ function sumByKategorieMonat($kategorie, $monat){
     foreach ($result as $id =>$value){
         $sum += abs($value["betrag"]);
     }
-    return ff($sum)."€";
+    return ff($sum)."&nbsp;€";
 }
 
 function monthlyTotal($einnahme, $monat){
@@ -384,7 +384,7 @@ function monthlyTotal($einnahme, $monat){
 function printMonthlyBudget(){
     $month = date("m");
     $restbudget = ff(monthlyTotal(1, $month) - monthlyTotal(0, $month) - 100);
-    echo "<div class=\'\'><h2 class='text-center my-2'>Diesen Monat noch verfügbar: $restbudget €</h2></div>";
+    echo "<div class=\'\'><h2 class='text-center my-2'>Diesen Monat noch verfügbar: $restbudget&nbsp;€</h2></div>";
 }
 
 function ff($float){
