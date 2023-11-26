@@ -40,6 +40,18 @@ function printHeader($active){
     echo '</ul>';
 }
 
+function head($title){
+    echo '<head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="assets/scripts/3rdparty/bootstrap-5.3.2.min.css" rel="stylesheet">
+        <script src="assets/scripts/3rdparty/bootstrap-5.3.2.bundle.min.js"></script>
+        <script src="assets/scripts/3rdparty/jquery-3.7.1.min.js"></script>
+        <title>'.$title.'</title>
+        <link rel="stylesheet" href="assets/styles.css">
+    </head>';
+}
+
 function selectKonto($title, $id = "selectKonto") {
     // Input Select für alle Konten. Title = Vorausgewählte Disabled Option
     global $conn;
@@ -102,15 +114,15 @@ function kontoCards() {
             <div class="card-body p-2">
             <div class="row">
             <div class="col-6 text-end pe-2 ps-1"><p>Jahresbeginn</p></div>
-            <div class="col-6 text-end pe-3 ps-0 pe-1"><p>'.ff($startbetrag).'€</p></div>
+            <div class="col-6 text-end pe-3 ps-0 pe-1"><p>'.ff($startbetrag).'&nbsp;€</p></div>
             <div class="col-6 text-end pe-2 ps-1"><p>Einnahmen</p></div>
-            <div class="col-6 text-end pe-3 ps-0 pe-1"><p>'.ff($einnahmen).'€</p></div>
+            <div class="col-6 text-end pe-3 ps-0 pe-1"><p>'.ff($einnahmen).'&nbsp;€</p></div>
             <div class="col-6 text-end pe-2 ps-1"><p>Ausgaben</p></div>
-            <div class="col-6 text-end pe-3 ps-0 pe-1"><p>'.ff($ausgaben).'€</p></div>
+            <div class="col-6 text-end pe-3 ps-0 pe-1"><p>'.ff($ausgaben).'&nbsp;€</p></div>
             <div class="col-6 text-end pe-2 ps-1"><p>Übertrag</p></div>
-            <div class="col-6 text-end pe-3 ps-0 pe-1"><p>'.("xx,xx").'€</p></div>
+            <div class="col-6 text-end pe-3 ps-0 pe-1"><p>'.("xx,xx").'&nbsp;€</p></div>
             <div class="col-6 text-end pe-2 ps-1"><p>Aktuell</p></div>
-            <div class="col-6 text-end pe-3 ps-0 pe-1"><p>'.ff($startbetrag + $einnahmen - abs($ausgaben)).'€</p></div>
+            <div class="col-6 text-end pe-3 ps-0 pe-1"><p>'.ff($startbetrag + $einnahmen - abs($ausgaben)).'&nbsp;€</p></div>
             </div>
             </div>
             </div>
@@ -132,15 +144,21 @@ function listUebertraege(){
               </tr>
               </thead>
               <tbody>';
-    for($i = 0; $i < 2; $i++){
-        echo '<tr>
-                  <th scope="row">1</th>
-                  <td>01.01.2024</td>
-                  <td>123,25€</td>
-                  <td>Girokonto</td>
-                  <td>Bar</td>
-                  <td class="px-0" id="edit"><button type="button" onclick="editEntry("'.$i.'") class="btn p-2"><img src="assets/img/edit.svg" height="22px"></button></td>
-                 </tr>';
+    global $conn;
+    $sql = "SELECT uebertrag.id, datum, betrag, quelle.kontoBezeichnung as quellKonto, ziel.kontoBezeichnung as zielKonto FROM uebertrag inner join konten as quelle on uebertrag.quelleid = quelle.id inner join konten as ziel on uebertrag.zielid = ziel.id;";
+    $result = $conn->query($sql);
+    if ($result->num_rows > 0) {
+        $i = 1;
+        while ($row = $result->fetch_assoc()) {
+            echo '<tr>
+                      <th scope="row">'.$i++.'</th>
+                      <td>'.$row["datum"].'</td>
+                      <td>'.$row["betrag"].'&nbsp;€</td>
+                      <td>'.$row["quellKonto"].'</td>
+                      <td>'.$row["zielKonto"].'</td>
+                      <td class="px-0" id="edit"><button type="button" onclick=editEntry("'.$row["id"].'") class="btn p-2"><img src="assets/img/edit.svg" height="22px"></button></td>
+                     </tr>';
+        }
     }
     echo '</tbody>
          </table>';
@@ -224,18 +242,18 @@ function listBuchungen($einnahme) {
             echo "<tr id=".$row["id"].">";
             echo "<th scope=\"row\">$i</th>";
             echo "<td class='px-2' id='datum'>".$row["datum"]."</td>".
-            "<td class='px-2 text-end' id='betrag'>".ff(abs($betrag))."€</td>".
+            "<td class='px-2 text-end' id='betrag'>".ff(abs($betrag))."&nbsp;€</td>".
             "<td class='px-2' id='konto'>".$row["kontoBezeichnung"]."</td>".
             "<td class='px-2 atext-center' id='kategorie'>".$row["kategorieBezeichnung"]."</td>".
             "<td class='px-2' id='kommentar'>".$row["kommentar"]."</td>".
-            "<td class='px-0' id='edit'><button type='button' onclick='editEntry(".$row["id"]. ")' class='btn p-2'><img src='assets/img/edit.svg' height='22px'></button></td>" .
+            "<td class='px-0' id='edit'><button type='button' onclick='editEntry(".$row["id"]. ",".$einnahme.")' class='btn p-2'><img src='assets/img/edit.svg' height='22px'></button></td>" .
             "</tr>";
             $i++;
         }
         //ergebniszeile
         echo "<th scope=\"row\"></th>";
         echo "<td>Summe</td>".
-            "<td class='text-end'>".ff(abs($sum))."€</td>".
+            "<td class='text-end'>".ff(abs($sum))."&nbsp;€</td>".
             "<td></td>".
             "<td></td>".
             "<td></td>".
@@ -293,8 +311,84 @@ function hideSensitive(){
         ';
 }
 
+function monthlyCategory($einnahme, $id="monthlyTable"){
+    global $conn;
+    $title = $einnahme == true ? "Einnahmen" : "Ausgaben";
+    $e = $einnahme == true ? "1" : "0";
+    $sql = "select kategorieBezeichnung,id from kategorie where kategorie.einnahme = $e;";
+    $result = $conn->query($sql);
+    echo '<div class="container-xl py-1 px-3 mt-2 border rounded border-dark-subtle shadow-box overflow-x-auto">';
+    echo "<h2 class='pt-2'>$title nach Monat</h2>";
+    echo '
+    <table class="table" id="'.$id.'">
+      <thead>
+        <tr>
+          <th scope="col">Kategorie</th>
+          <th scope="col">Jan.</th>
+          <th scope="col">Feb.</th>
+          <th scope="col">Mär.</th>
+          <th scope="col">Apr.</th>
+          <th scope="col">Mai</th>
+          <th scope="col">Jun.</th>
+          <th scope="col">Jul.</th>
+          <th scope="col">Aug.</th>
+          <th scope="col">Sept.</th>
+          <th scope="col">Okt.</th>
+          <th scope="col">Nov.</th>
+          <th scope="col">Dez.</th>
+        </tr>
+      </thead>
+      <tbody>';
+    if($result->num_rows > 0){
+        while($row = $result->fetch_assoc()){
+            $kategorie = $row["kategorieBezeichnung"];
+            $id = $row["id"];
+            echo "<tr><th scope='row'>$kategorie</th>";
+
+            for($monat = 1; $monat <= 12; $monat++){
+                echo "<td>".sumByKategorieMonat($id, $monat)."</td>";
+            }
+            echo "</tr>";
+        }
+    }
+    echo "</tbody></table></div>";
+}
+
+function sumByKategorieMonat($kategorie, $monat){
+    global $conn;
+    $sql = "SELECT betrag from buchungen where kategorieid = $kategorie and MONTH(datum) = $monat and YEAR(datum) = YEAR(CURDATE())";
+    $result = $conn->query($sql);
+    $sum = 0;
+    foreach ($result as $id =>$value){
+        $sum += abs($value["betrag"]);
+    }
+    return ff($sum)."&nbsp;€";
+}
+
+function monthlyTotal($einnahme, $monat){
+    global $conn;
+    if($einnahme == "1"){
+        $einnahmeModifier = "> 0";
+    } else {
+        $einnahmeModifier = "< 0";
+    }
+    $sql = "SELECT betrag from buchungen where betrag $einnahmeModifier and MONTH(datum) = $monat and YEAR(datum) = YEAR(CURDATE())";
+    $result = $conn->query($sql);
+    $sum = 0;
+    foreach ($result as $key=>$value){
+        $sum += abs($value["betrag"]);
+    }
+    return $sum;
+}
+
+function printMonthlyBudget(){
+    $month = date("m");
+    $restbudget = ff(monthlyTotal(1, $month) - monthlyTotal(0, $month) - 100);
+    echo "<div class=\'\'><h2 class='text-center my-2'>Diesen Monat noch verfügbar: $restbudget&nbsp;€</h2></div>";
+}
+
 function ff($float){
-    // format Float as 1.234,56
+    // format numbers as 1.234,56
     return number_format($float, "2", ",", ".");
 }
 
