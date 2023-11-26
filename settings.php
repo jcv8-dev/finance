@@ -1,8 +1,9 @@
 <?php
 require 'assets/scripts/helper.php';
-header("Cache-Control: no-cache, must-revalidate"); //HTTP 1.1
-
+require 'protect.php';
+header("Cache-Control: no-cache, must-revalidate");
 ?>
+
 <!doctype html>
 <html lang="de">
 <?php head("Finance - Einstellungen"); ?>

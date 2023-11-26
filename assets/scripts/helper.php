@@ -25,7 +25,11 @@ function printHeader($active){
         "konten" => "Konten",
         "settings" => "Einstellungen"
     );
-    echo '<h1 class="p-2">One of the Tools of all Time</h1>
+    echo '<div class="row"><h1 class="p-2 col-11">One of the Tools of all Time</h1>
+        <form class="col-1 end-0" method="post" action="">
+        <input type="hidden" name="logout" value="true" /> 
+        <a class="button btn btn-outline-primary my-3" onclick="this.parentNode.submit();">Logout</a>
+        </form></div>
         <ul class="nav nav-tabs ps-2">';
     // navbar with tabs
     foreach($sites as $url => $title){
