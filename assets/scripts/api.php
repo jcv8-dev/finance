@@ -130,7 +130,10 @@ function addKonto($conn){
     $stmt = $conn->prepare($sql);
     $name = $_POST["name"];
     $betrag = $_POST["startbetrag"];
-    $stmt->bind_param("si", $name, $betrag);
+    echo $betrag;
+    $betrag = str_replace(".","",$betrag);
+    $betrag = str_replace(",",".",$betrag);
+    $stmt->bind_param("sd", $name, $betrag);
 
     if ($stmt->execute()) {
         echo "Row inserted successfully!";

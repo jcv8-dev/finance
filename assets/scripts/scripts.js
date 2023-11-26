@@ -43,7 +43,7 @@ function insertBuchung(einnahme) {
         } else {
             e = "ausgabe"
         }
-        let data = "type="+e+"&date=" + date + "&betrag=" + betrag + "&kontoid=" + konto + "&kategorieid=" + kategorie + "&kommentar=" + kommentar;
+        let data = "type="+e+"&date=" + encode(date) + "&betrag=" + encode(betrag) + "&kontoid=" + encode(konto) + "&kategorieid=" + encode(kategorie) + "&kommentar=" + encode(kommentar);
         console.log(data);
         xhttp.send(data);
 
@@ -143,7 +143,7 @@ function submitEditBuchung(id, einnahme){
     };
     xhttp.open("POST", "assets/scripts/api", true);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    let data = "type=editBuchung&einnahme="+einnahme+"&id="+id+"&date="+curDate+"&betrag="+curBetrag+"&kontoid="+curKonto+"&kategorieid="+curKategorie+"&kommentar="+curKommentar;
+    let data = "type=editBuchung&einnahme="+einnahme+"&id="+id+"&date="+encode(curDate)+"&betrag="+encode(curBetrag)+"&kontoid="+encode(curKonto)+"&kategorieid="+encode(curKategorie)+"&kommentar="+encode(curKommentar);
     console.log(data);
     xhttp.send(data);
 }
@@ -165,7 +165,7 @@ async function addUebertrag(){
     }
     await fetch('assets/scripts/api.php', {
         method: 'POST',
-        body: "type=addUebertrag&date="+date+"&betrag="+betrag+"&source="+source+"&destination="+destination,
+        body: "type=addUebertrag&date="+encode(date)+"&betrag="+encode(betrag)+"&source="+encode(source)+"&destination="+encode(destination),
         headers: {
             'Content-type': 'application/x-www-form-urlencoded',
         }
@@ -200,7 +200,7 @@ function addKategorie(einnahme){
         } else {
             e = 0
         }
-        let data = "type=addKategorie&name="+name+"&einnahme="+e;
+        let data = "type=addKategorie&name="+encode(name)+"&einnahme="+e;
         console.log(data);
         xhttp.send(data);
     }
@@ -234,8 +234,12 @@ function addKonto(){
         };
         xhttp.open("POST", "assets/scripts/api", true);
         xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        let data = "type=addKonto&name="+name+"&startbetrag="+startbetrag;
+        let data = "type=addKonto&name="+encode(name)+"&startbetrag="+encode(startbetrag);
         console.log(data);
         xhttp.send(data);
     }
+}
+
+function encode(val){
+    return encodeURIComponent(val)
 }
