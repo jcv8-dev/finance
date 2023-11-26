@@ -5,4 +5,7 @@ $secret = array(
     "dbUser" => "nameOfDatabaseUser",
     "dbPass" => "Password",
     "dbServer" => "databaseHost"
+    "loginPass" => [
+        "sampleuser" => "samplepassword"
+    ]
 );
