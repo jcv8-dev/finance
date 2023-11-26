@@ -30,6 +30,9 @@ if(isset($_POST["type"])){
     } elseif ($_POST["type"] == "editBuchung") {
         echo "editBuchung";
         editBuchung($conn, $_POST["einnahme"]);
+    } elseif ($_POST["type"] == "addUebertrag") {
+        echo "addUebertrag";
+        addUebertrag($conn);
     } elseif($_POST["type"] == "setCookie"){
         //expire after 100 years :)
         setcookie($_POST["key"], $_POST["value"],time()+3075840000);
@@ -130,6 +133,23 @@ function addKonto($conn){
     $stmt->bind_param("si", $name, $betrag);
 
     if ($stmt->execute()) {
+        echo "Row inserted successfully!";
+    } else {
+        echo "Error: " . $stmt->error;
+    }
+    $stmt->close();
+    $conn->close();
+}
+
+function addUebertrag($conn){
+    $sql = "INSERT INTO uebertrag (datum, betrag, quelleid, zielid) value (?,?,?,?);";
+    $stmt = $conn->prepare($sql);
+    $date = $_POST["date"];
+    $betrag = $_POST["betrag"];
+    $quelleid = intval($_POST["source"]);
+    $zielid = intval($_POST["destination"]);
+    $stmt->bind_param("siii", $date,$betrag,$quelleid,$zielid);
+    if ($stmt->execute()){
         echo "Row inserted successfully!";
     } else {
         echo "Error: " . $stmt->error;

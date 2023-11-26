@@ -46,6 +46,7 @@ function head($title){
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="assets/scripts/3rdparty/bootstrap-5.3.2.min.css" rel="stylesheet">
         <script src="assets/scripts/3rdparty/bootstrap-5.3.2.bundle.min.js"></script>
+        <script src="assets/scripts/3rdparty/jquery-3.7.1.min.js"></script>
         <title>'.$title.'</title>
         <link rel="stylesheet" href="assets/styles.css">
     </head>';

@@ -148,7 +148,7 @@ function submitEditBuchung(id, einnahme){
     xhttp.send(data);
 }
 
-function addUebertrag(){
+async function addUebertrag(){
     let date = $('#uebertragFormDate')[0].value
     let betrag = $('#uebertragFormBetrag')[0].value
     let source = $('#uebertragFormSource')[0].value
@@ -163,8 +163,15 @@ function addUebertrag(){
     if(!validateBetrag(betrag)){
         return false
     }
-    //TODO insert into DB
-
+    await fetch('assets/scripts/api.php', {
+        method: 'POST',
+        body: "type=addUebertrag&date="+date+"&betrag="+betrag+"&source="+source+"&destination="+destination,
+        headers: {
+            'Content-type': 'application/x-www-form-urlencoded',
+        }
+    }).then(async function(response) {
+        return await response.text();
+    })
     // reset form
     $('#uebertragForm').trigger("reset")
     //reload page

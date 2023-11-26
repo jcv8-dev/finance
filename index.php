@@ -12,13 +12,13 @@ header("Cache-Control: no-cache, must-revalidate"); //HTTP 1.1
             <div class="container-xl py-1 px-3 mt-2 border rounded border-dark-subtle shadow-box">
                 <?php printMonthlyBudget(); ?>
             </div>
-            <div class="container-xl py-1 px-3 mt-2 border rounded border-dark-subtle shadow-box">
-                <img src="assets/img/stonks.bmp" class="img-fluid rounded shadow-box-sm" style="width: 100%;">
-            </div>
-                <?php monthlyCategory(true, $id="einnahmenMonatTable")?>
-                <?php monthlyCategory(false, $id="ausgabenMonatTable")?>
+            <?php monthlyCategory(true, $id="einnahmenMonatTable")?>
+            <?php monthlyCategory(false, $id="ausgabenMonatTable")?>
             <div class="container-xl py-1 px-3 mt-2 border rounded border-dark-subtle shadow-box">
                 <input type="file" accept="image/*" capture="camera">
+            </div>
+            <div class="container-xl py-1 px-3 mt-2 border rounded border-dark-subtle shadow-box">
+                <img src="assets/img/stonks.bmp" class="img-fluid rounded shadow-box-sm" style="width: 100%;">
             </div>
         </div>
 
