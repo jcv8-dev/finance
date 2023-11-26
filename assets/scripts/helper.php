@@ -144,15 +144,21 @@ function listUebertraege(){
               </tr>
               </thead>
               <tbody>';
-    for($i = 0; $i < 2; $i++){
-        echo '<tr>
-                  <th scope="row">1</th>
-                  <td>01.01.2024</td>
-                  <td>123,25€</td>
-                  <td>Girokonto</td>
-                  <td>Bar</td>
-                  <td class="px-0" id="edit"><button type="button" onclick="editEntry("'.$i.'") class="btn p-2"><img src="assets/img/edit.svg" height="22px"></button></td>
-                 </tr>';
+    global $conn;
+    $sql = "SELECT uebertrag.id, datum, betrag, quelle.kontoBezeichnung as quellKonto, ziel.kontoBezeichnung as zielKonto FROM uebertrag inner join konten as quelle on uebertrag.quelleid = quelle.id inner join konten as ziel on uebertrag.zielid = ziel.id;";
+    $result = $conn->query($sql);
+    if ($result->num_rows > 0) {
+        $i = 1;
+        while ($row = $result->fetch_assoc()) {
+            echo '<tr>
+                      <th scope="row">'.$i++.'</th>
+                      <td>'.$row["datum"].'</td>
+                      <td>'.$row["betrag"].' €</td>
+                      <td>'.$row["quellKonto"].'</td>
+                      <td>'.$row["zielKonto"].'</td>
+                      <td class="px-0" id="edit"><button type="button" onclick=editEntry("'.$row["id"].'") class="btn p-2"><img src="assets/img/edit.svg" height="22px"></button></td>
+                     </tr>';
+        }
     }
     echo '</tbody>
          </table>';
