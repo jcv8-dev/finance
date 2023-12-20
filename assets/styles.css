@@ -34,3 +34,7 @@ div.card-body div.row p {
     border: var(--bs-border-width) solid var(--bs-border-color);
     border-radius: var(--bs-border-radius);
 }
+
+h3 {
+    font-size: calc(1rem + .6vw);
+}
