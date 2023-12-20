@@ -4,28 +4,34 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 require "secrets.php";
-global $secret;
-$servername = $secret["dbServer"];
-$username = $secret["dbUser"];
-$password = $secret["dbPass"];
-$dbname = $secret["dbName"];
 
-$conn = new mysqli($servername, $username, $password, $dbname);
+function db(){
+    global $secret;
 
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+    $servername = $secret["dbServer"];
+    $username = $secret["dbUser"];
+    $password = $secret["dbPass"];
+    $dbname = $secret["dbName"];
+
+    $conn = new mysqli($servername, $username, $password, $dbname);
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+    return $conn;
 }
+
 
 function printHeader($active){
     // associate url with Title
     $sites = array(
-        "/finance" => "Übersicht",
+        "index" => "Übersicht",
         "einnahmen" => "Einnahmen",
         "ausgaben" => "Ausgaben",
         "konten" => "Konten",
-        "settings" => "Einstellungen"
+        "settings" => "Einstellungen",
+        "static"=> "Static"
     );
-    echo '<div class="row"><h1 class="p-2 col-11">One of the Tools of all Time</h1>
+    echo '<div class="row w-100"><h1 class="py-2 px-4 col-11">One of the Tools of all Time</h1>
         <form class="col-1 end-0" method="post" action="">
         <input type="hidden" name="logout" value="true" /> 
         <a class="button btn btn-outline-primary my-3" onclick="this.parentNode.submit();">Logout</a>
@@ -58,7 +64,7 @@ function head($title){
 
 function selectKonto($title, $id = "selectKonto") {
     // Input Select für alle Konten. Title = Vorausgewählte Disabled Option
-    global $conn;
+    $conn = db();
     $sql = "SELECT id, kontoBezeichnung FROM konten";
     $result = $conn->query($sql);
     if ($result->num_rows > 0) {
@@ -78,7 +84,7 @@ function selectKonto($title, $id = "selectKonto") {
 
 function selectKategorie($title, $einnahme, $id = "selectKategorie") {
     // Input Select für alle Kategorien (Differenzierung nach Einnahme/Ausgabe mit 1/0). Title = Vorausgewählte Disabled Option
-    global $conn;
+    $conn = db();
     $sql = "SELECT id, kategorieBezeichnung FROM kategorie where einnahme = $einnahme";
     $result = $conn->query($sql);
     if ($result->num_rows > 0) {
@@ -96,7 +102,7 @@ function selectKategorie($title, $einnahme, $id = "selectKategorie") {
 
 function kontoCards() {
     // Bootstrap Cards für alle Konten
-    global $conn;
+    $conn = db();
     $sql = "SELECT * FROM konten";
     $result = $conn->query($sql);
     if ($result->num_rows > 0) {
@@ -148,7 +154,7 @@ function listUebertraege(){
               </tr>
               </thead>
               <tbody>';
-    global $conn;
+    $conn = db();
     $sql = "SELECT uebertrag.id, datum, betrag, quelle.kontoBezeichnung as quellKonto, ziel.kontoBezeichnung as zielKonto FROM uebertrag inner join konten as quelle on uebertrag.quelleid = quelle.id inner join konten as ziel on uebertrag.zielid = ziel.id;";
     $result = $conn->query($sql);
     if ($result->num_rows > 0) {
@@ -170,7 +176,7 @@ function listUebertraege(){
 
 function listKategorien($einnahme) {
     // Erzeuge liste aller Kategorien (Differenzierung nach Einnahme/Ausgabe mit 1/0)
-    global $conn;
+    $conn = db();
     $sql = "SELECT id, kategorieBezeichnung FROM kategorie WHERE einnahme = $einnahme";
     $result = $conn->query($sql);
     $kategorien = array();
@@ -179,7 +185,7 @@ function listKategorien($einnahme) {
             $kategorien[$row["id"]] = $row["kategorieBezeichnung"];
         }
     }
-    echo '<ul class="list-group">';
+    echo '<ul class="list-group shadow-box">';
     echo '<li class="list-group-item container py-1"><div class="row"><div class="col-10 p-1 d-flex align-items-center"><b>'; echo $einnahme == 0 ? "Ausgaben" : "Einnahmen" ; echo'</b></div></div></li>';
     foreach($kategorien as $id => $kategorie){
         echo '<button class="list-group-item list-group-item-action container py-1"><div class="row"><div class="col-10 p-1 d-flex align-items-center"><p>'.$kategorie. '</p></div><div class="col-2 p-0"><img src="assets/img/edit.svg" height="22px" class="m-1 "> </div></div></button>';
@@ -190,7 +196,7 @@ function listKategorien($einnahme) {
 
 function listKonten() {
     // Erzeuge liste aller Konten
-    global $conn;
+    $conn = db();
     $sql = "SELECT id, kontoBezeichnung FROM konten";
     $result = $conn->query($sql);
     if ($result->num_rows > 0) {
@@ -198,7 +204,7 @@ function listKonten() {
             $konten[$row["id"]] = $row["kontoBezeichnung"];
         }
     }
-    echo '<ul class="list-group">';
+    echo '<ul class="list-group shadow-box">';
     echo '<li class="list-group-item container py-1"><div class="row"><div class="col-10 p-1 d-flex align-items-center"><b>Konten</b></div></div></li>';
     foreach($konten as $id => $konto){
         echo '<button class="list-group-item list-group-item-action container py-1"><div class="row"><div class="col-10 p-1 d-flex align-items-center"><p class="">'.$konto. '</p></div><div class="col-2 p-0"><img src="assets/img/edit.svg" height="22px" class="m-1"> </div></div></button>';
@@ -216,7 +222,7 @@ function listBuchungen($einnahme) {
         $einnahmeModifier = "< 0";
         $order = "DESC";
     }
-    global $conn;
+    $conn = db();
 
     // sortierung aus cookie lesen
     $col = readCookie("order".$einnahme);
@@ -282,11 +288,19 @@ function selectOrder($einnahme, $id = "filterReihenfolge"){
 
 function yearRadio(){
     //TODO Funktionalität
+    
+
+
     for($i = 0; $i < 5; $i++){
         $year = 2023 + $i;
-        echo "<input type='checkbox' class='btn-check' id='$year' autocomplete='off'>
-        <label class='btn btn-outline-primary mb-1' for='$year'>".$year."</label>";
+        echo '<div class="form-check">';
+        echo "<input class=\"form-check-input\" type=\"radio\" name=\"flexRadioDefault\" id=\"$year\">
+        <label class=\"form-check-label\" for=\"$year\">
+        $year
+        </label>";
+        echo "</div>";
     }
+    
 }
 
 function hideSensitive(){
@@ -316,7 +330,7 @@ function hideSensitive(){
 }
 
 function monthlyCategory($einnahme, $id="monthlyTable"){
-    global $conn;
+    $conn = db();
     $title = $einnahme == true ? "Einnahmen" : "Ausgaben";
     $e = $einnahme == true ? "1" : "0";
     $sql = "select kategorieBezeichnung,id from kategorie where kategorie.einnahme = $e;";
@@ -359,7 +373,7 @@ function monthlyCategory($einnahme, $id="monthlyTable"){
 }
 
 function sumByKategorieMonat($kategorie, $monat){
-    global $conn;
+    $conn = db();
     $sql = "SELECT betrag from buchungen where kategorieid = $kategorie and MONTH(datum) = $monat and YEAR(datum) = YEAR(CURDATE())";
     $result = $conn->query($sql);
     $sum = 0;
@@ -370,7 +384,7 @@ function sumByKategorieMonat($kategorie, $monat){
 }
 
 function monthlyTotal($einnahme, $monat){
-    global $conn;
+    $conn = db();
     if($einnahme == "1"){
         $einnahmeModifier = "> 0";
     } else {
@@ -401,6 +415,28 @@ function readCookie($key){
         return $_COOKIE[$key];
     }
     return "";
+}
+
+function monthlyBudgetSelector(){
+    echo '<div class="form-check">
+    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+    <label class="form-check-label" for="flexRadioDefault1">
+        <input type="text" class="w-25">
+        Fester Betrag [€]
+    </label>
+  </div>
+  <div class="form-check">
+    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
+    <label class="form-check-label" for="flexRadioDefault2">
+    <input type="text" class="w-25">
+      Dynamisch [%]
+      
+    </label>
+  </div>';
+}
+
+function getAvailableYears(){
+    
 }
 
 ?>

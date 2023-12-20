@@ -5,34 +5,40 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 require "secrets.php";
-global $secret;
-$servername = $secret["dbServer"];
-$username = $secret["dbUser"];
-$password = $secret["dbPass"];
-$dbname = $secret["dbName"];
 
-$conn = new mysqli($servername, $username, $password, $dbname);
+function db(){
+    global $secret;
 
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+    $servername = $secret["dbServer"];
+    $username = $secret["dbUser"];
+    $password = $secret["dbPass"];
+    $dbname = $secret["dbName"];
+
+    $conn = new mysqli($servername, $username, $password, $dbname);
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+    return $conn;
 }
+
+
 
 if(isset($_POST["type"])){
     echo "It's Alive\n";
     if($_POST["type"] == "einnahme"){
-        insertBuchung($conn, true);
+        insertBuchung(db(), true);
     } elseif ($_POST["type"] == "ausgabe"){
-        insertBuchung($conn, false);
+        insertBuchung(db(), false);
     } elseif ($_POST["type"] == "addKategorie"){
-        addKategorie($conn, $_POST["einnahme"]);
+        addKategorie(db(), $_POST["einnahme"]);
     } elseif ($_POST["type"] == "addKonto") {
-        addKonto($conn);
+        addKonto(db());
     } elseif ($_POST["type"] == "editBuchung") {
         echo "editBuchung";
-        editBuchung($conn, $_POST["einnahme"]);
+        editBuchung(db(), $_POST["einnahme"]);
     } elseif ($_POST["type"] == "addUebertrag") {
         echo "addUebertrag";
-        addUebertrag($conn);
+        addUebertrag(db());
     } elseif($_POST["type"] == "setCookie"){
         //expire after 100 years :)
         setcookie($_POST["key"], $_POST["value"],time()+3075840000);
