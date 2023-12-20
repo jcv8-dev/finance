@@ -12,32 +12,42 @@ header("Cache-Control: no-cache, must-revalidate");
         <div class="container px-2">
             <div class="container py-1 px-3 mt-2 border rounded border-dark-subtle shadow-box">
                 <div class="row">
-                    <h2 class="mt-2">Kategorisierung</h2>
+                    <h2 class="mt-2">Kategorien & Konten</h2>
                 </div>
                 <div class="row">
-                    <div class="col-lg-3 col-md-4 col-sm-6 col-12 py-1 px-1">
+                    <div class="col-lg-4 col-md-4 col-sm-6 col-12 py-1 px-2">
                         <?php listKategorien(1); ?>
                     </div>
-                    <div class="col-lg-3 col-md-4 col-sm-6 col-12 py-1 px-1">
+                    <div class="col-lg-4 col-md-4 col-sm-6 col-12 py-1 px-2">
                         <?php listKategorien(0); ?>
                     </div>
-                    <div class="col-lg-3 col-md-4 col-sm-6 col-12 py-1 px-1">
+                    <div class="col-lg-4 col-md-4 col-sm-6 col-12 py-1 px-2">
                         <?php listKonten(); ?>
                     </div>
                 </div>
             </div>
             <div class="container py-1 px-3 mt-2 border rounded border-dark-subtle shadow-box">
                 <div class="row">
-                    <h2 class="mt-1">Angezeigte Daten</h2>
+                    <h2 class="mt-1">Einstellungen</h2>
                 </div>
                 <div class="row">
-                    <div class="col-lg-4 col-sm-6 col-12 py-1 px-1">
-                        <div class="w-100"><h3>Zeitraum</h3></div>
+                    <div class="col-lg-4 col-sm-6 col-12 py-1 px-3">
+                    <div class="p-2 border rounded h-100 shadow-box">
+                        <div class="w-100"><h3>Angezeigter Zeitraum</h3></div>
                         <?php yearRadio(); ?>
                     </div>
-                    <div class="col-lg-4 col-sm-6 col-12 py-1 px-1 ">
-                        <div class="w-100"><h3>Datentyp</h3></div>
+                    </div>
+                    <div class="col-lg-4 col-sm-6 col-12 py-1 px-3">
+                    <div class="p-2 border rounded h-100 shadow-box">
+                        <div class="w-100"><h3>Angezeigte Daten</h3></div>
                         <?php hideSensitive(); ?>
+                    </div>
+                    </div>
+                    <div class="col-lg-4 col-sm-6 col-12 py-1 px-3">
+                        <div class="p-2 border rounded h-100 shadow-box">
+                        <div class="w-100"><h3>Berechnung Monatsbudget</h3></div>
+                        <?php monthlyBudgetSelector(); ?>
+                        </div>
                     </div>
                 </div>
             </div>
