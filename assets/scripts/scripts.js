@@ -6,7 +6,7 @@ function validateForm() {
     if(!validateBetrag(a)){
         return false;
     }
-    if ((a == null || a == "") || (b == null || b == 0) || (c == null || c == 0) || (d == null || d == "")) {
+    if ((a == null || a === "") || (b == null || b === 0) || (c == null || c === 0) || (d == null || d === "")) {
         alert("Nicht alle Felder ausgefüllt.");
         return false;
     }
@@ -20,7 +20,7 @@ function validateBetrag(betrag){
     }
     return true;
 }
-function insertBuchung(einnahme) {
+async function insertBuchung(einnahme) {
     if(validateForm()) {
         let date = document.getElementById("datePicker").value;
         let betrag = document.getElementById("betrag").value;
@@ -34,7 +34,7 @@ function insertBuchung(einnahme) {
             e = "ausgabe"
         }
 
-        postRequest("assets/scripts/api",{
+        await postRequest("assets/scripts/api",{
             type: e,
             date: date,
             betrag: betrag,
@@ -53,7 +53,7 @@ function insertBuchung(einnahme) {
 function notImplemented(){
     alert("whoops! that hasn't been implemented yet ¯\\_(ツ)_/¯")
 }
-function submitFilter(einnahme) {
+async function submitFilter(einnahme) {
     let suche = $("#filterSuche")[0].value
     let order = $("#filterReihenfolge")[0].value
     if(suche!==""){
@@ -65,7 +65,7 @@ function submitFilter(einnahme) {
     } else {
         e = 0
     }
-    postRequest("assets/scripts/api", {
+    await postRequest("assets/scripts/api", {
         type: "setCookie",
         key: "order"+e,
         value: order
@@ -94,8 +94,7 @@ function getIdFromSelect(object,textToFind){
     for (var i = 0; i < object.options.length; i++) {
         var option = object.options[i];
         if (option.textContent === textToFind) {
-            var value = option.value;
-            return value
+            return option.value
         }
     }
 }
@@ -168,22 +167,23 @@ async function addUebertrag(){
     location.reload()
 }
 
-function addKategorie(einnahme){
-    $('#addKategorieModal').modal('show')
+async function addKategorie(einnahme){
+    let modal = $('#addKategorieModal')
+    modal.modal('show')
     let name = document.getElementById("addKategorieName").value;
-    if(name != null || name != ""){
+    if(name != null || name !== ""){
         let e
         if(einnahme){
             e = 1
         } else {
             e = 0
         }
-        postRequest("assets/scripts/api",{
+        await postRequest("assets/scripts/api",{
             type: "addKategorie",
             name: name,
             einnahme: e,
         })
-        $('#addKategorieModal').modal('hide');
+        modal.modal('hide');
         $('#addKategorieForm').trigger("reset");
         location.reload();
     }
@@ -197,13 +197,13 @@ function prepareKategorieModal(einnahme){
         $('#addKategorieModalSubmit')[0].onclick = function() { addKategorie(true)}
     } else {
         $('#addKategorieModalTitle')[0].innerText = "Neue Kategorie für Ausgaben"
-        $('#addKategorieModalSubmit')[0].onclick = function(einnahme) { addKategorie(false)}
+        $('#addKategorieModalSubmit')[0].onclick = function() { addKategorie(false)}
     }
 }
 async function addKonto(){
     let name = document.getElementById("kontoName").value;
     let startbetrag = document.getElementById("startBetrag").value;
-    if(name != "" && startbetrag.match(/^\d*([.,]{1}\d{1,2}){0,1}€?$/g)){
+    if(name !== "" && startbetrag.match(/^\d*([.,]{1}\d{1,2}){0,1}€?$/g)){
         await postRequest("assets/scripts/api", {
             type: "addKonto",
             name: name,
