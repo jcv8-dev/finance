@@ -8,7 +8,7 @@ header("Cache-Control: no-cache, must-revalidate");
 <html lang="de">
     <?php head("Finance"); ?>
     <body>
-        <?php printHeader("/finance"); ?>
+        <?php printHeader("index"); ?>
         <div class="container-xl px-2 mb-4">
             <div class="container-xl py-1 px-3 mt-2 border rounded border-dark-subtle shadow-box">
                 <?php printMonthlyBudget(); ?>
