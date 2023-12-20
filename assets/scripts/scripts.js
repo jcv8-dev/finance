@@ -27,26 +27,24 @@ function insertBuchung(einnahme) {
         let konto = document.getElementById("selectKonto").value;
         let kategorie = document.getElementById("selectKategorie").value;
         let kommentar = document.getElementById("kommentar").value;
-        const xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function () {
-            if(this.status == 200){
-                console.log(this.responseText);
-                $("#neueBuchungForm").trigger("reset");
-                location.reload();
-            }
-        };
-        xhttp.open("POST", "assets/scripts/api", true);
-        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        let e
+
         if(einnahme){
             e = "einnahme"
         } else {
             e = "ausgabe"
         }
-        let data = "type="+e+"&date=" + encode(date) + "&betrag=" + encode(betrag) + "&kontoid=" + encode(konto) + "&kategorieid=" + encode(kategorie) + "&kommentar=" + encode(kommentar);
-        console.log(data);
-        xhttp.send(data);
 
+        postRequest("assets/scripts/api",{
+            type: e,
+            date: date,
+            betrag: betrag,
+            kontoid: konto,
+            kategorieid: kategorie,
+            kommentar: kommentar
+        })
+
+        $("#neueBuchungForm").trigger("reset");
+        location.reload();
     } else {
         console.log("wat is schief jelaufen");
     }
@@ -61,24 +59,19 @@ function submitFilter(einnahme) {
     if(suche!==""){
         notImplemented()
     }
-    const xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function () {
-        if(this.status == 200){
-            console.log(this.responseText);
-            location.reload();
-        }
-    };
-    xhttp.open("POST", "assets/scripts/api", true);
-    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     let e
     if(einnahme){
         e = 1
     } else {
         e = 0
     }
-    let data = "type=setCookie&key=order"+e+"&value="+order;
-    console.log(data);
-    xhttp.send(data);
+    postRequest("assets/scripts/api", {
+        type: "setCookie",
+        key: "order"+e,
+        value: order
+    })
+    location.reload();
+
 }
 
 function setField(id, value){
@@ -125,27 +118,25 @@ function editEntry(id, einnahme){
     setField("editFormKommentar", curKommentar);
 }
 
-function submitEditBuchung(id, einnahme){
+async function submitEditBuchung(id, einnahme){
     console.log("SubmitEdit")
     let curDate = $('#editFormDate')[0].value
     let curBetrag = $('#editFormBetrag')[0].value
     let curKonto = $('#editFormKonto')[0].value
     let curKategorie = $('#editFormKategorie')[0].value
     let curKommentar = $('#editFormKommentar')[0].value
-
-    const xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function () {
-        if(this.status == 200){
-            console.log(this.responseText);
-            $('#editEntryModal').modal('hide')
-            location.reload();
-        }
-    };
-    xhttp.open("POST", "assets/scripts/api", true);
-    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    let data = "type=editBuchung&einnahme="+einnahme+"&id="+id+"&date="+encode(curDate)+"&betrag="+encode(curBetrag)+"&kontoid="+encode(curKonto)+"&kategorieid="+encode(curKategorie)+"&kommentar="+encode(curKommentar);
-    console.log(data);
-    xhttp.send(data);
+    await postRequest("assets/scripts/api",{
+        type: "editBuchung",
+        einnahme: einnahme,
+        id: id,
+        date: curDate,
+        betrag: curBetrag,
+        kontoid: curKonto,
+        kategorieid: curKategorie,
+        kommentar: curKommentar
+    })
+    $('#editEntryModal').modal('hide')
+    location.reload();
 }
 
 async function addUebertrag(){
@@ -163,14 +154,13 @@ async function addUebertrag(){
     if(!validateBetrag(betrag)){
         return false
     }
-    await fetch('assets/scripts/api.php', {
-        method: 'POST',
-        body: "type=addUebertrag&date="+encode(date)+"&betrag="+encode(betrag)+"&source="+encode(source)+"&destination="+encode(destination),
-        headers: {
-            'Content-type': 'application/x-www-form-urlencoded',
-        }
-    }).then(async function(response) {
-        return await response.text();
+
+    await postRequest("assets/scripts/api", {
+        type: 'addUebertrag',
+        date: date,
+        betrag: betrag,
+        source: source,
+        destination: destination,
     })
     // reset form
     $('#uebertragForm').trigger("reset")
@@ -181,28 +171,21 @@ async function addUebertrag(){
 function addKategorie(einnahme){
     $('#addKategorieModal').modal('show')
     let name = document.getElementById("addKategorieName").value;
-    console.log(name)
     if(name != null || name != ""){
-        const xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function () {
-            if(this.status == 200){
-                console.log(this.responseText);
-                $('#addKategorieModal').modal('hide');
-                $('#addKategorieForm').trigger("reset");
-                location.reload();
-            }
-        };
-        xhttp.open("POST", "assets/scripts/api", true);
-        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         let e
         if(einnahme){
             e = 1
         } else {
             e = 0
         }
-        let data = "type=addKategorie&name="+encode(name)+"&einnahme="+e;
-        console.log(data);
-        xhttp.send(data);
+        postRequest("assets/scripts/api",{
+            type: "addKategorie",
+            name: name,
+            einnahme: e,
+        })
+        $('#addKategorieModal').modal('hide');
+        $('#addKategorieForm').trigger("reset");
+        location.reload();
     }
 }
 
@@ -216,30 +199,44 @@ function prepareKategorieModal(einnahme){
         $('#addKategorieModalTitle')[0].innerText = "Neue Kategorie für Ausgaben"
         $('#addKategorieModalSubmit')[0].onclick = function(einnahme) { addKategorie(false)}
     }
-
-
 }
-function addKonto(){
+async function addKonto(){
     let name = document.getElementById("kontoName").value;
     let startbetrag = document.getElementById("startBetrag").value;
     if(name != "" && startbetrag.match(/^\d*([.,]{1}\d{1,2}){0,1}€?$/g)){
-        const xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function () {
-            if(this.status == 200){
-                console.log(this.responseText);
-                $('#newKonto').modal('hide');
-                $('#kontoForm').trigger("reset");
-                location.reload();
-            }
-        };
-        xhttp.open("POST", "assets/scripts/api", true);
-        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        let data = "type=addKonto&name="+encode(name)+"&startbetrag="+encode(startbetrag);
-        console.log(data);
-        xhttp.send(data);
+        await postRequest("assets/scripts/api", {
+            type: "addKonto",
+            name: name,
+            startbetrag: startbetrag
+        })
+        $('#newKonto').modal('hide');
+        $('#kontoForm').trigger("reset");
+        location.reload();
     }
 }
 
 function encode(val){
     return encodeURIComponent(val)
+}
+async function postRequest(url, data){
+    let formData = ""
+    for (const key in data) {
+        formData+=key+"="+encode(data[key])+"&";
+    }
+    try {
+        await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: formData
+        }).then(async function(response) {
+            return await response.text();
+        }).then(async function(text){
+            console.log(text)
+        })
+    } catch (error) {
+        console.error('Error:', error);
+        alert("Netzwerkfehler!")
+    }
 }
