@@ -31,11 +31,15 @@ function printHeader($active){
         "settings" => "Einstellungen",
         "static"=> "Static"
     );
-    echo '<div class="row w-100"><h1 class="py-2 px-4 col-11">One of the Tools of all Time</h1>
-        <form class="col-1 end-0" method="post" action="">
-        <input type="hidden" name="logout" value="true" /> 
-        <a class="button btn btn-outline-primary my-3" onclick="this.parentNode.submit();">Logout</a>
-        </form></div>
+    echo '<div class="row w-100">
+            <h1 class="py-2 px-4 col-10">One of the Tools of all Time</h1>
+            <div class="col-2 justify-content-end">
+                <form style="width: fit-content" method="post" action="">
+                    <input type="hidden" name="logout" value="true" /> 
+                    <a class="end-0 button btn btn-outline-primary my-3" onclick="this.parentNode.submit();">Logout</a>
+                </form>
+            </div>
+        </div>
         <ul class="nav nav-tabs ps-2">';
     // navbar with tabs
     foreach($sites as $url => $title){
