@@ -1,6 +1,6 @@
-Ersatz für Buchhaltungsexceltabelle
+# Ersatz für Buchhaltungsexceltabelle
 
-Anforderungen
+## Anforderungen
 - [X] Einnahmen/Ausgaben buchen
   - [X] Mit Kategorie, Konto, Kommentar
     - [X] Hinzufügen von Kategorien & Konten
@@ -21,3 +21,8 @@ Anforderungen
     - [ ] pauschal
     - [ ] prozentual
   - [X] Monatliches Restbudget anzeigen
+
+## ToDo:
+
+- Database Credentials validation feedback in ui
+- Automatically create tables
