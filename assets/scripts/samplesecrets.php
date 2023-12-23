@@ -4,7 +4,7 @@ $secret = array(
     "dbName" => "nameOfDatabase",
     "dbUser" => "nameOfDatabaseUser",
     "dbPass" => "Password",
-    "dbServer" => "databaseHost"
+    "dbServer" => "databaseHost",
     "loginPass" => [
         "sampleuser" => "samplepassword"
     ]
