@@ -2,6 +2,7 @@
 require 'assets/scripts/helper.php';
 require 'protect.php';
 header("Cache-Control: no-cache, must-revalidate");
+$startTime = microtime(true);
 ?>
 
 <!doctype html>
@@ -22,8 +23,10 @@ header("Cache-Control: no-cache, must-revalidate");
                 <img src="assets/img/stonks.bmp" class="img-fluid rounded shadow-box-sm" style="width: 100%;">
             </div>
         </div>
-
     </body>
+    <?php
+    printFooter($startTime);
+    ?>
     <script src="assets/scripts/scripts.js"></script>
     <script>
         $(document).ready(function() {

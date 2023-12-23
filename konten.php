@@ -2,6 +2,7 @@
 require 'assets/scripts/helper.php';
 require 'protect.php';
 header("Cache-Control: no-cache, must-revalidate");
+$startTime = microtime(true);
 ?>
 
 <!doctype html>
@@ -47,6 +48,9 @@ header("Cache-Control: no-cache, must-revalidate");
     </div>
 
   </body>
+  <?php
+  printFooter($startTime);
+  ?>
   <script>
     $(document).ready(function() {
         document.getElementById('uebertragFormDate').valueAsDate = new Date();

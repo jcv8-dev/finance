@@ -54,6 +54,21 @@ function printHeader($active){
     echo '</ul>';
 }
 
+function printFooter($startTime){
+    echo "<footer>
+        <div class=\"container\">
+            <div class=\"row py-2\">
+                <div class=\"col\">";
+                    $endTime = microtime(true);
+                    $executionTime = ff($endTime - $startTime);
+                    echo "PHP Execution Time: {$executionTime} seconds</div>";
+    echo "
+                </div>
+            </div>
+        </div>
+    </footer>";
+}
+
 function head($title){
     echo '<head>
         <meta charset="utf-8">

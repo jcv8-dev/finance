@@ -2,6 +2,7 @@
 require 'assets/scripts/helper.php';
 require 'protect.php';
 header("Cache-Control: no-cache, must-revalidate");
+$startTime = microtime(true);
 ?>
 
 <!doctype html>
@@ -88,6 +89,9 @@ header("Cache-Control: no-cache, must-revalidate");
 
 
 </body>
+<?php
+printFooter($startTime);
+?>
 <script src="assets/scripts/scripts.js">
 </script>
 <script>
