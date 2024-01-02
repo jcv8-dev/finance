@@ -15,7 +15,7 @@ a.nav-link {
 }
 
 a.nav-link.active {
-    color: var(--bs-primary) !important;
+    /*color: var(--bs-primary) !important;*/
 }
 
 .shadow-box {
@@ -38,3 +38,71 @@ div.card-body div.row p {
 h3 {
     font-size: calc(1rem + .6vw);
 }
+th,td {
+    color: var(--text-color) !important;
+}
+table {
+    border-radius: var(--bs-border-radius);
+    background-color: var(--background-accent);
+    border-spacing: 0;
+    border-collapse: separate;
+    border: 1px solid black;
+}
+.table > :not(caption) > * > * {
+    background-color: unset;
+}
+
+body {
+    background-color: var(--background);
+}
+.bg {
+    background-color: var(--background);
+}
+
+.pr {
+    color: var(--primary-color) !important;
+}
+.pr-h {
+    color: var(--primary-color) !important;
+}
+.pr-h:hover {
+    color: var(--primary-hover) !important;
+}
+.sc {
+    color: var(--secondary-color) !important;
+}
+.sc-h {
+    color: var(--secondary-color) !important;
+}
+.sc-h:hover {
+    color: var(--secondary-hover) !important;
+}
+.cbga {
+    color: var(--background-accent) !important;
+}
+.bga {
+    background-color: var(--background-accent) !important;
+}
+.bc {
+    border-color: var(--border-color) !important;
+}
+.bc-h:hover {
+    border-color: var(--border-color) !important;
+}
+
+.tc {
+    color: var(--text-color);
+}
+
+.prh {
+    text-shadow: 0px 0px 0.8rem var(--primary-opaque);
+}
+
+/*:root{*/
+/*    --bs-border-color: var(--border-color);*/
+/*    --bs-table-bg: var(--table-background-color);*/
+/*    --bs-body-bg: var(--table-background-color);*/
+/*    --bs-primary: var(--primary-color);*/
+/*    --bs-btn-bg: var(--primary-color);*/
+/*    --bs-btn-hover-bg: var(--primary-color);*/
+/*}*/

@@ -32,22 +32,22 @@ function printHeader($active){
         "static"=> "Static"
     );
     echo '<div class="row w-100">
-            <h1 class="py-2 px-4 col-10">One of the Tools of all Time</h1>
+            <h1 class="py-2 px-4 col-10 pr prh">One of the Tools of all Time</h1>
             <div class="col-2 justify-content-end">
                 <form style="width: fit-content" method="post" action="">
                     <input type="hidden" name="logout" value="true" /> 
-                    <a class="end-0 button btn btn-outline-primary my-3" onclick="this.parentNode.submit();">Logout</a>
+                    <a class="end-0 button btn btn-outline-primary my-3 pr-h bc" onclick="this.parentNode.submit();">Logout</a>
                 </form>
             </div>
         </div>
-        <ul class="nav nav-tabs ps-2">';
+        <ul class="nav nav-tabs ps-2 bc">';
     // navbar with tabs
     foreach($sites as $url => $title){
         echo '<li class="nav-item">';
         if($active == $url){
-            echo '<a class="nav-link active" aria-current="page" href="#">'.$title.'</a>';
+            echo '<a class="nav-link active pr-h bc" aria-current="page" href="#">'.$title.'</a>';
         } else {
-            echo '<a class="nav-link" href="'.$url.'">'.$title.'</a>';
+            echo '<a class="nav-link sc-h bc-h" href="'.$url.'">'.$title.'</a>';
         }
         echo '</li>';
     }
@@ -58,7 +58,7 @@ function printFooter($startTime){
     echo "
         <div class=\"container\">
             <div class=\"row py-2\">
-                <div class=\"col\">";
+                <div class=\"col tc\">";
                     $endTime = microtime(true);
                     $executionTime = ff($endTime - $startTime);
                     echo "PHP Execution Time: {$executionTime} seconds</div>";
@@ -78,6 +78,7 @@ function head($title){
         <script src="assets/scripts/3rdparty/jquery-3.7.1.min.js"></script>
         <title>'.$title.'</title>
         <link rel="stylesheet" href="assets/styles.css">
+        <link rel="stylesheet" href="assets/theme.css">
     </head>';
 }
 
@@ -367,8 +368,8 @@ function monthlyCategory($einnahme, $id="monthlyTable"){
     $e = $einnahme == true ? "1" : "0";
     $sql = "select kategorieBezeichnung,id from kategorie where kategorie.einnahme = $e;";
     $result = $conn->query($sql);
-    echo '<div class="container-xl py-1 px-3 mt-2 border rounded border-dark-subtle shadow-box overflow-x-auto">';
-    echo "<h2 class='pt-2'>$title nach Monat</h2>";
+    echo '<div class="container-xl py-1 px-3 mt-2 border rounded shadow-box overflow-x-auto tc">';
+    echo "<h2 class='pt-2'>$title</h2>";
     echo '
     <table class="table" id="'.$id.'">
       <thead>
@@ -434,7 +435,7 @@ function monthlyTotal($einnahme, $monat){
 function printMonthlyBudget(){
     $month = date("m");
     $restbudget = ff(monthlyTotal(1, $month) - monthlyTotal(0, $month) - 100);
-    echo "<div class=\'\'><h2 class='text-center my-2'>Diesen Monat noch verfügbar: $restbudget&nbsp;€</h2></div>";
+    echo "<div class=\'\'><h2 class='text-center my-2 tc'>Diesen Monat noch verfügbar: $restbudget&nbsp;€</h2></div>";
 }
 
 function ff($float){

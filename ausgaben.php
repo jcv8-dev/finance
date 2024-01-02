@@ -11,7 +11,7 @@ $startTime = microtime(true);
 <body>
 <?php printHeader("ausgaben"); ?>
 <div class="container px-2">
-    <div class="container py-2 px-3 mt-2 border rounded border-dark-subtle shadow-box">
+    <div class="container py-2 px-3 mt-2 border rounded shadow-box">
         <form name="neueBuchungForm">
             <div class="row">
                 <div class="col-md-3 col-6 pb-2 px-1">
@@ -42,9 +42,9 @@ $startTime = microtime(true);
             </div>
         </form>
     </div>
-    <div class="container py-2 px-3 mt-2 border rounded border-dark-subtle shadow-box">
+    <div class="container py-2 px-3 mt-2 border rounded shadow-box">
         <form>
-            <div class="row">
+            <div class="row pb-2">
                 <div class="col-4 px-1">
                     <input type="text" id="filterSuche" class="form-control shadow-box-sm" placeholder="Suche">
                 </div>

@@ -11,7 +11,7 @@ $startTime = microtime(true);
     <body>
         <?php printHeader("settings"); ?>
         <div class="container px-2">
-            <div class="container py-1 px-3 mt-2 border rounded border-dark-subtle shadow-box">
+            <div class="container py-1 px-3 mt-2 border rounded shadow-box">
                 <div class="row">
                     <h2 class="mt-2">Kategorien & Konten</h2>
                 </div>
@@ -27,7 +27,7 @@ $startTime = microtime(true);
                     </div>
                 </div>
             </div>
-            <div class="container py-1 px-3 mt-2 border rounded border-dark-subtle shadow-box">
+            <div class="container py-1 px-3 mt-2 border rounded shadow-box">
                 <div class="row">
                     <h2 class="mt-1">Einstellungen</h2>
                 </div>

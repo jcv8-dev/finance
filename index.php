@@ -8,18 +8,18 @@ $startTime = microtime(true);
 <!doctype html>
 <html lang="de">
     <?php head("Finance"); ?>
-    <body>
+    <body class="">
         <?php printHeader("index"); ?>
         <div class="container-xl px-2 mb-4">
-            <div class="container-xl py-1 px-3 mt-2 border rounded border-dark-subtle shadow-box">
+            <div class="container-xl py-1 px-3 mt-2 border rounded shadow-box">
                 <?php printMonthlyBudget(); ?>
             </div>
             <?php monthlyCategory(true, $id="einnahmenMonatTable")?>
             <?php monthlyCategory(false, $id="ausgabenMonatTable")?>
-            <div class="container-xl py-1 px-3 mt-2 border rounded border-dark-subtle shadow-box">
+            <div class="container-xl py-1 px-3 mt-2 border rounded shadow-box">
                 <input type="file" accept="image/*" capture="camera">
             </div>
-            <div class="container-xl py-1 px-3 mt-2 border rounded border-dark-subtle shadow-box">
+            <div class="container-xl py-1 px-3 mt-2 border rounded shadow-box">
                 <img src="assets/img/stonks.bmp" alt="stonks" class="img-fluid rounded shadow-box-sm" style="width: 100%;">
             </div>
         </div>

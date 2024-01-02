@@ -11,12 +11,12 @@ $startTime = microtime(true);
   <body>
     <?php printHeader("konten"); ?>
     <div class="container px-2">
-      <div class="container py-1 px-3 mt-2 border rounded border-dark-subtle shadow-box">
+      <div class="container py-1 px-3 mt-2 border rounded shadow-box">
         <div class="row">
           <?php kontoCards(); ?>
         </div>
       </div>
-      <div class="container py-2 px-3 mt-2 border rounded border-dark-subtle shadow-box">
+      <div class="container py-2 px-3 mt-2 border rounded shadow-box">
         <form id="uebertragForm">
           <div class="row">
             <div class="col-md-3 col-6 pb-2 px-1">
@@ -40,7 +40,7 @@ $startTime = microtime(true);
           </div>
         </form>
       </div>
-      <div class="container-sm py-2 px-3 mt-2 border rounded border-dark-subtle shadow-box">
+      <div class="container-sm py-2 px-3 mt-2 border rounded shadow-box">
         <div class="container p-0 overflow-x-auto">
           <?php listUebertraege(); ?>
         </div>

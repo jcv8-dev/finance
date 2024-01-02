@@ -1,0 +1,16 @@
+:root {
+    --background: #e4eee9;
+    --background-accent: #cdd7d2;
+    --background-accent-light: #618684;
+    --table-background-color: #555;
+    --primary-color: #11da65;
+    --primary-hover: #0eb754;
+    --primary-opaque: rgba(17, 218, 101, 0.5);
+    --secondary-color: #459867;
+    --secondary-hover: #1c8172;
+    --text-color: #6b8174;
+    --border-color: var(--background-accent-light);
+    --bs-body-color: var(--text-color);
+    --bs-table-color-state: var(--text-color);
+    --bs-body-bg: var(--background-accent);
+}
