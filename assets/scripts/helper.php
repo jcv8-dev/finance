@@ -55,7 +55,7 @@ function printHeader($active){
 }
 
 function printFooter($startTime){
-    echo "<footer>
+    echo "
         <div class=\"container\">
             <div class=\"row py-2\">
                 <div class=\"col\">";
@@ -66,7 +66,7 @@ function printFooter($startTime){
                 </div>
             </div>
         </div>
-    </footer>";
+   ";
 }
 
 function head($title){
@@ -270,17 +270,18 @@ function listBuchungen($einnahme) {
         while ($row = $result->fetch_assoc()) {
             $sum += $row["betrag"];
             $betrag = $row["betrag"];
-            echo "<tr id=".$row["id"].">";
+            echo "<tr id=" . $row["id"] . ">";
             echo "<th scope=\"row\">$i</th>";
-            echo "<td class='px-2' id='datum'>".$row["datum"]."</td>".
-            "<td class='px-2 text-end' id='betrag'>".ff(abs($betrag))."&nbsp;€</td>".
-            "<td class='px-2' id='konto'>".$row["kontoBezeichnung"]."</td>".
-            "<td class='px-2 atext-center' id='kategorie'>".$row["kategorieBezeichnung"]."</td>".
-            "<td class='px-2' id='kommentar'>".$row["kommentar"]."</td>".
-            "<td class='px-0' id='edit'><button type='button' onclick='editEntry(".$row["id"]. ",".$einnahme.")' class='btn p-2'><img src='assets/img/edit.svg' height='22px'></button></td>" .
-            "</tr>";
+            echo "<td class='px-2' id='datum'>" . $row["datum"] . "</td>" .
+                "<td class='px-2 text-end' id='betrag'>" . ff(abs($betrag)) . "&nbsp;€</td>" .
+                "<td class='px-2' id='konto'>" . $row["kontoBezeichnung"] . "</td>" .
+                "<td class='px-2 atext-center' id='kategorie'>" . $row["kategorieBezeichnung"] . "</td>" .
+                "<td class='px-2' id='kommentar'>" . $row["kommentar"] . "</td>" .
+                "<td class='px-0' id='edit'><button type='button' onclick='editEntry(" . $row["id"] . "," . $einnahme . ")' class='btn p-2'><img src='assets/img/edit.svg' height='22px'></button></td>" .
+                "</tr>";
             $i++;
         }
+    }
         //ergebniszeile
         echo "<th scope=\"row\"></th>";
         echo "<td>Summe</td>".
@@ -291,7 +292,7 @@ function listBuchungen($einnahme) {
             "<td></td>".
             "</tr>";
         echo "</tbody></table>";
-    }
+
 }
 
 function selectOrder($einnahme, $id = "filterReihenfolge"){
