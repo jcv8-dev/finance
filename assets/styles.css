@@ -128,5 +128,5 @@ body {
 }
 
 :root{
-    --bs-btn-hover-bg: var(--primary-color);
+    --bs-btn-hover-bg: var(--background-accent-hover);
 }

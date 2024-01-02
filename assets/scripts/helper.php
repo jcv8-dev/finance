@@ -454,16 +454,15 @@ function monthlyBudgetSelector(){
     echo '<div class="form-check">
     <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
     <label class="form-check-label" for="flexRadioDefault1">
-        <input type="text" class="w-25">
+        <input type="text" class="w-25 border rounded bga">
         Fester Betrag [€]
     </label>
   </div>
   <div class="form-check">
     <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
     <label class="form-check-label" for="flexRadioDefault2">
-    <input type="text" class="w-25">
+    <input type="text" class="w-25 border rounded bga">
       Dynamisch [%]
-      
     </label>
   </div>';
 }
