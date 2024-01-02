@@ -63,6 +63,9 @@ body {
 .bg {
     background-color: var(--background);
 }
+.bg-pr-h:hover{
+    background-color: var(--text-color);
+}
 
 .pr {
     color: var(--primary-color) !important;
@@ -96,6 +99,27 @@ body {
 }
 
 .tc {
+    color: var(--text-color) !important;
+}
+
+.list-group-item:hover {
+    background-color: var(--background-accent-hover);
+}
+
+.btn-outline-primary {
+    border-color: var(--border-color) !important;
+    color: var(--text-color);
+}
+.btn-outline-primary:hover {
+    background-color: var(--text-color);
+}
+
+.btn-primary {
+    border-color: var(--border-color) !important;
+    background-color: var(--text-color);
+}
+.btn-primary:hover {
+    background-color: var(--background);
     color: var(--text-color);
 }
 
@@ -103,11 +127,6 @@ body {
     text-shadow: 0px 0px 0.8rem var(--primary-opaque);
 }
 
-/*:root{*/
-/*    --bs-border-color: var(--border-color);*/
-/*    --bs-table-bg: var(--table-background-color);*/
-/*    --bs-body-bg: var(--table-background-color);*/
-/*    --bs-primary: var(--primary-color);*/
-/*    --bs-btn-bg: var(--primary-color);*/
-/*    --bs-btn-hover-bg: var(--primary-color);*/
-/*}*/
+:root{
+    --bs-btn-hover-bg: var(--primary-color);
+}

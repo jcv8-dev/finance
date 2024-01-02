@@ -19,13 +19,13 @@ if (isset($failed)) {
         </div>
         <div class="container">
             <div class="row pb-2">
-                <input class="col-10 col-sm-6 col-lg-3 mx-auto" type="text" name="user" placeholder="Username" required>
+                <input style="height: 38px" class="col-10 col-sm-6 col-lg-3 mx-auto border rounded" type="text" name="user" placeholder="Username" required>
             </div>
             <div class="row pb-2">
-                <input class="col-10 col-sm-6 col-lg-3 mx-auto" type="password" name="password" placeholder="Password" required>
+                <input style="height: 38px" class="col-10 col-sm-6 col-lg-3 mx-auto border rounded" type="password" name="password" placeholder="Password" required>
             </div>
             <div class="row pb-2">
-                <input class="col-10 col-sm-6 col-lg-3 mx-auto" type="submit" value="Sign In">
+                <input class="btn btn-outline-primary col-10 col-sm-6 col-lg-3 mx-auto" type="submit" value="Sign In">
             </div>
         </div>
 

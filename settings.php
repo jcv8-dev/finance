@@ -53,7 +53,7 @@ $startTime = microtime(true);
                 </div>
                 <div class="row justify-content-end">
                     <div class="my-2" style="width: fit-content">
-                        <button type="button" onclick="notImplemented()" id="submitSettings" class="btn btn-primary">Speichern</button>
+                        <button type="button" onclick="notImplemented()" id="submitSettings" class="btn btn-outline-primary">Speichern</button>
                     </div>
                 </div>
             </div>
@@ -75,7 +75,7 @@ $startTime = microtime(true);
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" onclick="addEinnahmeKategorie();" class="btn btn-primary">Speichern</button>
+                        <button type="button" onclick="addEinnahmeKategorie();" class="btn btn-outline-primary">Speichern</button>
                     </div>
                 </div>
             </div>
@@ -97,7 +97,7 @@ $startTime = microtime(true);
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" onclick="addAusgabeKategorie();" class="btn btn-primary">Speichern</button>
+                        <button type="button" onclick="addAusgabeKategorie();" class="btn btn-outline-primary">Speichern</button>
                     </div>
                 </div>
             </div>
@@ -122,7 +122,7 @@ $startTime = microtime(true);
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" onclick="" id="addKategorieModalSubmit" class="btn btn-primary">Speichern</button>
+                        <button type="button" onclick="" id="addKategorieModalSubmit" class="btn btn-outline-primary">Speichern</button>
                     </div>
                 </div>
             </div>
@@ -145,7 +145,7 @@ $startTime = microtime(true);
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" onclick="addKonto();" class="btn btn-primary">Speichern</button>
+                        <button type="button" onclick="addKonto();" class="btn btn-outline-primary">Speichern</button>
                     </div>
                 </div>
             </div>

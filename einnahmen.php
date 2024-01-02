@@ -79,7 +79,7 @@ $startTime = microtime(true);
                 <div class="modal-footer">
                     <div class="row">
                         <button id="deletebuchung" type="button" onclick="notImplemented()" class="btn btn-outline-danger col me-2">Löschen</button>
-                        <button id="submitEditBuchung" type="button" class="btn btn-primary col">Speichern</button>
+                        <button id="submitEditBuchung" type="button" class="btn btn-outline-primary col">Speichern</button>
                     </div>
                 </div>
             </div>

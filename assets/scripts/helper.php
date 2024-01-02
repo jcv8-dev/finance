@@ -36,7 +36,7 @@ function printHeader($active){
             <div class="col-1 justify-content-end p-0">
                 <form class="w-fit-content mx-auto" method="post" action="">
                     <input type="hidden" name="logout" value="true" /> 
-                    <a class="end-0 button btn btn-outline-primary my-3 pr-h bc p-1" onclick="this.parentNode.submit();"><img src="assets/img/exit.svg" width="30px"> </a>
+                    <a class="end-0 button btn btn-outline-primary my-3 bg-pr-h bc p-1" onclick="this.parentNode.submit();"><img src="assets/img/exit.svg" width="30px"> </a>
                 </form>
             </div>
         </div>
@@ -47,7 +47,7 @@ function printHeader($active){
         if($active == $url){
             echo '<a class="nav-link active pr-h bc" aria-current="page" href="#">'.$title.'</a>';
         } else {
-            echo '<a class="nav-link sc-h bc-h" href="'.$url.'">'.$title.'</a>';
+            echo '<a class="nav-link pr-h tc bc-h" href="'.$url.'">'.$title.'</a>';
         }
         echo '</li>';
     }
