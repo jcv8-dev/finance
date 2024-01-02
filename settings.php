@@ -51,6 +51,11 @@ $startTime = microtime(true);
                         </div>
                     </div>
                 </div>
+                <div class="row justify-content-end">
+                    <div class="my-2" style="width: fit-content">
+                        <button type="button" onclick="notImplemented()" id="submitSettings" class="btn btn-primary">Speichern</button>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="modal" tabindex="-1" id="newEinnahmenKategorie">
