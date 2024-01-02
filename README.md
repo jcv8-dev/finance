@@ -20,6 +20,7 @@
   - [ ] Sparrate festlegen
     - [ ] pauschal
     - [ ] prozentual
+    - [X] hardcoded 
   - [X] Monatliches Restbudget anzeigen
 
 ## ToDo:
