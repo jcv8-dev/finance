@@ -1,12 +1,12 @@
 function validateForm() {
-    var a = document.forms["neueBuchungForm"]["betrag"].value;
-    var b = document.forms["neueBuchungForm"]["selectKonto"].value;
-    var c = document.forms["neueBuchungForm"]["selectKategorie"].value;
-    var d = document.forms["neueBuchungForm"]["kommentar"].value;
-    if(!validateBetrag(a)){
+    let betrag = document.forms["neueBuchungForm"]["betrag"].value;
+    let konto = document.forms["neueBuchungForm"]["selectKonto"].value;
+    let kategorie = document.forms["neueBuchungForm"]["selectKategorie"].value;
+    let kommentar = document.forms["neueBuchungForm"]["kommentar"].value;
+    if(!validateBetrag(betrag)){
         return false;
     }
-    if ((a == null || a === "") || (b == null || b === 0) || (c == null || c === 0) || (d == null || d === "")) {
+    if ((betrag == null || betrag === "") || (konto == null || konto === 0) || (kategorie == null || kategorie === 0)) { // || (kommentar == null || kommentar === "")
         alert("Nicht alle Felder ausgefüllt.");
         return false;
     }

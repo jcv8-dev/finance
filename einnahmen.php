@@ -71,7 +71,7 @@ $startTime = microtime(true);
                                 <div class="col-12 pb-2"><input type="text" id="editFormBetrag" class="form-control shadow-box-sm" placeholder="Betrag" aria-label="Betrag" required></div>
                                 <div class="col-12 pb-2"><?php selectKonto("Konto", $id = "editFormKonto");?></div>
                                 <div class="col-12 pb-2"><?php selectKategorie("Kategorie", 1, $id = "editFormKategorie");?></div>
-                                <div class="col-12 pb-2"><input type="text" id="editFormKommentar" class="form-control shadow-box-sm" placeholder="Kommentar" aria-label="Kommentar" required></div>
+                                <div class="col-12 pb-2"><input type="text" id="editFormKommentar" class="form-control shadow-box-sm" placeholder="Kommentar" aria-label="Kommentar"></div>
                             </div>
                         </div>
                     </form>
