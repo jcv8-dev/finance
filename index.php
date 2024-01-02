@@ -16,12 +16,12 @@ $startTime = microtime(true);
             </div>
             <?php monthlyCategory(true, $id="einnahmenMonatTable")?>
             <?php monthlyCategory(false, $id="ausgabenMonatTable")?>
-            <div class="container-xl py-1 px-3 mt-2 border rounded shadow-box">
-                <input type="file" accept="image/*" capture="camera">
-            </div>
-            <div class="container-xl py-1 px-3 mt-2 border rounded shadow-box">
+<!--            <div class="container-xl py-1 px-3 mt-2 border rounded shadow-box">-->
+<!--                <input type="file" accept="image/*" capture="camera">-->
+<!--            </div>-->
+            <!--<div class="container-xl py-1 px-3 mt-2 border rounded shadow-box">
                 <img src="assets/img/stonks.bmp" alt="stonks" class="img-fluid rounded shadow-box-sm" style="width: 100%;">
-            </div>
+            </div>-->
         </div>
     </body>
     <?php

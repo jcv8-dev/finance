@@ -38,6 +38,11 @@ div.card-body div.row p {
 h3 {
     font-size: calc(1rem + .6vw);
 }
+
+.w-fit-content{
+    width: fit-content;
+}
+
 th,td {
     color: var(--text-color) !important;
 }

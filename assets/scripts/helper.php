@@ -29,14 +29,14 @@ function printHeader($active){
         "ausgaben" => "Ausgaben",
         "konten" => "Konten",
         "settings" => "Einstellungen",
-        "static"=> "Static"
+        "static"=> "S"
     );
     echo '<div class="row w-100">
-            <h1 class="py-2 px-4 col-10 pr prh">One of the Tools of all Time</h1>
-            <div class="col-2 justify-content-end">
-                <form style="width: fit-content" method="post" action="">
+            <h1 class="py-2 px-4 col-11 pr prh pe-2">One of the Tools of all Time</h1>
+            <div class="col-1 justify-content-end p-0">
+                <form class="w-fit-content mx-auto" method="post" action="">
                     <input type="hidden" name="logout" value="true" /> 
-                    <a class="end-0 button btn btn-outline-primary my-3 pr-h bc" onclick="this.parentNode.submit();">Logout</a>
+                    <a class="end-0 button btn btn-outline-primary my-3 pr-h bc p-1" onclick="this.parentNode.submit();"><img src="assets/img/exit.svg" width="30px"> </a>
                 </form>
             </div>
         </div>
