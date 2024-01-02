@@ -218,16 +218,18 @@ function listKonten() {
     $conn = db();
     $sql = "SELECT id, kontoBezeichnung FROM konten";
     $result = $conn->query($sql);
+    echo '<ul class="list-group shadow-box">';
+    echo '<li class="list-group-item container py-1"><div class="row"><div class="col-10 p-1 d-flex align-items-center"><b>Konten</b></div></div></li>';
     if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
             $konten[$row["id"]] = $row["kontoBezeichnung"];
         }
+        foreach($konten as $id => $konto){
+            echo '<button class="list-group-item list-group-item-action container py-1"><div class="row"><div class="col-10 p-1 d-flex align-items-center"><p class="">'.$konto. '</p></div><div class="col-2 p-0"><img src="assets/img/edit.svg" height="22px" class="m-1"> </div></div></button>';
+        }
     }
-    echo '<ul class="list-group shadow-box">';
-    echo '<li class="list-group-item container py-1"><div class="row"><div class="col-10 p-1 d-flex align-items-center"><b>Konten</b></div></div></li>';
-    foreach($konten as $id => $konto){
-        echo '<button class="list-group-item list-group-item-action container py-1"><div class="row"><div class="col-10 p-1 d-flex align-items-center"><p class="">'.$konto. '</p></div><div class="col-2 p-0"><img src="assets/img/edit.svg" height="22px" class="m-1"> </div></div></button>';
-    }
+
+
     echo '<button type="button" data-bs-toggle="modal" data-bs-target="#newKonto" class="list-group-item list-group-item-action container py-1"><div class="row"><div class="col-10 p-1 d-flex align-items-center"><p>+ Hinzufügen</p></div></div></button>';    echo '</ul>';
 }
 
