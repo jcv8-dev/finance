@@ -135,6 +135,7 @@ function kontoCards() {
             $einnahmen = $einnahmen->fetch_assoc()["SUM(betrag)"];
             $einnahmen = $einnahmen != 0 ? abs($einnahmen) : 0;
             $startbetrag = $row["startbetrag"];
+            $uebertrag = getUebertrag($row["id"], $conn);
             echo '<div class="col-12 col-sm-6 col-md-4 col-lg-3 p-1">
             <div class="card shadow-box-sm" style="width: auto;" id="'.$row["id"].'">
             <div class="card-header"><b>';
@@ -149,15 +150,24 @@ function kontoCards() {
             <div class="col-6 text-end pe-2 ps-1"><p>Ausgaben</p></div>
             <div class="col-6 text-end pe-3 ps-0 pe-1"><p>'.ff($ausgaben).'&nbsp;€</p></div>
             <div class="col-6 text-end pe-2 ps-1"><p>Übertrag</p></div>
-            <div class="col-6 text-end pe-3 ps-0 pe-1"><p>'.("xx,xx").'&nbsp;€</p></div>
+            <div class="col-6 text-end pe-3 ps-0 pe-1"><p>'.ff($uebertrag).'&nbsp;€</p></div>
             <div class="col-6 text-end pe-2 ps-1"><p>Aktuell</p></div>
-            <div class="col-6 text-end pe-3 ps-0 pe-1"><p>'.ff($startbetrag + $einnahmen - abs($ausgaben)).'&nbsp;€</p></div>
+            <div class="col-6 text-end pe-3 ps-0 pe-1"><p>'.ff($startbetrag + $einnahmen - abs($ausgaben) + $uebertrag).'&nbsp;€</p></div>
             </div>
             </div>
             </div>
             </div>';
         }
     }
+}
+function getUebertrag($id, $conn){
+    $eingangquery = "SELECT SUM(betrag) from uebertrag where zielid = $id";
+    $ausgangquery = "SELECT SUM(betrag) from uebertrag where quelleid = $id";
+    $eingang = $conn->query($eingangquery)->fetch_assoc()["SUM(betrag)"];
+    $eingangValue = ($eingang !== null) ? $eingang : 0;
+    $ausgang = $conn->query($ausgangquery)->fetch_assoc()["SUM(betrag)"];
+    $ausgangValue = ($ausgang !== null) ? $ausgang : 0;
+    return $eingangValue-$ausgangValue;
 }
 
 function listUebertraege(){
@@ -182,7 +192,7 @@ function listUebertraege(){
             echo '<tr>
                       <th scope="row">'.$i++.'</th>
                       <td>'.$row["datum"].'</td>
-                      <td>'.$row["betrag"].'&nbsp;€</td>
+                      <td>'.ff($row["betrag"]).'&nbsp;€</td>
                       <td>'.$row["quellKonto"].'</td>
                       <td>'.$row["zielKonto"].'</td>
                       <td class="px-0" id="edit"><button type="button" onclick=editEntry("'.$row["id"].'") class="btn p-2"><img src="assets/img/edit.svg" height="22px"></button></td>
