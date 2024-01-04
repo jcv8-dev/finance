@@ -276,7 +276,11 @@ function colorizeTable(id, aufsteigend) {
                 green = temp
             }
             if(numericValue !== 0){
-                $(this).css("background-color", `rgba(${red}, ${green}, 20, 0.7)`);
+                $(this).attr("style", `color: rgba(${red}, ${green}, 20, 0.7) !important; text-shadow:
+    1px 1px 0 #000,
+    -1px 1px 0 #000,
+    -1px -1px 0 #000,
+    1px -1px 0 #000;`);
             }
 
             //TODO fix colors
