@@ -2,11 +2,10 @@ function validateForm() {
     let betrag = document.forms["neueBuchungForm"]["betrag"].value;
     let konto = document.forms["neueBuchungForm"]["selectKonto"].value;
     let kategorie = document.forms["neueBuchungForm"]["selectKategorie"].value;
-    let kommentar = document.forms["neueBuchungForm"]["kommentar"].value;
     if(!validateBetrag(betrag)){
         return false;
     }
-    if ((betrag == null || betrag === "") || (konto == null || konto === 0) || (kategorie == null || kategorie === 0)) { // || (kommentar == null || kommentar === "")
+    if ((betrag == null || betrag === "") || (konto == null || konto === 0) || (kategorie == null || kategorie === 0)) {
         alert("Nicht alle Felder ausgefüllt.");
         return false;
     }
