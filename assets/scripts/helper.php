@@ -368,9 +368,9 @@ function monthlyCategory($einnahme, $id="monthlyTable"){
     $e = $einnahme == true ? "1" : "0";
     $sql = "select kategorieBezeichnung,id from kategorie where kategorie.einnahme = $e;";
     $result = $conn->query($sql);
-    echo '<div class="container-xl py-1 px-3 mt-2 border rounded shadow-box overflow-x-auto tc">';
+    echo '<div class="container-xl py-1 px-3 mt-2 border rounded shadow-box tc">';
     echo "<h2 class='pt-2'>$title</h2>";
-    echo '
+    echo '<div class="overflow-x-auto ">
     <table class="table" id="'.$id.'">
       <thead>
         <tr>
@@ -402,7 +402,7 @@ function monthlyCategory($einnahme, $id="monthlyTable"){
             echo "</tr>";
         }
     }
-    echo "</tbody></table></div>";
+    echo "</tbody></table></div></div>";
 }
 
 function sumByKategorieMonat($kategorie, $monat){
