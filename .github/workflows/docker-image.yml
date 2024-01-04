@@ -24,4 +24,4 @@ jobs:
       run: docker build -t jcv8/finance:latest .
 
     - name: Push Docker image
-      run: docker push jcv6/finance:latest
+      run: docker push jcv8/finance:latest
