@@ -85,7 +85,7 @@ function head($title){
 function selectKonto($title, $id = "selectKonto") {
     // Input Select für alle Konten. Title = Vorausgewählte Disabled Option
     $conn = db();
-    $sql = "SELECT id, kontoBezeichnung FROM konten";
+    $sql = "SELECT id, kontoBezeichnung FROM konten order by kontoBezeichnung";
     $result = $conn->query($sql);
     if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
@@ -105,7 +105,7 @@ function selectKonto($title, $id = "selectKonto") {
 function selectKategorie($title, $einnahme, $id = "selectKategorie") {
     // Input Select für alle Kategorien (Differenzierung nach Einnahme/Ausgabe mit 1/0). Title = Vorausgewählte Disabled Option
     $conn = db();
-    $sql = "SELECT id, kategorieBezeichnung FROM kategorie where einnahme = $einnahme";
+    $sql = "SELECT id, kategorieBezeichnung FROM kategorie where einnahme = $einnahme ORDER BY kategorieBezeichnung";
     $result = $conn->query($sql);
     if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
@@ -207,7 +207,7 @@ function listUebertraege(){
 function listKategorien($einnahme) {
     // Erzeuge liste aller Kategorien (Differenzierung nach Einnahme/Ausgabe mit 1/0)
     $conn = db();
-    $sql = "SELECT id, kategorieBezeichnung FROM kategorie WHERE einnahme = $einnahme";
+    $sql = "SELECT id, kategorieBezeichnung FROM kategorie WHERE einnahme = $einnahme ORDER BY kategorieBezeichnung";
     $result = $conn->query($sql);
     $kategorien = array();
     if ($result->num_rows > 0) {
@@ -227,7 +227,7 @@ function listKategorien($einnahme) {
 function listKonten() {
     // Erzeuge liste aller Konten
     $conn = db();
-    $sql = "SELECT id, kontoBezeichnung FROM konten";
+    $sql = "SELECT id, kontoBezeichnung FROM konten ORDER BY kontoBezeichnung";
     $result = $conn->query($sql);
     echo '<ul class="list-group shadow-box">';
     echo '<li class="list-group-item container py-1"><div class="row"><div class="col-10 p-1 d-flex align-items-center"><b>Konten</b></div></div></li>';
@@ -366,7 +366,7 @@ function monthlyCategory($einnahme, $id="monthlyTable"){
     $conn = db();
     $title = $einnahme ? "Einnahmen" : "Ausgaben";
     $e = $einnahme ? "1" : "0";
-    $sql = "select kategorieBezeichnung,id from kategorie where kategorie.einnahme = $e;";
+    $sql = "select kategorieBezeichnung,id from kategorie where kategorie.einnahme = $e ORDER BY kategorieBezeichnung;";
     $result = $conn->query($sql);
     echo '<div class="container-xl py-1 px-3 mt-2 border rounded shadow-box tc">';
     echo "<h2 class='pt-2'>$title</h2>";
