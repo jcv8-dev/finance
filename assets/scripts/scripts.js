@@ -276,11 +276,11 @@ function colorizeTable(id, aufsteigend) {
                 green = temp
             }
             if(numericValue !== 0){
-                $(this).attr("style", `color: rgba(${red}, ${green}, 20, 0.7) !important; text-shadow:
-    1px 1px 0 #000,
-    -1px 1px 0 #000,
-    -1px -1px 0 #000,
-    1px -1px 0 #000;`);
+                $(this).attr("style", `color: rgba(${red}, ${green}, 20, 1) !important; text-shadow:
+    0.5px 0.5px 0 var(--text-color),
+    -0.5px 0.5px 0 var(--text-color),
+    -0.5px -0.5px 0 var(--text-color),
+    0.5px -0.5px 0 var(--text-color);`);
             }
 
             //TODO fix colors
