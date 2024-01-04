@@ -36,7 +36,7 @@ function printHeader($active){
             <div class="col-1 justify-content-end p-0">
                 <form class="w-fit-content mx-auto" method="post" action="">
                     <input type="hidden" name="logout" value="true" /> 
-                    <a class="end-0 button btn btn-outline-primary my-3 bg-pr-h bc p-1" onclick="this.parentNode.submit();"><img src="assets/img/exit.svg" width="30px"> </a>
+                    <a class="end-0 button btn btn-outline-primary my-3 bg-pr-h bc p-1" onclick="this.parentNode.submit();"><img alt="exit pictogram" src="assets/img/exit.svg" width="30px"> </a>
                 </form>
             </div>
         </div>
@@ -61,7 +61,7 @@ function printFooter($startTime){
                 <div class=\"col tc\">";
                     $endTime = microtime(true);
                     $executionTime = ff($endTime - $startTime);
-                    echo "PHP Execution Time: {$executionTime} seconds</div>";
+                    echo "PHP Execution Time: $executionTime seconds</div>";
     echo "
                 </div>
             </div>
@@ -196,7 +196,7 @@ function listUebertraege(){
                       <td>'.ff($row["betrag"]).'&nbsp;€</td>
                       <td>'.$row["quellKonto"].'</td>
                       <td>'.$row["zielKonto"].'</td>
-                      <td class="px-0" id="edit"><button type="button" onclick=editEntry("'.$row["id"].'") class="btn p-2"><img src="assets/img/edit.svg" height="22px"></button></td>
+                      <td class="px-0" id="edit"><button type="button" onclick=editEntry("'.$row["id"].'") class="btn p-2"><img alt="edit pictogram" src="assets/img/edit.svg" height="22px"></button></td>
                      </tr>';
         }
     }
@@ -218,7 +218,7 @@ function listKategorien($einnahme) {
     echo '<ul class="list-group shadow-box">';
     echo '<li class="list-group-item container py-1"><div class="row"><div class="col-10 p-1 d-flex align-items-center"><b>'; echo $einnahme == 0 ? "Ausgaben" : "Einnahmen" ; echo'</b></div></div></li>';
     foreach($kategorien as $id => $kategorie){
-        echo '<button class="list-group-item list-group-item-action container py-1"><div class="row"><div class="col-10 p-1 d-flex align-items-center"><p>'.$kategorie. '</p></div><div class="col-2 p-0"><img src="assets/img/edit.svg" height="22px" class="m-1 "> </div></div></button>';
+        echo '<button class="list-group-item list-group-item-action container py-1"><div class="row"><div class="col-10 p-1 d-flex align-items-center"><p>'.$kategorie. '</p></div><div class="col-2 p-0"><img alt="edit pictogram" src="assets/img/edit.svg" height="22px" class="m-1 "> </div></div></button>';
     }
     echo '<button type="button" onclick="prepareKategorieModal('; echo $einnahme == 0 ? "false" : "true"; echo ')" class="list-group-item list-group-item-action container py-1"><div class="row"><div class="col-10 p-1 d-flex align-items-center"><p>+ Hinzufügen</p></div></div></button>';
     echo '</ul>';
@@ -236,7 +236,7 @@ function listKonten() {
             $konten[$row["id"]] = $row["kontoBezeichnung"];
         }
         foreach($konten as $id => $konto){
-            echo '<button class="list-group-item list-group-item-action container py-1"><div class="row"><div class="col-10 p-1 d-flex align-items-center"><p class="">'.$konto. '</p></div><div class="col-2 p-0"><img src="assets/img/edit.svg" height="22px" class="m-1"> </div></div></button>';
+            echo '<button class="list-group-item list-group-item-action container py-1"><div class="row"><div class="col-10 p-1 d-flex align-items-center"><p class="">'.$konto. '</p></div><div class="col-2 p-0"><img alt="edit pictogram" src="assets/img/edit.svg" height="22px" class="m-1"> </div></div></button>';
         }
     }
 
@@ -288,7 +288,7 @@ function listBuchungen($einnahme) {
                 "<td class='px-2' id='konto'>" . $row["kontoBezeichnung"] . "</td>" .
                 "<td class='px-2 atext-center' id='kategorie'>" . $row["kategorieBezeichnung"] . "</td>" .
                 "<td class='px-2' id='kommentar'>" . $row["kommentar"] . "</td>" .
-                "<td class='px-0' id='edit'><button type='button' onclick='editEntry(" . $row["id"] . "," . $einnahme . ")' class='btn p-2'><img src='assets/img/edit.svg' height='22px'></button></td>" .
+                "<td class='px-0' id='edit'><button type='button' onclick='editEntry(" . $row["id"] . "," . $einnahme . ")' class='btn p-2'><img alt='edit pictogram' src='assets/img/edit.svg' height='22px'></button></td>" .
                 "</tr>";
             $i++;
         }
@@ -364,13 +364,13 @@ function hideSensitive(){
 
 function monthlyCategory($einnahme, $id="monthlyTable"){
     $conn = db();
-    $title = $einnahme == true ? "Einnahmen" : "Ausgaben";
-    $e = $einnahme == true ? "1" : "0";
+    $title = $einnahme ? "Einnahmen" : "Ausgaben";
+    $e = $einnahme ? "1" : "0";
     $sql = "select kategorieBezeichnung,id from kategorie where kategorie.einnahme = $e;";
     $result = $conn->query($sql);
-    echo '<div class="container-xl py-1 px-3 mt-2 border rounded shadow-box overflow-x-auto tc">';
+    echo '<div class="container-xl py-1 px-3 mt-2 border rounded shadow-box tc">';
     echo "<h2 class='pt-2'>$title</h2>";
-    echo '
+    echo '<div class="overflow-x-auto ">
     <table class="table" id="'.$id.'">
       <thead>
         <tr>
@@ -402,7 +402,7 @@ function monthlyCategory($einnahme, $id="monthlyTable"){
             echo "</tr>";
         }
     }
-    echo "</tbody></table></div>";
+    echo "</tbody></table></div></div>";
 }
 
 function sumByKategorieMonat($kategorie, $monat){
@@ -471,4 +471,3 @@ function getAvailableYears(){
     
 }
 
-?>
