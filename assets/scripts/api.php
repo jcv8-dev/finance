@@ -154,10 +154,10 @@ function addUebertrag($conn):void{
     $sql = "INSERT INTO uebertrag (datum, betrag, quelleid, zielid) value (?,?,?,?);";
     $stmt = $conn->prepare($sql);
     $date = $_POST["date"];
-    $betrag = $_POST["betrag"];
+    $betrag = abs(floatval(str_replace(",", ".",$_POST["betrag"])));
     $quelleid = intval($_POST["source"]);
     $zielid = intval($_POST["destination"]);
-    $stmt->bind_param("siii", $date,$betrag,$quelleid,$zielid);
+    $stmt->bind_param("sdii", $date,$betrag,$quelleid,$zielid);
     if ($stmt->execute()){
         echo "Row inserted successfully!";
     } else {
