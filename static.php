@@ -1,4 +1,5 @@
 <?php
+require 'assets/scripts/readDB.php';
 require 'assets/scripts/helper.php';
 require 'protect.php';
 header("Cache-Control: no-cache, must-revalidate");
@@ -14,4 +15,4 @@ $startTime = microtime(true);
 <?php
 printFooter($startTime);
 ?>
-    </html
+</html>
