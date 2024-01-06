@@ -46,7 +46,34 @@ $startTime = microtime(true);
         </div>
       </div>
     </div>
-
+    <div class="modal" tabindex="-1" id="editEntryModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Eintrag bearbeiten</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="updateEntryForm">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-12 pb-3"><input type="date" id="editFormDate" class="form-control shadow-box-sm" aria-label="Datum" required></div>
+                                <div class="col-12 pb-2"><input type="text" id="editFormBetrag" class="form-control shadow-box-sm" placeholder="Betrag" aria-label="Betrag" required></div>
+                                <div class="col-12 pb-2"><?php selectKonto("Von", $id = "editFormQuelle");?></div>
+                                <div class="col-12 pb-2"><?php selectKonto("Nach", $id = "editFormZiel");?></div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <div class="row">
+                        <button id="deletebuchung" type="button" onclick="notImplemented()" class="btn btn-outline-danger col me-2">Löschen</button>
+                        <button id="submitEditUebertrag" type="button" class="btn btn-outline-primary col">Speichern</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
   </body>
   <?php
   printFooter($startTime);

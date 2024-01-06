@@ -3,7 +3,9 @@
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+
 require "secrets.php";
+//require "protect.php";
 
 function db(){
     global $secret;
@@ -137,7 +139,7 @@ function kontoCards() {
             $einnahmen = $einnahmen != 0 ? abs($einnahmen) : 0;
             $startbetrag = $row["startbetrag"];
             $uebertrag = getUebertrag($row["id"], $conn);
-            echo '<div class="col-12 col-sm-6 col-md-4 col-lg-3 p-1">
+            echo '<div class="col-6 col-sm-6 col-md-4 col-lg-3 p-1">
             <div class="card shadow-box-sm" style="width: auto;" id="'.$row["id"].'">
             <div class="card-header"><b>';
             echo $row["kontoBezeichnung"];
@@ -152,8 +154,8 @@ function kontoCards() {
             <div class="col-6 text-end pe-3 ps-0 pe-1"><p>'.ff($ausgaben).'&nbsp;€</p></div>
             <div class="col-6 text-end pe-2 ps-1"><p>Übertrag</p></div>
             <div class="col-6 text-end pe-3 ps-0 pe-1"><p>'.ff($uebertrag).'&nbsp;€</p></div>
-            <div class="col-6 text-end pe-2 ps-1"><p>Aktuell</p></div>
-            <div class="col-6 text-end pe-3 ps-0 pe-1"><p>'.ff($startbetrag + $einnahmen - abs($ausgaben) + $uebertrag).'&nbsp;€</p></div>
+            <div class="col-6 text-end pe-2 ps-1"><p class="fw-bold">Aktuell</p></div>
+            <div class="col-6 text-end pe-3 ps-0 pe-1"><p class="fw-bold">'.ff($startbetrag + $einnahmen - abs($ausgaben) + $uebertrag).'&nbsp;€</p></div>
             </div>
             </div>
             </div>
@@ -190,18 +192,23 @@ function listUebertraege(){
     if ($result->num_rows > 0) {
         $i = 1;
         while ($row = $result->fetch_assoc()) {
-            echo '<tr>
-                      <th scope="row">'.$i++.'</th>
-                      <td>'.$row["datum"].'</td>
-                      <td>'.ff($row["betrag"]).'&nbsp;€</td>
-                      <td>'.$row["quellKonto"].'</td>
-                      <td>'.$row["zielKonto"].'</td>
-                      <td class="px-0" id="edit"><button type="button" onclick=editEntry("'.$row["id"].'") class="btn p-2"><img alt="edit pictogram" src="assets/img/edit.svg" height="22px"></button></td>
-                     </tr>';
+            $i++;
+            $id = $row["id"];
+            $date = $row["datum"];
+            $betrag = ff($row["betrag"]);
+            $quelle = $row["quellKonto"];
+            $ziel = $row["zielKonto"];
+            echo "<tr id=\"$id\">
+                      <th scope=\"row\">$i</th>
+                      <td id=\"datum\">$date</td>
+                      <td id=\"betrag\">$betrag&nbsp;€</td>
+                      <td id=\"quelle\">$quelle</td>
+                      <td id=\"ziel\">$ziel</td>
+                      <td id=\"edit\" class=\"px-0\" id=\"edit\"><button type=\"button\" onclick=editEntry(\"$id\",\"uebertrag\") class=\"btn p-2\"><img alt=\"edit pictogram\" src=\"assets/img/edit.svg\" height=\"22px\"></button></td>
+                     </tr>";
         }
     }
-    echo '</tbody>
-         </table>';
+    echo "</tbody></table>";
 }
 
 function listKategorien($einnahme) {
@@ -278,17 +285,31 @@ function listBuchungen($einnahme) {
     if ($result->num_rows > 0) {
         echo "<tbody>";
         $i = 1;
+        if($einnahme == 1){
+            $type = "einnahme";
+        } else {
+            $type = "ausgabe";
+        }
         while ($row = $result->fetch_assoc()) {
             $sum += $row["betrag"];
             $betrag = $row["betrag"];
+            $date = $row["datum"];
+            $konto = $row["kontoBezeichnung"];
+            $kategorie = $row["kategorieBezeichnung"];
+            $betrag = ff(abs($betrag));
+            $id = $row["id"];
+            $kommentar = $row["kommentar"];
             echo "<tr id=" . $row["id"] . ">";
             echo "<th scope=\"row\">$i</th>";
-            echo "<td class='px-2' id='datum'>" . $row["datum"] . "</td>" .
-                "<td class='px-2 text-end' id='betrag'>" . ff(abs($betrag)) . "&nbsp;€</td>" .
-                "<td class='px-2' id='konto'>" . $row["kontoBezeichnung"] . "</td>" .
-                "<td class='px-2 atext-center' id='kategorie'>" . $row["kategorieBezeichnung"] . "</td>" .
-                "<td class='px-2' id='kommentar'>" . $row["kommentar"] . "</td>" .
-                "<td class='px-0' id='edit'><button type='button' onclick='editEntry(" . $row["id"] . "," . $einnahme . ")' class='btn p-2'><img alt='edit pictogram' src='assets/img/edit.svg' height='22px'></button></td>" .
+            echo "<td class=\"px-2\" id=\"datum\"> $date </td>" .
+                "<td class=\"px-2 text-end\" id=\"betrag\">$betrag&nbsp;€</td>" .
+                "<td class=\"px-2\" id=\"konto\">$konto</td>" .
+                "<td class=\"px-2 atext-center\" id=\"kategorie\">$kategorie</td>" .
+                "<td class=\"px-2\" id=\"kommentar\">$kommentar</td>" .
+                "<td class=\"px-0\" id=\"edit\">".
+                "<button type=\"button\" class=\"btn p-2\" onclick=editEntry($id,\"$type\")>".
+                    "<img alt=\"edit pictogram\" src=\"assets/img/edit.svg\" height=\"22px\">".
+                "</button></td>" .
                 "</tr>";
             $i++;
         }

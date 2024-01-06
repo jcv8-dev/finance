@@ -5,6 +5,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 require "secrets.php";
+require "../../protect.php";
 
 function db():mysqli{
     global $secret;
@@ -36,6 +37,9 @@ if(isset($_POST["type"])){
     } elseif ($_POST["type"] == "editBuchung") {
         echo "editBuchung";
         editBuchung(db(), $_POST["einnahme"]);
+    } elseif ($_POST["type"] == "editUebertrag") {
+        echo "editUebertrag";
+        editUebertrag(db());
     } elseif ($_POST["type"] == "addUebertrag") {
         echo "addUebertrag";
         addUebertrag(db());
@@ -57,7 +61,7 @@ function getBuchungen($conn):void{
     }
 }
 
-function editBuchung(mysqli $conn, $einnahme):void
+function editBuchung(mysqli $conn, $type):void
 {
     $sql = "UPDATE buchungen SET datum = ?, betrag = ?, kontoid = ?, kategorieid = ?, kommentar = ? where id = ?;";
     $stmt = $conn->prepare($sql);
@@ -68,12 +72,40 @@ function editBuchung(mysqli $conn, $einnahme):void
     $kategorieid = intval($_POST["kategorieid"]);
     $kontoid = intval($_POST["kontoid"]);
     // Differenzierung nach Einnahme/Ausgabe
-    if(!$einnahme){
+    if($type == "ausgabe"){
         $betrag = -$betrag;
     }
     $stmt->bind_param("sdiisi",$_POST["date"], $betrag, $kontoid, $kategorieid, $kommentar, $_POST["id"]);
     //echo "Konto".$kategorieid. " Kategorie: ", $kontoid;
 
+    // Disable Foreign Key Checks //TODO warum gehts ned mit?
+    $disableChecks = "SET foreign_key_checks = 0;";
+    $enableChecks = "SET foreign_key_checks = 1;";
+    $disableChecksStmt = $conn->prepare($disableChecks);
+    $enableChecksStmt = $conn->prepare($enableChecks);
+
+    $disableChecksStmt->execute();
+    if ($stmt->execute()) {
+        echo "Row updated successfully!";
+    } else {
+        echo "Error: " . $stmt->error;
+    }
+    $enableChecksStmt->execute();
+    $stmt->close();
+    $conn->close();
+}
+
+function editUebertrag(mysqli $conn):void
+{
+    $sql = "UPDATE uebertrag SET datum = ?, betrag = ?, quelleid = ?, zielid = ? where id = ?;";
+    $stmt = $conn->prepare($sql);
+    // Werte aus $_POST[] lesen
+    //TODO Sanitize + Userfeedback
+    $betrag = abs(floatval(str_replace(",", ".",$_POST["betrag"])));
+    $quelleid = intval($_POST["quelle"]);
+    $zielid = intval($_POST["ziel"]);
+
+    $stmt->bind_param("sdiii",$_POST["date"], $betrag, $quelleid, $zielid, $_POST["id"]);
     // Disable Foreign Key Checks //TODO warum gehts ned mit?
     $disableChecks = "SET foreign_key_checks = 0;";
     $enableChecks = "SET foreign_key_checks = 1;";

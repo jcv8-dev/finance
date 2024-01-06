@@ -98,22 +98,44 @@ function getIdFromSelect(object,textToFind){
     }
 }
 
-function editEntry(id, einnahme){
-    console.log(id);
+function editEntry(id, type){
+    if(type === "einnahme" || type === "ausgabe"){
+        editBuchung(id, type)
+    } else if (type === "uebertrag"){
+        editUebertrag(id)
+    }
+}
+
+function editUebertrag(id){
     $('#editEntryModal').modal('show');
     $('#updateEntryForm').trigger("reset")
-    let curDate = $('#'+id + " > td#datum")[0].textContent
+    let curDate = $('#'+id + " > td#datum")[0].textContent.trim()
+    let curBetrag = $('#'+id + " > td#betrag")[0].textContent
+    let curQuelle = $('#'+id + " > td#quelle")[0].textContent
+    let curZiel = $('#'+id + " > td#ziel")[0].textContent
+    // set fields tu current values of entry
+    setField("editFormDate", curDate);
+    setField("editFormBetrag", curBetrag);
+    setField("editFormQuelle", curQuelle);
+    setField("editFormZiel", curZiel);
+    $('#submitEditUebertrag')[0].onclick = function(){submitEditUebertrag(id)}
+}
+
+function editBuchung(id, type) {
+    $('#editEntryModal').modal('show');
+    $('#updateEntryForm').trigger("reset")
+    let curDate = $('#'+id + " > td#datum")[0].textContent.trim()
     let curBetrag = $('#'+id + " > td#betrag")[0].textContent
     let curKonto = $('#'+id + " > td#konto")[0].textContent
     let curKategorie = $('#'+id + " > td#kategorie")[0].textContent
     let curKommentar = $('#'+id + " > td#kommentar")[0].textContent
-    $('#submitEditBuchung')[0].onclick = function(){submitEditBuchung(id, einnahme)}
     // set fields tu current values of entry
     setField("editFormDate", curDate);
     setField("editFormBetrag", curBetrag);
     setField("editFormKonto", curKonto);
     setField("editFormKategorie", curKategorie);
     setField("editFormKommentar", curKommentar);
+    $('#submitEditBuchung')[0].onclick = function(){submitEditBuchung(id, type)}
 }
 
 async function submitEditBuchung(id, einnahme){
@@ -132,6 +154,22 @@ async function submitEditBuchung(id, einnahme){
         kontoid: curKonto,
         kategorieid: curKategorie,
         kommentar: curKommentar
+    })
+    $('#editEntryModal').modal('hide')
+    location.reload();
+}
+async function submitEditUebertrag(id){
+    let curDate = $('#editFormDate')[0].value.trim()
+    let curBetrag = $('#editFormBetrag')[0].value
+    let curQuelle = $('#editFormQuelle')[0].value
+    let curZiel = $('#editFormZiel')[0].value
+    await postRequest("assets/scripts/api",{
+        type: "editUebertrag",
+        id: id,
+        date: curDate,
+        betrag: curBetrag,
+        quelle: curQuelle,
+        ziel: curZiel,
     })
     $('#editEntryModal').modal('hide')
     location.reload();
@@ -276,10 +314,10 @@ function colorizeTable(id, aufsteigend) {
             }
             if(numericValue !== 0){
                 $(this).attr("style", `color: rgba(${red}, ${green}, 20, 1) !important; text-shadow:
-    0.5px 0.5px 0 var(--text-color),
-    -0.5px 0.5px 0 var(--text-color),
-    -0.5px -0.5px 0 var(--text-color),
-    0.5px -0.5px 0 var(--text-color);`);
+    0.5px 0.5px 2px var(--text-color),
+    -0.5px 0.5px 2px var(--text-color),
+    -0.5px -0.5px 2px var(--text-color),
+    0.5px -0.5px 2px var(--text-color);`);
             }
 
             //TODO fix colors
