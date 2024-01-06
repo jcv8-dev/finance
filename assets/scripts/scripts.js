@@ -33,7 +33,7 @@ async function insertBuchung(einnahme) {
             e = "ausgabe"
         }
 
-        await postRequest("assets/scripts/api",{
+        await postRequest("assets/scripts/writeDB",{
             type: e,
             date: date,
             betrag: betrag,
@@ -64,7 +64,7 @@ async function submitFilter(einnahme) {
     } else {
         e = 0
     }
-    await postRequest("assets/scripts/api", {
+    await postRequest("assets/scripts/writeDB", {
         type: "setCookie",
         key: "order"+e,
         value: order
@@ -145,7 +145,7 @@ async function submitEditBuchung(id, einnahme){
     let curKonto = $('#editFormKonto')[0].value
     let curKategorie = $('#editFormKategorie')[0].value
     let curKommentar = $('#editFormKommentar')[0].value
-    await postRequest("assets/scripts/api",{
+    await postRequest("assets/scripts/writeDB",{
         type: "editBuchung",
         einnahme: einnahme,
         id: id,
@@ -163,7 +163,7 @@ async function submitEditUebertrag(id){
     let curBetrag = $('#editFormBetrag')[0].value
     let curQuelle = $('#editFormQuelle')[0].value
     let curZiel = $('#editFormZiel')[0].value
-    await postRequest("assets/scripts/api",{
+    await postRequest("assets/scripts/writeDB",{
         type: "editUebertrag",
         id: id,
         date: curDate,
@@ -191,7 +191,7 @@ async function addUebertrag(){
         return false
     }
 
-    await postRequest("assets/scripts/api", {
+    await postRequest("assets/scripts/writeDB", {
         type: 'addUebertrag',
         date: date,
         betrag: betrag,
@@ -215,7 +215,7 @@ async function addKategorie(einnahme){
         } else {
             e = 0
         }
-        await postRequest("assets/scripts/api",{
+        await postRequest("assets/scripts/writeDB",{
             type: "addKategorie",
             name: name,
             einnahme: e,
@@ -241,7 +241,7 @@ async function addKonto(){
     let name = document.getElementById("kontoName").value;
     let startbetrag = document.getElementById("startBetrag").value;
     if(name !== "" && startbetrag.match(/^\d*([.,]{1}\d{1,2}){0,1}€?$/g)){
-        await postRequest("assets/scripts/api", {
+        await postRequest("assets/scripts/writeDB", {
             type: "addKonto",
             name: name,
             startbetrag: startbetrag
