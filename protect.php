@@ -1,5 +1,8 @@
 <?php
-session_start();
+if(session_status()!=PHP_SESSION_ACTIVE){
+    session_start();
+}
+
 
 if (isset($_POST["logout"])) {
     session_destroy();
