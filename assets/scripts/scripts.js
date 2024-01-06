@@ -278,7 +278,7 @@ async function postRequest(url, data){
     }
 }
 
-function colorizeTable(id, aufsteigend) {
+function colorizeTableByRow(id, aufsteigend) {
     $("#"+id+" tr").each(function() {
         let columnValues = [];
         $(this).find("td").each(function() {
@@ -286,27 +286,14 @@ function colorizeTable(id, aufsteigend) {
             let numericValue = parseFloat(valueWithSymbol.replace(/[^0-9.-]+/g,""))/100;
             columnValues.push(numericValue);
         });
-
         let min = Math.min(...columnValues);
         let max = Math.max(...columnValues);
-
         $(this).find("td").each(function() {
             let valueWithSymbol = $(this).text();
             let numericValue = parseFloat(valueWithSymbol.replace(/[^0-9.-]+/g,""))/100;
             let relativeValue = (numericValue - min) / (max - min);
             let red = Math.floor(255 * (1 - relativeValue)* 1.9 + 80);
             let green = Math.floor(255 * relativeValue * 1.5 + 10);
-            if(numericValue > 0){
-                console.log("min: "+min)
-                console.log("max: "+max)
-                console.log("relativeValue: "+relativeValue)
-                console.log("numericValue: "+numericValue)
-                // console.log("red: "+red)
-                // console.log("green: "+green)
-            }
-
-
-
             if(!aufsteigend){
                 let temp = red
                 red = green
@@ -319,8 +306,42 @@ function colorizeTable(id, aufsteigend) {
     -0.5px -0.5px 2px var(--text-color),
     0.5px -0.5px 2px var(--text-color);`);
             }
-
             //TODO fix colors
         });
     });
+}
+function colorizeTableByColumn(id, aufsteigend) {
+    for (let i = 0; i < 12; i++) {
+        let columnCells = []
+        let columnValues = []
+        $(id).find("tbody tr").each(function (){
+                // i+1 um kategoriebezeichnung zu skippen
+                columnCells.push($(this)[0].cells[i+1])
+                let text = $(this)[0].cells[i+1].textContent
+                columnValues.push(parseFloat(text.replace(/[^0-9.-]+/g,""))/100)
+        })
+        let min = Math.min(...columnValues);
+        let max = Math.max(...columnValues);
+
+        for (let j = 0; j < columnCells.length; j++) {
+            let relativeValue = (columnValues[j] - min) / (max - min);
+            let red = Math.floor(255 * (1 - relativeValue)* 1.9 + 80);
+            let green = Math.floor(255 * relativeValue * 1.5 + 10);
+            if(!aufsteigend){
+                let temp = red
+                red = green
+                green = temp
+            }
+            if(columnValues[j] !== 0){
+                console.log(columnCells[j])
+                $(columnCells[j]).attr("style",`color: rgba(${red}, ${green}, 20, 1) !important; 
+                text-shadow: 0.5px 0.5px 2px var(--text-color), 
+                -0.5px 0.5px 2px var(--text-color), 
+                -0.5px -0.5px 2px var(--text-color),
+                0.5px -0.5px 2px var(--text-color);`)
+            }
+        }
+        columnCells = []
+        columnValues = []
+    }
 }
