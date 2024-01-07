@@ -6,6 +6,7 @@ $secret = array(
     "dbPass" => "Password",
     "dbServer" => "databaseHost",
     "loginPass" => [
-        "sampleuser" => "samplepassword"
-    ]
+        "sampleuser" => "samplepassword" // change me
+    ],
+    "loginRetentionSeconds" => "1209600" // 14 Tage
 );
