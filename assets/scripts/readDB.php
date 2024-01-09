@@ -333,19 +333,20 @@ function monthlyCategory($einnahme, $id="monthlyTable"){
     <table class="table" id="'.$id.'">
       <thead>
         <tr>
-          <th scope="col">Kategorie</th>
-          <th scope="col">Jan.</th>
-          <th scope="col">Feb.</th>
-          <th scope="col">Mär.</th>
-          <th scope="col">Apr.</th>
-          <th scope="col">Mai</th>
-          <th scope="col">Jun.</th>
-          <th scope="col">Jul.</th>
-          <th scope="col">Aug.</th>
-          <th scope="col">Sept.</th>
-          <th scope="col">Okt.</th>
-          <th scope="col">Nov.</th>
-          <th scope="col">Dez.</th>
+            <th scope="col">Kategorie</th>
+            <th scope="col">Jan.</th>
+            <th scope="col">Feb.</th>
+            <th scope="col">Mär.</th>
+            <th scope="col">Apr.</th>
+            <th scope="col">Mai</th>
+            <th scope="col">Jun.</th>
+            <th scope="col">Jul.</th>
+            <th scope="col">Aug.</th>
+            <th scope="col">Sept.</th>
+            <th scope="col">Okt.</th>
+            <th scope="col">Nov.</th>
+            <th scope="col">Dez.</th>
+            <th scope="col">Sum.</th>
         </tr>
       </thead>
       <tbody>';
@@ -354,13 +355,22 @@ function monthlyCategory($einnahme, $id="monthlyTable"){
             $kategorie = $row["kategorieBezeichnung"];
             $id = $row["id"];
             echo "<tr><th scope='row'>$kategorie</th>";
-
+            $total = 0;
             for($monat = 1; $monat <= 12; $monat++){
-                echo "<td>".sumByKategorieMonat($id, $monat)."</td>";
+                $sum = sumByKategorieMonat($id, $monat);
+                echo "<td>".ff($sum)."&nbsp;€</td>";
+                $total += $sum;
             }
+            echo "<td>".ff($total)."&nbsp;€</td>";
             echo "</tr>";
         }
     }
+    echo "<tr><th scope='row'>Summe</th>";
+    for($monat = 1; $monat <= 12; $monat++){
+        $sum = monthlyTotal($einnahme, $monat);
+        echo "<td>".ff($sum)."&nbsp;€</td>";
+    }
+    echo "</tr>";
     echo "</tbody></table></div></div>";
 }
 
@@ -372,7 +382,7 @@ function sumByKategorieMonat($kategorie, $monat){
     foreach ($result as $id =>$value){
         $sum += abs($value["betrag"]);
     }
-    return ff($sum)."&nbsp;€";
+    return $sum;
 }
 
 function monthlyTotal($einnahme, $monat){
@@ -393,7 +403,7 @@ function monthlyTotal($einnahme, $monat){
 
 function printMonthlyBudget(){
     $month = date("m");
-    $restbudget = ff(monthlyTotal(1, $month) - monthlyTotal(0, $month) - 100);
+    $restbudget = ff(monthlyTotal(1, $month) - monthlyTotal(0, $month) - 200);
     echo "<div class=\'\'><h2 class='text-center my-2 tc'>Diesen Monat noch verfügbar: $restbudget&nbsp;€</h2></div>";
 }
 

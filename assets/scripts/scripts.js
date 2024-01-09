@@ -311,10 +311,10 @@ function colorizeTableByRow(id, aufsteigend) {
     });
 }
 function colorizeTableByColumn(id, aufsteigend) {
-    for (let i = 0; i < 12; i++) {
+    for (let i = 0; i <= 12; i++) {
         let columnCells = []
         let columnValues = []
-        $(id).find("tbody tr").each(function (){
+        $(id).find("tbody tr:not(:last)").each(function (){
                 // i+1 um kategoriebezeichnung zu skippen
                 columnCells.push($(this)[0].cells[i+1])
                 let text = $(this)[0].cells[i+1].textContent
@@ -333,7 +333,6 @@ function colorizeTableByColumn(id, aufsteigend) {
                 green = temp
             }
             if(columnValues[j] !== 0){
-                console.log(columnCells[j])
                 $(columnCells[j]).attr("style",`color: rgba(${red}, ${green}, 20, 1) !important; 
                 text-shadow: 0.5px 0.5px 2px var(--text-color), 
                 -0.5px 0.5px 2px var(--text-color), 
