@@ -1,4 +1,5 @@
 <?php
+require 'assets/scripts/readDB.php';
 require 'assets/scripts/helper.php';
 require 'protect.php';
 header("Cache-Control: no-cache, must-revalidate");
@@ -24,8 +25,8 @@ $startTime = microtime(true);
     <script src="assets/scripts/scripts.js"></script>
     <script>
         $(document).ready(function() {
-            colorizeTable("einnahmenMonatTable", true);
-            colorizeTable("ausgabenMonatTable", false);
+            colorizeTableByColumn("#einnahmenMonatTable", true);
+            colorizeTableByColumn("#ausgabenMonatTable", false);
         });
     </script>
 </html>

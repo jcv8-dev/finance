@@ -33,7 +33,7 @@ async function insertBuchung(einnahme) {
             e = "ausgabe"
         }
 
-        await postRequest("assets/scripts/api",{
+        await postRequest("assets/scripts/writeDB",{
             type: e,
             date: date,
             betrag: betrag,
@@ -64,7 +64,7 @@ async function submitFilter(einnahme) {
     } else {
         e = 0
     }
-    await postRequest("assets/scripts/api", {
+    await postRequest("assets/scripts/writeDB", {
         type: "setCookie",
         key: "order"+e,
         value: order
@@ -98,22 +98,44 @@ function getIdFromSelect(object,textToFind){
     }
 }
 
-function editEntry(id, einnahme){
-    console.log(id);
+function editEntry(id, type){
+    if(type === "einnahme" || type === "ausgabe"){
+        editBuchung(id, type)
+    } else if (type === "uebertrag"){
+        editUebertrag(id)
+    }
+}
+
+function editUebertrag(id){
     $('#editEntryModal').modal('show');
     $('#updateEntryForm').trigger("reset")
-    let curDate = $('#'+id + " > td#datum")[0].textContent
+    let curDate = $('#'+id + " > td#datum")[0].textContent.trim()
+    let curBetrag = $('#'+id + " > td#betrag")[0].textContent
+    let curQuelle = $('#'+id + " > td#quelle")[0].textContent
+    let curZiel = $('#'+id + " > td#ziel")[0].textContent
+    // set fields tu current values of entry
+    setField("editFormDate", curDate);
+    setField("editFormBetrag", curBetrag);
+    setField("editFormQuelle", curQuelle);
+    setField("editFormZiel", curZiel);
+    $('#submitEditUebertrag')[0].onclick = function(){submitEditUebertrag(id)}
+}
+
+function editBuchung(id, type) {
+    $('#editEntryModal').modal('show');
+    $('#updateEntryForm').trigger("reset")
+    let curDate = $('#'+id + " > td#datum")[0].textContent.trim()
     let curBetrag = $('#'+id + " > td#betrag")[0].textContent
     let curKonto = $('#'+id + " > td#konto")[0].textContent
     let curKategorie = $('#'+id + " > td#kategorie")[0].textContent
     let curKommentar = $('#'+id + " > td#kommentar")[0].textContent
-    $('#submitEditBuchung')[0].onclick = function(){submitEditBuchung(id, einnahme)}
     // set fields tu current values of entry
     setField("editFormDate", curDate);
     setField("editFormBetrag", curBetrag);
     setField("editFormKonto", curKonto);
     setField("editFormKategorie", curKategorie);
     setField("editFormKommentar", curKommentar);
+    $('#submitEditBuchung')[0].onclick = function(){submitEditBuchung(id, type)}
 }
 
 async function submitEditBuchung(id, einnahme){
@@ -123,7 +145,7 @@ async function submitEditBuchung(id, einnahme){
     let curKonto = $('#editFormKonto')[0].value
     let curKategorie = $('#editFormKategorie')[0].value
     let curKommentar = $('#editFormKommentar')[0].value
-    await postRequest("assets/scripts/api",{
+    await postRequest("assets/scripts/writeDB",{
         type: "editBuchung",
         einnahme: einnahme,
         id: id,
@@ -132,6 +154,22 @@ async function submitEditBuchung(id, einnahme){
         kontoid: curKonto,
         kategorieid: curKategorie,
         kommentar: curKommentar
+    })
+    $('#editEntryModal').modal('hide')
+    location.reload();
+}
+async function submitEditUebertrag(id){
+    let curDate = $('#editFormDate')[0].value.trim()
+    let curBetrag = $('#editFormBetrag')[0].value
+    let curQuelle = $('#editFormQuelle')[0].value
+    let curZiel = $('#editFormZiel')[0].value
+    await postRequest("assets/scripts/writeDB",{
+        type: "editUebertrag",
+        id: id,
+        date: curDate,
+        betrag: curBetrag,
+        quelle: curQuelle,
+        ziel: curZiel,
     })
     $('#editEntryModal').modal('hide')
     location.reload();
@@ -153,7 +191,7 @@ async function addUebertrag(){
         return false
     }
 
-    await postRequest("assets/scripts/api", {
+    await postRequest("assets/scripts/writeDB", {
         type: 'addUebertrag',
         date: date,
         betrag: betrag,
@@ -177,7 +215,7 @@ async function addKategorie(einnahme){
         } else {
             e = 0
         }
-        await postRequest("assets/scripts/api",{
+        await postRequest("assets/scripts/writeDB",{
             type: "addKategorie",
             name: name,
             einnahme: e,
@@ -203,7 +241,7 @@ async function addKonto(){
     let name = document.getElementById("kontoName").value;
     let startbetrag = document.getElementById("startBetrag").value;
     if(name !== "" && startbetrag.match(/^\d*([.,]{1}\d{1,2}){0,1}€?$/g)){
-        await postRequest("assets/scripts/api", {
+        await postRequest("assets/scripts/writeDB", {
             type: "addKonto",
             name: name,
             startbetrag: startbetrag
@@ -240,7 +278,7 @@ async function postRequest(url, data){
     }
 }
 
-function colorizeTable(id, aufsteigend) {
+function colorizeTableByRow(id, aufsteigend) {
     $("#"+id+" tr").each(function() {
         let columnValues = [];
         $(this).find("td").each(function() {
@@ -248,27 +286,14 @@ function colorizeTable(id, aufsteigend) {
             let numericValue = parseFloat(valueWithSymbol.replace(/[^0-9.-]+/g,""))/100;
             columnValues.push(numericValue);
         });
-
         let min = Math.min(...columnValues);
         let max = Math.max(...columnValues);
-
         $(this).find("td").each(function() {
             let valueWithSymbol = $(this).text();
             let numericValue = parseFloat(valueWithSymbol.replace(/[^0-9.-]+/g,""))/100;
             let relativeValue = (numericValue - min) / (max - min);
             let red = Math.floor(255 * (1 - relativeValue)* 1.9 + 80);
             let green = Math.floor(255 * relativeValue * 1.5 + 10);
-            if(numericValue > 0){
-                console.log("min: "+min)
-                console.log("max: "+max)
-                console.log("relativeValue: "+relativeValue)
-                console.log("numericValue: "+numericValue)
-                // console.log("red: "+red)
-                // console.log("green: "+green)
-            }
-
-
-
             if(!aufsteigend){
                 let temp = red
                 red = green
@@ -276,13 +301,46 @@ function colorizeTable(id, aufsteigend) {
             }
             if(numericValue !== 0){
                 $(this).attr("style", `color: rgba(${red}, ${green}, 20, 1) !important; text-shadow:
-    0.5px 0.5px 0 var(--text-color),
-    -0.5px 0.5px 0 var(--text-color),
-    -0.5px -0.5px 0 var(--text-color),
-    0.5px -0.5px 0 var(--text-color);`);
+    0.5px 0.5px 2px var(--text-color),
+    -0.5px 0.5px 2px var(--text-color),
+    -0.5px -0.5px 2px var(--text-color),
+    0.5px -0.5px 2px var(--text-color);`);
             }
-
             //TODO fix colors
         });
     });
+}
+function colorizeTableByColumn(id, aufsteigend) {
+    for (let i = 0; i <= 12; i++) {
+        let columnCells = []
+        let columnValues = []
+        $(id).find("tbody tr:not(:last)").each(function (){
+                // i+1 um kategoriebezeichnung zu skippen
+                columnCells.push($(this)[0].cells[i+1])
+                let text = $(this)[0].cells[i+1].textContent
+                columnValues.push(parseFloat(text.replace(/[^0-9.-]+/g,""))/100)
+        })
+        let min = Math.min(...columnValues);
+        let max = Math.max(...columnValues);
+
+        for (let j = 0; j < columnCells.length; j++) {
+            let relativeValue = (columnValues[j] - min) / (max - min);
+            let red = Math.floor(255 * (1 - relativeValue)* 1.9 + 80);
+            let green = Math.floor(255 * relativeValue * 1.5 + 10);
+            if(!aufsteigend){
+                let temp = red
+                red = green
+                green = temp
+            }
+            if(columnValues[j] !== 0){
+                $(columnCells[j]).attr("style",`color: rgba(${red}, ${green}, 20, 1) !important; 
+                text-shadow: 0.5px 0.5px 2px var(--text-color), 
+                -0.5px 0.5px 2px var(--text-color), 
+                -0.5px -0.5px 2px var(--text-color),
+                0.5px -0.5px 2px var(--text-color);`)
+            }
+        }
+        columnCells = []
+        columnValues = []
+    }
 }

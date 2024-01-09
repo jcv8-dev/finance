@@ -1,22 +1,28 @@
 <?php
+
 session_start();
 require "assets/scripts/secrets.php";
+//require "assets/scripts/helper.php";
 global $secret;
 
 if (isset($_POST["user"]) && !isset($_SESSION["user"])) {
     $users = $secret["loginPass"];
 
-    // (B2) CHECK & VERIFY
+
+    // Check credentials
     if (isset($users[$_POST["user"]]) && $users[$_POST["user"]] == $_POST["password"]) {
         $_SESSION["user"] = $_POST["user"];
+        $userHash = password_hash($_POST["user"], PASSWORD_DEFAULT);
+        setcookie("userHash",$userHash,time()+$secret["loginRetentionSeconds"]);
     }
 
-    // (B3) FAILED LOGIN FLAG
+    // failed login flag
     if (!isset($_SESSION["user"])) { $failed = true; }
 }
 
-// (C) REDIRECT TO HOME PAGE IF SIGNED IN - SET YOUR OWN !
-if (isset($_SESSION["user"])) {
+
+
+if (isset($_SESSION["user"]) || password_verify($secret["loginPass"][0],$_COOKIE["userHash"])) {
     header("Location: index");
     exit();
 }
