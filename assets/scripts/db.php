@@ -15,7 +15,6 @@ function db(){
 }
 
 function readCookie($key){
-    print_r($_COOKIE);
     if(isset($_COOKIE[$key])){
         return $_COOKIE[$key];
     }

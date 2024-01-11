@@ -197,7 +197,7 @@ function listBuchungen($einnahme) {
     }
 
     // Für Sortierung nach Datum neueste zuerst
-    if($col == "date" || $col == "created"){
+    if($col == "datum" || $col == "created"){
         $order = "DESC";
     }
 
