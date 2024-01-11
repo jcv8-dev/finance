@@ -5,22 +5,8 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 require "secrets.php";
+require "db.php";
 require "../../protect.php";
-
-function db():mysqli{
-    global $secret;
-
-    $servername = $secret["dbServer"];
-    $username = $secret["dbUser"];
-    $password = $secret["dbPass"];
-    $dbname = $secret["dbName"];
-
-    $conn = new mysqli($servername, $username, $password, $dbname);
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
-    return $conn;
-}
 
 
 
@@ -45,7 +31,7 @@ if(isset($_POST["type"])){
         addUebertrag(db());
     } elseif($_POST["type"] == "setCookie"){
         //expire after 100 years :)
-        setcookie($_POST["key"], $_POST["value"],time()+3075840000);
+        setcookie($_POST["key"], $_POST["value"],time()+3075840000, "/finance");
     }
 } else {
     echo "not triggered";

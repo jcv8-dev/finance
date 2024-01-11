@@ -6,21 +6,7 @@ error_reporting(E_ALL);
 
 require "secrets.php";
 require "protect.php";
-
-function db(){
-    global $secret;
-
-    $servername = $secret["dbServer"];
-    $username = $secret["dbUser"];
-    $password = $secret["dbPass"];
-    $dbname = $secret["dbName"];
-
-    $conn = new mysqli($servername, $username, $password, $dbname);
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
-    return $conn;
-}
+require "db.php";
 
 function selectKonto($title, $id = "selectKonto") {
     // Input Select für alle Konten. Title = Vorausgewählte Disabled Option
@@ -192,19 +178,34 @@ function listKonten() {
 function listBuchungen($einnahme) {
     // Erzeuge liste aller Buchungen (Differenzierung nach Einnahme/Ausgabe mit 1/0)
     // Reihenfolge andersherum weil ausgabe als negativer Betrag gespeichert wird.
-    if($einnahme == "1"){
+    $key = "order".$einnahme;
+    $col = readCookie($key);
+
+    if($col == ""){$col = "datum";}
+
+    $einnahmeModifier = "< 0";
+    $order = "ASC";
+
+    if($einnahme == "0"){
+        // Ausgaben auswählen
         $einnahmeModifier = "> 0";
-        $order = "ASC";
-    } else {
-        $einnahmeModifier = "< 0";
+
+        // Ausgaben sortierung anpassen (Ausgaben sind negative werte)
+        if($col == "betrag"){
+            $order = "DESC";
+        }
+    }
+
+    // Für Sortierung nach Datum neueste zuerst
+    if($col == "date" || $col == "created"){
         $order = "DESC";
     }
+
+
     $conn = db();
 
     // sortierung aus cookie lesen
-    $col = readCookie("order".$einnahme);
-    if($col == ""){$col = "datum";}
-    
+
     $sql = "SELECT buchungen.id, datum, betrag, kontoBezeichnung, kategorie.kategorieBezeichnung, kommentar FROM buchungen INNER JOIN kategorie on buchungen.kategorieid = kategorie.id INNER JOIN konten on buchungen.kontoid = konten.id where betrag $einnahmeModifier ORDER BY $col $order";
     $result = $conn->query($sql);
     $sum = 0;
