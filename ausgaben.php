@@ -50,7 +50,7 @@ $startTime = microtime(true);
                     <input type="text" id="filterSuche" class="form-control shadow-box-sm" placeholder="Suche">
                 </div>
                 <div class="col-5">
-                    <?php selectOrder("1"); ?>
+                    <?php selectOrder("0"); ?>
                 </div>
                 <div class="col-3 px-1">
                     <button type="button" id="submit-filter" onclick="submitFilter(false)"

@@ -65,12 +65,7 @@ function ff($float){
     return number_format($float, "2", ",", ".");
 }
 
-function readCookie($key){
-    if(isset($_COOKIE[$key])){
-        return $_COOKIE[$key];
-    }
-    return "";
-}
+
 
 function monthlyBudgetSelector(){
     echo '<div class="form-check">
