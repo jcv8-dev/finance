@@ -1,7 +1,8 @@
 <?php
 
 session_start();
-require_once "assets/scripts/secrets.php";
+
+require_once "assets/scripts/upload/secrets.php";
 //require_once "assets/scripts/helper.php";
 global $secret;
 $failed = false;
