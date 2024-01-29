@@ -33,10 +33,10 @@ function redirLogin($reason){
     exit();
 }
 
-if($session_valid){
-    $auth = "Session";
-}
-
 if($cookie_valid){
     $auth = "Cookie";
+}
+
+if($session_valid){
+    $auth = "Session";
 }
