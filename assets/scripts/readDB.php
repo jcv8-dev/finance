@@ -4,9 +4,9 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-require "secrets.php";
-require "protect.php";
-require "db.php";
+require_once "secrets.php";
+require_once "protect.php";
+require_once "db.php";
 
 function selectKonto($title, $id = "selectKonto") {
     // Input Select für alle Konten. Title = Vorausgewählte Disabled Option

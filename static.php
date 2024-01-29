@@ -1,7 +1,8 @@
 <?php
-require 'assets/scripts/readDB.php';
-require 'assets/scripts/helper.php';
-require 'protect.php';
+require_once 'assets/scripts/readDB.php';
+require_once 'assets/scripts/helper.php';
+require_once 'protect.php';
+
 header("Cache-Control: no-cache, must-revalidate");
 $startTime = microtime(true);
 ?>

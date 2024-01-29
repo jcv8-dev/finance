@@ -4,9 +4,9 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-require "secrets.php";
-require "db.php";
-require "../../protect.php";
+require_once "secrets.php";
+require_once "db.php";
+require_once "../../protect.php";
 
 
 

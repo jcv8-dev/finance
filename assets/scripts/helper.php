@@ -33,14 +33,13 @@ function printHeader($active){
 }
 
 function printFooter($startTime){
-    echo "
-        <div class=\"container\">
-            <div class=\"row py-2\">
-                <div class=\"col tc\">";
     $endTime = microtime(true);
     $executionTime = ff($endTime - $startTime);
-    echo "PHP Execution Time: $executionTime seconds</div>";
-    echo "
+    global $auth;
+    echo "<div class=\"container\">
+            <div class=\"row py-2\">
+                <div class=\"col tc\">
+                PHP Time: $executionTime s | Auth: $auth</div>
                 </div>
             </div>
         </div>
@@ -50,6 +49,7 @@ function printFooter($startTime){
 function head($title){
     echo '<head>
         <meta charset="utf-8">
+        <meta lang="de">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="assets/scripts/3rdparty/bootstrap-5.3.2.min.css" rel="stylesheet">
         <script src="assets/scripts/3rdparty/bootstrap-5.3.2.bundle.min.js"></script>
@@ -83,3 +83,4 @@ function monthlyBudgetSelector(){
     </label>
   </div>';
 }
+

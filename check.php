@@ -1,9 +1,10 @@
 <?php
 
 session_start();
-require "assets/scripts/secrets.php";
-//require "assets/scripts/helper.php";
+require_once "assets/scripts/secrets.php";
+//require_once "assets/scripts/helper.php";
 global $secret;
+$failed = false;
 
 if (isset($_POST["user"]) && !isset($_SESSION["user"])) {
     $users = $secret["loginPass"];
