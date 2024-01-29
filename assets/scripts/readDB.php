@@ -4,9 +4,9 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-require "secrets.php";
-require "protect.php";
-require "db.php";
+require_once "secrets.php";
+require_once "protect.php";
+require_once "db.php";
 
 function selectKonto($title, $id = "selectKonto") {
     // Input Select für alle Konten. Title = Vorausgewählte Disabled Option
@@ -183,12 +183,12 @@ function listBuchungen($einnahme) {
 
     if($col == ""){$col = "datum";}
 
-    $einnahmeModifier = "< 0";
+    $betragModifier = "> 0";
     $order = "ASC";
 
     if($einnahme == "0"){
         // Ausgaben auswählen
-        $einnahmeModifier = "> 0";
+        $betragModifier = "< 0";
 
         // Ausgaben sortierung anpassen (Ausgaben sind negative werte)
         if($col == "betrag"){
@@ -206,7 +206,7 @@ function listBuchungen($einnahme) {
 
     // sortierung aus cookie lesen
 
-    $sql = "SELECT buchungen.id, datum, betrag, kontoBezeichnung, kategorie.kategorieBezeichnung, kommentar FROM buchungen INNER JOIN kategorie on buchungen.kategorieid = kategorie.id INNER JOIN konten on buchungen.kontoid = konten.id where betrag $einnahmeModifier ORDER BY $col $order";
+    $sql = "SELECT buchungen.id, datum, betrag, kontoBezeichnung, kategorie.kategorieBezeichnung, kommentar FROM buchungen INNER JOIN kategorie on buchungen.kategorieid = kategorie.id INNER JOIN konten on buchungen.kontoid = konten.id where betrag $betragModifier ORDER BY $col $order";
     $result = $conn->query($sql);
     $sum = 0;
     echo '<table class="table table-sm table-striped">

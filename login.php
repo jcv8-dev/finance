@@ -1,9 +1,19 @@
 <?php
 require "check.php";
-require "assets/scripts/helper.php";
+require_once "assets/scripts/helper.php";
 
-if (isset($failed)) {
-    echo '<div id="login-bad">Invalid user or password.</div>';
+function loginAlert(){
+    global $failed;
+    if(isset($_GET["cookie"])) $reason = "The Cookie has expired";
+    if(isset($_GET["session"])) $reason = "The Session has expired";
+    if(isset($failed) && $failed) $reason = "Invalid credentials";
+
+    if(isset($reason)){
+        echo "<div class=\"alert alert-warning alert-dismissible fade show col-10 col-sm-6 col-lg-3 mx-auto border rounded\" role=\"alert\">
+          $reason
+          <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"alert\" aria-label=\"Close\"></button>
+        </div>";
+    }
 }
 
 ?>
@@ -28,8 +38,8 @@ if (isset($failed)) {
                 <input class="btn btn-outline-primary col-10 col-sm-6 col-lg-3 mx-auto" type="submit" value="Sign In">
             </div>
         </div>
-
     </form>
+    <?php loginAlert(); ?>
 </div>
 </body>
 </html>
