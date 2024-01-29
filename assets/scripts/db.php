@@ -1,4 +1,8 @@
 <?php
+if(!file_exists("assets/scripts/upload/secrets.php")){
+//    echo "db redir setup";
+    header("Location: setup");
+}
 function db(){
     global $secret;
 

@@ -1,4 +1,10 @@
 <?php
+
+if(!file_exists("assets/scripts/upload/secrets.php")){
+    echo "login redir setup";
+    header("Location: setup");
+}
+
 require "check.php";
 require_once "assets/scripts/helper.php";
 

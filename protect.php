@@ -1,6 +1,10 @@
 <?php
 //require "assets/scripts/helper.php";
-require_once "assets/scripts/secrets.php";
+if(!file_exists("assets/scripts/upload/secrets.php")){
+    header("Location: setup");
+    echo "protect redir setup";
+}
+require_once "assets/scripts/upload/secrets.php";
 global $secret;
 
 if(session_status()!=PHP_SESSION_ACTIVE){
