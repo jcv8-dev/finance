@@ -1,5 +1,21 @@
 # Ersatz für Buchhaltungsexceltabelle
 
+```yml
+# docker-compose.yaml
+version: "3"
+services:
+  finance:
+    image: jcv8/finance:latest
+    container_name: finance
+    ports:
+      - "8026:80"
+    restart: "unless-stopped"
+    volumes:
+      - finance-persistant:/var/www/html/assets/scripts/upload
+volumes:
+  finance-persistant:
+``` 
+
 ## Anforderungen
 - [X] Einnahmen/Ausgaben buchen
   - [X] Mit Kategorie, Konto, Kommentar
