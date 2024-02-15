@@ -344,3 +344,8 @@ function colorizeTableByColumn(id, aufsteigend) {
         columnValues = []
     }
 }
+
+function openInBackground(url){
+    open(url);
+    focus();
+}

@@ -1,7 +1,7 @@
 <?php
-require_once 'protect.php';
-require_once 'assets/scripts/readDB.php';
-require_once 'assets/scripts/helper.php';
+require_once __DIR__.'/protect.php';
+require_once __DIR__.'/assets/scripts/readDB.php';
+require_once __DIR__.'/assets/scripts/helper.php';
 header("Cache-Control: no-cache, must-revalidate");
 $startTime = microtime(true);
 ?>
@@ -55,6 +55,16 @@ $startTime = microtime(true);
                 <div class="row justify-content-end">
                     <div class="my-2" style="width: fit-content">
                         <button type="button" onclick="notImplemented()" id="submitSettings" class="btn btn-outline-primary">Speichern</button>
+                    </div>
+                </div>
+            </div>
+            <div class="container py-1 px-3 mt-2 border rounded shadow-box">
+                <div class="row">
+                    <h2 class="mt-1">Management</h2>
+                </div>
+                <div class="row">
+                    <div class="my-2" style="width: fit-content">
+                        <button type="button" onclick="openInBackground('/finance/assets/scripts/export')" id="submitSettings" class="btn btn-outline-primary">Daten exportieren (CSV)</button>
                     </div>
                 </div>
             </div>

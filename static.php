@@ -1,6 +1,6 @@
 <?php
-require_once 'protect.php';
-require_once 'assets/scripts/helper.php';
+require_once __DIR__.'/protect.php';
+require_once __DIR__.'/assets/scripts/helper.php';
 
 header("Cache-Control: no-cache, must-revalidate");
 $startTime = microtime(true);

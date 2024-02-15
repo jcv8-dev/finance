@@ -2,8 +2,8 @@
 
 session_start();
 
-require_once "assets/scripts/upload/secrets.php";
-//require_once "assets/scripts/helper.php";
+require_once __DIR__."/assets/scripts/upload/secrets.php";
+
 global $secret;
 $failed = false;
 

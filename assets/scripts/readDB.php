@@ -1,15 +1,11 @@
 <?php
-require_once "protect.php";
-require_once "db.php";
+require_once __DIR__."/../../protect.php";
+require_once __DIR__."/db.php";
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+//ini_set('display_errors', 1);
+//ini_set('display_startup_errors', 1);
+//error_reporting(E_ALL);
 
-//if(!file_exists("assets/scripts/upload/secrets.php")){
-//    header("Location: setup");
-//    echo "readdb redir setup";
-//}
 
 function selectKonto($title, $id = "selectKonto") {
     // Input Select für alle Konten. Title = Vorausgewählte Disabled Option
