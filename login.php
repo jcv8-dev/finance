@@ -1,7 +1,6 @@
 <?php
 
-if(!file_exists("assets/scripts/upload/secrets.php")){
-    echo "login redir setup";
+if(!file_exists(__DIR__."/assets/scripts/upload/secrets.php")){
     header("Location: setup");
 }
 

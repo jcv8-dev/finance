@@ -1,10 +1,10 @@
 <?php
-//require "assets/scripts/helper.php";
-if(!file_exists("assets/scripts/upload/secrets.php")){
+
+if(!file_exists(__DIR__."/assets/scripts/upload/secrets.php")){
     header("Location: setup");
-    echo "protect redir setup";
 }
-require_once "assets/scripts/upload/secrets.php";
+
+require_once __DIR__."/assets/scripts/upload/secrets.php";
 global $secret;
 
 if(session_status()!=PHP_SESSION_ACTIVE){
@@ -33,7 +33,7 @@ if (!$session_valid && !$cookie_valid){
 }
 
 function redirLogin($reason){
-    header("Location: login?$reason");
+    header("Location: https://$_SERVER[HTTP_HOST]/finance/login?$reason");
     exit();
 }
 
