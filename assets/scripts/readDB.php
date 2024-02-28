@@ -5,7 +5,7 @@ require_once __DIR__."/db.php";
 //ini_set('display_errors', 1);
 //ini_set('display_startup_errors', 1);
 //error_reporting(E_ALL);
-
+// trigger dev pipeline.
 
 function selectKonto($title, $id = "selectKonto") {
     // Input Select für alle Konten. Title = Vorausgewählte Disabled Option
@@ -392,7 +392,9 @@ function monthlyTotal($einnahme, $monat){
     } else {
         $einnahmeModifier = "< 0";
     }
-    $sql = "SELECT betrag from buchungen where betrag $einnahmeModifier and MONTH(datum) = $monat and YEAR(datum) = YEAR(CURDATE())";
+    // konten, deren Bezeichnung diesen String enthält werden bei der Berechnung des monatlichen Gesamtbetrags nicht berücksichtigt.
+    $exclude = "[Anlage]";
+    $sql = "SELECT betrag from buchungen inner join konten on buchungen.kontoid = konten.id where betrag $einnahmeModifier and MONTH(datum) = $monat and YEAR(datum) = YEAR(CURDATE()) and kontoBezeichnung not like '%$exclude%'";
     $result = $conn->query($sql);
     $sum = 0;
     foreach ($result as $key=>$value){
