@@ -3,6 +3,8 @@ name: Docker Image CI - DEV
 on:
   push:
     branches: [ "dev" ]
+  workflow_dispatch:
+
 
 jobs:
   build-and-push:
