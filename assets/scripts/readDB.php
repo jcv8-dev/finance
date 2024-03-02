@@ -2,9 +2,9 @@
 require_once __DIR__."/../../protect.php";
 require_once __DIR__."/db.php";
 
-//ini_set('display_errors', 1);
-//ini_set('display_startup_errors', 1);
-//error_reporting(E_ALL);
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 // trigger dev pipeline.
 
 function selectKonto($title, $id = "selectKonto") {
@@ -366,8 +366,10 @@ function monthlyCategory($einnahme, $id="monthlyTable"){
         }
     }
     echo "<tr><th scope='row'>Summe</th>";
+    $date = new DateTime();
     for($monat = 1; $monat <= 12; $monat++){
-        $sum = monthlyTotal($einnahme, $monat);
+        $date = $date->setDate($date->format("Y"), $monat, $date->format("d"));
+        $sum = monthlyTotal($einnahme, $date);
         echo "<td>".ff($sum)."&nbsp;€</td>";
     }
     echo "</tr>";
@@ -385,16 +387,18 @@ function sumByKategorieMonat($kategorie, $monat){
     return $sum;
 }
 
-function monthlyTotal($einnahme, $monat){
+function monthlyTotal($einnahme, $date){
     $conn = db();
     if($einnahme == "1"){
         $einnahmeModifier = "> 0";
     } else {
         $einnahmeModifier = "< 0";
     }
+    $monat = $date->format("m");
+    $jahr = $date->format("Y");
     // konten, deren Bezeichnung diesen String enthält werden bei der Berechnung des monatlichen Gesamtbetrags nicht berücksichtigt.
     $exclude = "[Anlage]";
-    $sql = "SELECT betrag from buchungen inner join konten on buchungen.kontoid = konten.id where betrag $einnahmeModifier and MONTH(datum) = $monat and YEAR(datum) = YEAR(CURDATE()) and kontoBezeichnung not like '%$exclude%'";
+    $sql = "SELECT betrag, kommentar, datum from buchungen inner join konten on buchungen.kontoid = konten.id where betrag $einnahmeModifier and MONTH(datum) = $monat and YEAR(datum) = $jahr and kontoBezeichnung not like '%$exclude%'";
     $result = $conn->query($sql);
     $sum = 0;
     foreach ($result as $key=>$value){
@@ -404,9 +408,25 @@ function monthlyTotal($einnahme, $monat){
 }
 
 function printMonthlyBudget(){
-    $month = date("m");
-    $restbudget = ff(monthlyTotal(1, $month) - monthlyTotal(0, $month) - 200);
+    // calculate budget for the current month based on the last six months
+    $restbudget = recursiveMonthlyBudget(6, 0);
     echo "<div class=\'\'><h2 class='text-center my-2 tc'>Diesen Monat noch verfügbar: $restbudget&nbsp;€</h2></div>";
+}
+
+function recursiveMonthlyBudget($offset, $budget){
+    $today = new DateTime();
+    $offsetDate = $today->modify("-$offset months");
+
+    if($offset <= 0){
+        return ff($budget);
+    }
+    $offsetBudget = monthlyTotal(1, $offsetDate) - monthlyTotal(0, $offsetDate);
+    // no need to save if monthly budget is 0
+    if($offsetBudget != 0){
+        return recursiveMonthlyBudget($offset-1, $budget * 0.8 + $offsetBudget - 200);
+    }
+    return recursiveMonthlyBudget($offset-1, $budget * 0.8 + $offsetBudget);
+
 }
 
 function getAvailableYears(){
