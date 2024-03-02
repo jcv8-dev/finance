@@ -16,6 +16,7 @@ $startTime = microtime(true);
             <div class="container-xl py-1 px-3 mt-2 border rounded shadow-box">
                 <?php printMonthlyBudget(); ?>
             </div>
+            <?php monthlySaldo()?>
             <?php monthlyCategory(true, $id="einnahmenMonatTable")?>
             <?php monthlyCategory(false, $id="ausgabenMonatTable")?>
         </div>

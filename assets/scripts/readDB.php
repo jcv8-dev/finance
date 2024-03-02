@@ -376,6 +376,87 @@ function monthlyCategory($einnahme, $id="monthlyTable"){
     echo "</tbody></table></div></div>";
 }
 
+function monthlySaldo(){
+    echo '<div class="container-xl py-1 px-3 mt-2 border rounded shadow-box tc">';
+    echo "<h2 class='pt-2'>Übersicht</h2>";
+    echo '<div class="overflow-x-auto ">
+    <table class="table" id="uebersicht">
+      <thead>
+        <tr>
+            <th scope="col">Kategorie</th>
+            <th scope="col">Jan.</th>
+            <th scope="col">Feb.</th>
+            <th scope="col">Mär.</th>
+            <th scope="col">Apr.</th>
+            <th scope="col">Mai</th>
+            <th scope="col">Jun.</th>
+            <th scope="col">Jul.</th>
+            <th scope="col">Aug.</th>
+            <th scope="col">Sept.</th>
+            <th scope="col">Okt.</th>
+            <th scope="col">Nov.</th>
+            <th scope="col">Dez.</th>
+            <th scope="col">Sum.</th>
+        </tr>
+      </thead>
+      <tbody>';
+
+    echo "<tr><th scope='row'>Einnahmen</th>";
+    $y = date("Y");
+    $date = new DateTime("$y-01-01");
+    $sum = 0;
+    $einnahmen = Array();
+    for($i = 1; $i <= 12; $i++){
+        $monthlyTotal = monthlyTotal(1, $date);
+        echo "<td>".ff($monthlyTotal)."</td>";
+        $einnahmen[$i] = $monthlyTotal;
+        $date->modify("+1 month");
+        $sum += $monthlyTotal;
+    }
+    echo "<td>".ff($sum)."</td>";
+    echo "</tr>";
+
+    echo "<tr><th scope='row'>Ausgaben</th>";
+    $date = new DateTime("$y-01-01");
+    $sum = 0;
+    $ausgaben = Array();
+    for($i = 1; $i <= 12; $i++){
+        $monthlyTotal = monthlyTotal(0, $date);
+        echo "<td>".ff($monthlyTotal)."</td>";
+        $ausgaben[$i] = $monthlyTotal;
+        $date->modify("+1 month");
+        $sum += $monthlyTotal;
+    }
+    echo "<td>".ff($sum)."</td>";
+    echo "</tr>";
+
+    echo "<tr><th scope='row'>Saldo</th>";
+    $sum = 0;
+    for($i = 1; $i <= 12; $i++){
+        $saldo = $einnahmen[$i] - $ausgaben[$i];
+        echo "<td>".ff($saldo)."</td>";
+        $sum += $saldo;
+    }
+    echo "<td>".ff($sum)."</td>";
+    echo "</tr>";
+
+    echo "<tr><th scope='row'>Budget</th>";
+    $date = new DateTime("$y-01-01");
+    $sum = 0;
+    for($i = 1; $i <= 12; $i++){
+        if($einnahmen[$i] - $ausgaben[$i] != 0){
+            $budget = monthlyBudget($date);
+        } else {
+            $budget = 0;
+        }
+        echo "<td>".ff($budget)."</td>";
+        $date->modify("+1 month");
+    }
+
+    echo "</tr>";
+    echo "</tbody></table></div></div>";
+}
+
 function sumByKategorieMonat($kategorie, $monat){
     $conn = db();
     $sql = "SELECT betrag from buchungen where kategorieid = $kategorie and MONTH(datum) = $monat and YEAR(datum) = YEAR(CURDATE())";
@@ -409,24 +490,26 @@ function monthlyTotal($einnahme, $date){
 
 function printMonthlyBudget(){
     // calculate budget for the current month based on the last six months
-    $restbudget = recursiveMonthlyBudget(6, 0);
+    $restbudget = ff(monthlyBudget(new DateTime()));
     echo "<div class=\'\'><h2 class='text-center my-2 tc'>Diesen Monat noch verfügbar: $restbudget&nbsp;€</h2></div>";
 }
 
-function recursiveMonthlyBudget($offset, $budget){
-    $today = new DateTime();
-    $offsetDate = $today->modify("-$offset months");
+function monthlyBudget($date){
+    return recursiveMonthlyBudget($date,6, 0);
+}
 
-    if($offset <= 0){
-        return ff($budget);
+function recursiveMonthlyBudget($start, $offset, $budget){
+    $_start = new DateTime($start->format("Y-m-d"));
+    $offsetDate = $_start->modify("-$offset months");
+    if($offset < 0){
+        return $budget;
     }
     $offsetBudget = monthlyTotal(1, $offsetDate) - monthlyTotal(0, $offsetDate);
     // no need to save if monthly budget is 0
     if($offsetBudget != 0){
-        return recursiveMonthlyBudget($offset-1, $budget * 0.8 + $offsetBudget - 200);
+        return recursiveMonthlyBudget($start,$offset-1, $budget * 0.8 + $offsetBudget - 200);
     }
-    return recursiveMonthlyBudget($offset-1, $budget * 0.8 + $offsetBudget);
-
+    return recursiveMonthlyBudget($start,$offset-1, $budget * 0.8 + $offsetBudget);
 }
 
 function getAvailableYears(){
