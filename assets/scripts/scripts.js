@@ -70,7 +70,6 @@ async function submitFilter(einnahme) {
     const urlParams = new URLSearchParams(window.location.search);
     urlParams.set('filter', suche);
     window.location.search = urlParams;
-    location.reload();
 
 }
 
