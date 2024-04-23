@@ -71,6 +71,7 @@ async function submitFilter(einnahme) {
     urlParams.set('filter', suche);
     window.location.search = urlParams;
     location.reload();
+
 }
 
 function setContentFromParam(id, param){
