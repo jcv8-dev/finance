@@ -55,7 +55,7 @@ $startTime = microtime(true);
             </div>
         </form>
         <div class="container p-0 overflow-x-auto">
-            <?php listBuchungen("1",  $_GET["filter"]); ?>
+            <?php listBuchungen("1",  isset($_GET["filter"])?:""); ?>
         </div>
     </div>
     <div class="modal" tabindex="-1" id="editEntryModal">
