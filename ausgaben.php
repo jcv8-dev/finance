@@ -60,7 +60,7 @@ $startTime = microtime(true);
             </div>
         </form>
         <div class="container p-0 overflow-x-auto">
-            <?php listBuchungen("0"); ?>
+            <?php listBuchungen("0", $_GET["filter"]); ?>
         </div>
     </div>
 

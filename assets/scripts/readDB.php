@@ -174,7 +174,7 @@ function listKonten() {
     echo '<button type="button" data-bs-toggle="modal" data-bs-target="#newKonto" class="list-group-item list-group-item-action container py-1"><div class="row"><div class="col-10 p-1 d-flex align-items-center"><p>+ Hinzufügen</p></div></div></button>';    echo '</ul>';
 }
 
-function listBuchungen($einnahme) {
+function listBuchungen($einnahme, $filter) {
     // Erzeuge liste aller Buchungen (Differenzierung nach Einnahme/Ausgabe mit 1/0)
     // Reihenfolge andersherum weil ausgabe als negativer Betrag gespeichert wird.
     $key = "order".$einnahme;
@@ -205,7 +205,7 @@ function listBuchungen($einnahme) {
 
     // sortierung aus cookie lesen
 
-    $sql = "SELECT buchungen.id, datum, betrag, kontoBezeichnung, kategorie.kategorieBezeichnung, kommentar FROM buchungen INNER JOIN kategorie on buchungen.kategorieid = kategorie.id INNER JOIN konten on buchungen.kontoid = konten.id where betrag $betragModifier ORDER BY $col $order";
+    $sql = "SELECT buchungen.id, datum, betrag, kontoBezeichnung, kategorie.kategorieBezeichnung, kommentar FROM buchungen INNER JOIN kategorie on buchungen.kategorieid = kategorie.id INNER JOIN konten on buchungen.kontoid = konten.id where betrag $betragModifier and kommentar LIKE '%".$filter."%'ORDER BY $col $order";
     $result = $conn->query($sql);
     $sum = 0;
     echo '<table class="table table-sm table-striped">

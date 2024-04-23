@@ -56,7 +56,9 @@ async function submitFilter(einnahme) {
     let suche = $("#filterSuche")[0].value
     let order = $("#filterReihenfolge")[0].value
     if(suche!==""){
-        notImplemented()
+        let url = window.location.href
+        url += '?filter='+suche
+        window.location.href = url
     }
     let e
     if(einnahme){
