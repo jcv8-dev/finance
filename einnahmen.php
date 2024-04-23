@@ -49,12 +49,13 @@ $startTime = microtime(true);
                     <?php selectOrder("1"); ?>
                 </div>
                 <div class="col-3 px-1">
-                    <button type="button" id="submit-filter" onclick="submitFilter(true)" class="btn btn-outline-primary w-100 shadow-box-sm">Anwenden</button>
+                    <button type="button" id="submit-filter" onclick="submitFilter(true)"
+                            class="btn btn-outline-primary w-100 shadow-box-sm">Anwenden</button>
                 </div>
             </div>
         </form>
         <div class="container p-0 overflow-x-auto">
-            <?php listBuchungen("1"); ?>
+            <?php listBuchungen("1",  $_GET["filter"] ?? "") ?>
         </div>
     </div>
     <div class="modal" tabindex="-1" id="editEntryModal">
@@ -98,6 +99,7 @@ printFooter($startTime);
 <script>
     $(document).ready(function() {
         document.getElementById('datePicker').valueAsDate = new Date();
+        setContentFromParam('#filterSuche','filter')
     });
 </script>
 </html>
