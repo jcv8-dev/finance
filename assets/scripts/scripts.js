@@ -55,7 +55,8 @@ function notImplemented(){
 async function submitFilter(einnahme) {
     let suche = $("#filterSuche")[0].value
     let order = $("#filterReihenfolge")[0].value
-    window.location.search = jQuery.query.set("filter", suche);
+    let queryParams = new URLSearchParams(window.location.search);
+    queryParams.set("filter", suche);
     let e
     if(einnahme){
         e = 1
