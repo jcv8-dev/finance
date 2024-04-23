@@ -55,13 +55,7 @@ function notImplemented(){
 async function submitFilter(einnahme) {
     let suche = $("#filterSuche")[0].value
     let order = $("#filterReihenfolge")[0].value
-    if(suche!==""){
-        let url = window.location.href
-        url += '?filter='+suche
-        window.location.href = url
-    } else {
-        window.location.href = window.location.href.split('?')[0];
-    }
+    window.location.search = jQuery.query.set("filter", suche);
     let e
     if(einnahme){
         e = 1
@@ -79,10 +73,8 @@ async function submitFilter(einnahme) {
 
 function setContentFromParam(id, param){
     let value = new URL(location.href).searchParams.get(param)
-    console.log(value)
-    if(value != 0){
-        $("#"+id).innerText = value
-    }
+    if(value !== 0){
+        $(id)[0].setAttribute("value", value)    }
 }
 
 function setField(id, value){

@@ -99,7 +99,7 @@ printFooter($startTime);
 <script>
     $(document).ready(function() {
         document.getElementById('datePicker').valueAsDate = new Date();
-        setContentFromParam('filterSuche','filter')
+        setContentFromParam('#filterSuche','filter')
     });
 </script>
 </html>
