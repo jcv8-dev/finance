@@ -75,7 +75,7 @@ async function submitFilter(einnahme) {
 
 function setContentFromParam(id, param){
     let value = new URL(location.href).searchParams.get(param)
-    if(value !== 0){
+    if(value !== null){
         $(id)[0].setAttribute("value", value)    }
 }
 
