@@ -59,6 +59,8 @@ async function submitFilter(einnahme) {
         let url = window.location.href
         url += '?filter='+suche
         window.location.href = url
+    } else {
+        window.location.href = window.location.href.split('?')[0];
     }
     let e
     if(einnahme){
@@ -73,6 +75,14 @@ async function submitFilter(einnahme) {
     })
     location.reload();
 
+}
+
+function setContentFromParam(id, param){
+    let value = new URL(location.href).searchParams.get(param)
+    console.log(value)
+    if(value != 0){
+        $("#"+id).innerText = value
+    }
 }
 
 function setField(id, value){
