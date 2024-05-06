@@ -55,9 +55,7 @@ function notImplemented(){
 async function submitFilter(einnahme) {
     let suche = $("#filterSuche")[0].value
     let order = $("#filterReihenfolge")[0].value
-    if(suche!==""){
-        notImplemented()
-    }
+
     let e
     if(einnahme){
         e = 1
@@ -69,8 +67,16 @@ async function submitFilter(einnahme) {
         key: "order"+e,
         value: order
     })
-    location.reload();
+    const urlParams = new URLSearchParams(window.location.search);
+    urlParams.set('filter', suche);
+    window.location.search = urlParams;
 
+}
+
+function setContentFromParam(id, param){
+    let value = new URL(location.href).searchParams.get(param)
+    if(value !== null){
+        $(id)[0].setAttribute("value", value)    }
 }
 
 function setField(id, value){
