@@ -86,6 +86,57 @@ function kontoCards() {
         }
     }
 }
+
+function kontoSumCard(){
+    $conn = db();
+    $sql = "SELECT * FROM konten";
+    $result = $conn->query($sql);
+    $totalSum = 0;
+    $totalStartbetrag = 0;
+    $totalEinnahme = 0;
+    $totalAusgabe = 0;
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $ausgabensql = "SELECT SUM(betrag) from buchungen where betrag < 0 and kontoid = ".$row["id"];
+            $einnahmensql = "SELECT SUM(betrag) from buchungen where betrag > 0 and kontoid = ".$row["id"];
+            $ausgaben = $conn->query($ausgabensql);
+            $einnahmen = $conn->query($einnahmensql);
+            $ausgaben = $ausgaben->fetch_assoc()["SUM(betrag)"];
+            $ausgaben = $ausgaben != 0 ? abs($ausgaben) : 0;
+            $einnahmen = $einnahmen->fetch_assoc()["SUM(betrag)"];
+            $einnahmen = $einnahmen != 0 ? abs($einnahmen) : 0;
+            $startbetrag = $row["startbetrag"];
+            $totalStartbetrag += $startbetrag;
+            $totalEinnahme += $einnahmen;
+            if(!str_contains($row["kontoBezeichnung"], "[Anlage]")){
+                $totalAusgabe += $ausgaben;
+            } else {
+                $ausgaben = 0;
+            }
+            $totalSum += ($startbetrag + $einnahmen - abs($ausgaben));
+        }
+    }
+    echo '<div class="col-6 col-sm-6 col-md-4 col-lg-3 p-1">
+            <div class="card shadow-box-sm" style="width: auto;" id="total">
+            <div class="card-header"><b>Total</b></div>
+            <div class="card-body p-2">
+            <div class="row">
+            <div class="col-6 text-end pe-2 ps-1"><p>Jahresbeginn</p></div>
+            <div class="col-6 text-end pe-3 ps-0 pe-1"><p>'.ff($totalStartbetrag).'&nbsp;€</p></div>
+            <div class="col-6 text-end pe-2 ps-1"><p>Einnahmen</p></div>
+            <div class="col-6 text-end pe-3 ps-0 pe-1"><p>'.ff($totalEinnahme).'&nbsp;€</p></div>
+            <div class="col-6 text-end pe-2 ps-1"><p>Ausgaben</p></div>
+            <div class="col-6 text-end pe-3 ps-0 pe-1"><p>'.ff($totalAusgabe).'&nbsp;€</p></div>
+            <div class="col-6 text-end pe-2 ps-1"><p></p></div>
+            <div class="col-6 text-end pe-3 ps-0 pe-1"><p style="height: ">&nbsp;</p></div>
+            <div class="col-6 text-end pe-2 ps-1"><p class="fw-bold">Aktuell</p></div>
+            <div class="col-6 text-end pe-3 ps-0 pe-1"><p class="fw-bold">'.ff($totalSum).'&nbsp;€</p></div>
+            </div>
+            </div>
+            </div>
+            </div>';
+}
+
 function getUebertrag($id, $conn){
     $eingangquery = "SELECT SUM(betrag) from uebertrag where zielid = $id";
     $ausgangquery = "SELECT SUM(betrag) from uebertrag where quelleid = $id";

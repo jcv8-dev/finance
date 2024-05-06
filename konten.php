@@ -15,6 +15,7 @@ $startTime = microtime(true);
       <div class="container py-1 px-3 mt-2 border rounded shadow-box">
         <div class="row">
           <?php kontoCards(); ?>
+          <?php kontoSumCard(); ?>
         </div>
       </div>
       <div class="container py-2 px-3 mt-2 border rounded shadow-box">
