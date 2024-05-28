@@ -531,7 +531,9 @@ function monthlyTotal($einnahme, $date){
     $jahr = $date->format("Y");
     // konten, deren Bezeichnung diesen String enthält werden bei der Berechnung des monatlichen Gesamtbetrags nicht berücksichtigt.
     $exclude = "[Anlage]";
-    $sql = "SELECT betrag, kommentar, datum from buchungen inner join konten on buchungen.kontoid = konten.id where betrag $einnahmeModifier and MONTH(datum) = $monat and YEAR(datum) = $jahr and kontoBezeichnung not like '%$exclude%'";
+//    $sql = "SELECT betrag, kommentar, datum from buchungen inner join konten on buchungen.kontoid = konten.id where betrag $einnahmeModifier and MONTH(datum) = $monat and YEAR(datum) = $jahr and kontoBezeichnung not like '%$exclude%'";
+    $sql = "SELECT betrag, kommentar, datum from buchungen inner join konten on buchungen.kontoid = konten.id where betrag $einnahmeModifier and MONTH(datum) = $monat and YEAR(datum) = $jahr";
+
     $result = $conn->query($sql);
     $sum = 0;
     foreach ($result as $key=>$value){
