@@ -108,11 +108,12 @@ function kontoSumCard(){
             $startbetrag = $row["startbetrag"];
             $totalStartbetrag += $startbetrag;
             $totalEinnahme += $einnahmen;
-            if(!str_contains($row["kontoBezeichnung"], "[Anlage]")){
-                $totalAusgabe += $ausgaben;
-            } else {
-                $ausgaben = 0;
-            }
+//            if(!str_contains($row["kontoBezeichnung"], "[Anlage]")){
+//                $totalAusgabe += $ausgaben;
+//            } else {
+//                $ausgaben = 0;
+//            }
+            $totalAusgabe += $ausgaben;
             $totalSum += ($startbetrag + $einnahmen - abs($ausgaben));
         }
     }
