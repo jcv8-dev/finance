@@ -561,7 +561,7 @@ function recursiveMonthlyBudget($start, $offset, $budget){
     $offsetBudget = monthlyTotal(1, $offsetDate) - monthlyTotal(0, $offsetDate);
     // no need to save if monthly budget is 0
     if($offsetBudget != 0){
-        return recursiveMonthlyBudget($start,$offset-1, $budget * 0.8 + $offsetBudget - 200);
+        return recursiveMonthlyBudget($start,$offset-1, $budget * 0.8 + $offsetBudget - 100);
     }
     return recursiveMonthlyBudget($start,$offset-1, $budget * 0.8 + $offsetBudget);
 }
