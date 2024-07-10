@@ -15,7 +15,7 @@ if(isset($_POST["submit"])) {
 }
 
 if(file_exists("assets/scripts/upload/secrets.php")){
-    header("Location: login");
+    header("Location: /login");
     echo " setup redir login";
 }
 

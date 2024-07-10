@@ -25,6 +25,6 @@ if (isset($_POST["user"]) && !isset($_SESSION["user"])) {
 
 
 if (isset($_SESSION["user"]) || password_verify($secret["loginPass"][0],$_COOKIE["userHash"])) {
-    header("Location: index");
+    header("Location: /index");
     exit();
 }
