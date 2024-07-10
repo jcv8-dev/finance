@@ -588,7 +588,7 @@ function recursiveMonthlyBudget($start, $offset, $budget){
 function monatAusgabenOhneAnlagen($date){
     $monat = $date->format("m");
     $jahr = $date->format("Y");
-    $sql = "select SUM(betrag) from buchungen join konten on buchungen.kontoid = konten.id join financePHP.kategorie k on buchungen.kategorieid = k.id and kategorieBezeichnung not 'Anlage' and MONTH(datum) = $monat and YEAR(datum) = $jahr;";
+    $sql = "select SUM(betrag) from buchungen join kategorie on buchungen.kategorieid = kategorie.id where kategorie.kategorieBezeichnung not 'Anlage' and MONTH(datum) = $monat and YEAR(datum) = $jahr;";
     $result = db()->query($sql);
     return $result;
 }
