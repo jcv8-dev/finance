@@ -591,7 +591,7 @@ function monatAusgabenOhneAnlagen($date){
     $sql = "select SUM(betrag) from buchungen join kategorie on buchungen.kategorieid = kategorie.id where not kategorie.kategorieBezeichnung = 'Anlage' and MONTH(datum) = $monat and YEAR(datum) = $jahr;";
     $result = db()->query($sql);
     foreach ($result as $key=>$value){
-        return $value;
+        return $value["SUM(betrag)"];
     }
     return 0;
 }
