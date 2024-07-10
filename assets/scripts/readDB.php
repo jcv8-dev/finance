@@ -485,6 +485,21 @@ function monthlySaldo(){
     echo "<td>".ff($sum)."</td>";
     echo "</tr>";
 
+    echo "<tr><th scope='row'>Reine Ausgaben</th>";
+    $date = new DateTime("$y-01-01");
+    $sum = 0;
+    $ausgaben = Array();
+    for($i = 1; $i <= 12; $i++){
+        $monthlyTotal = monatAusgabenOhneAnlagen($date);
+        echo "<td>".ff($monthlyTotal)."</td>";
+        $ausgaben[$i] = $monthlyTotal;
+        $date->modify("+1 month");
+        $sum += $monthlyTotal;
+    }
+    echo "<td>".ff($sum)."</td>";
+    echo "</tr>";
+
+
     echo "<tr><th scope='row'>Saldo</th>";
     $sum = 0;
     for($i = 1; $i <= 12; $i++){
@@ -568,6 +583,14 @@ function recursiveMonthlyBudget($start, $offset, $budget){
         return recursiveMonthlyBudget($start,$offset-1, $budget * 0.8 + $offsetBudget - 100);
     }
     return recursiveMonthlyBudget($start,$offset-1, $budget * 0.8 + $offsetBudget);
+}
+
+function monatAusgabenOhneAnlagen($date){
+    $monat = $date->format("m");
+    $jahr = $date->format("Y");
+    $sql = "select SUM(betrag) from buchungen join konten on buchungen.kontoid = konten.id join financePHP.kategorie k on buchungen.kategorieid = k.id and kategorieBezeichnung not 'Anlage' and MONTH(datum) = $monat and YEAR(datum) = $jahr;";
+    $result = db()->query($sql);
+    return $result;
 }
 
 function getAvailableYears(){
