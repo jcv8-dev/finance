@@ -287,7 +287,8 @@ async function postRequest(url, data){
 function colorizeTableByRow(id, aufsteigend) {
     $("#"+id+" tr").each(function() {
         let columnValues = [];
-        $(this).find("td").each(function() {
+        // exclude sum column
+        $(this).find("td:not(:last)").each(function() {
             let valueWithSymbol = $(this).text();
             // remove all non numerical characters -> convert to cents
             let numericValue = parseFloat(valueWithSymbol.replace(/[^0-9]+/g,""));
@@ -295,7 +296,8 @@ function colorizeTableByRow(id, aufsteigend) {
         });
         let min = Math.min(...columnValues);
         let max = Math.max(...columnValues);
-        $(this).find("td").each(function() {
+        // exclude sum column
+        $(this).find("td:not(:last)").each(function() {
             let valueWithSymbol = $(this).text();
             // remove all non numerical characters -> convert to cents
             let numericValue = parseFloat(valueWithSymbol.replace(/[^0-9]+/g,""));
