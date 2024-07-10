@@ -33,7 +33,7 @@ if (!$session_valid && !$cookie_valid){
 }
 
 function redirLogin($reason){
-    header("Location: https://$_SERVER[HTTP_HOST]/finance/login?$reason");
+    header("Location: login?$reason");
     exit();
 }
 
