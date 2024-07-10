@@ -419,11 +419,14 @@ function monthlyCategory($einnahme, $id="monthlyTable"){
     }
     echo "<tr><th scope='row'>Summe</th>";
     $date = new DateTime();
+    $year_sum = 0;
     for($monat = 1; $monat <= 12; $monat++){
         $date = $date->setDate($date->format("Y"), $monat, $date->format("d"));
         $sum = monthlyTotal($einnahme, $date);
         echo "<td>".ff($sum)."&nbsp;€</td>";
+        $year_sum += $sum;
     }
+    echo "<td>".ff($year_sum)."&nbsp;€</td>";
     echo "</tr>";
     echo "</tbody></table></div></div>";
 }
