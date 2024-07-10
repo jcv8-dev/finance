@@ -289,14 +289,16 @@ function colorizeTableByRow(id, aufsteigend) {
         let columnValues = [];
         $(this).find("td").each(function() {
             let valueWithSymbol = $(this).text();
-            let numericValue = parseFloat(valueWithSymbol.replace(/[^0-9.-]+/g,""))/100;
+            // remove all non numerical characters -> convert to cents
+            let numericValue = parseFloat(valueWithSymbol.replace(/[^0-9]+/g,""));
             columnValues.push(numericValue);
         });
         let min = Math.min(...columnValues);
         let max = Math.max(...columnValues);
         $(this).find("td").each(function() {
             let valueWithSymbol = $(this).text();
-            let numericValue = parseFloat(valueWithSymbol.replace(/[^0-9.-]+/g,""))/100;
+            // remove all non numerical characters -> convert to cents
+            let numericValue = parseFloat(valueWithSymbol.replace(/[^0-9]+/g,""));
             let relativeValue = (numericValue - min) / (max - min);
             let red = Math.floor(255 * (1 - relativeValue)* 1.9 + 80);
             let green = Math.floor(255 * relativeValue * 1.5 + 10);
@@ -324,7 +326,8 @@ function colorizeTableByColumn(id, aufsteigend) {
                 // i+1 um kategoriebezeichnung zu skippen
                 columnCells.push($(this)[0].cells[i+1])
                 let text = $(this)[0].cells[i+1].textContent
-                columnValues.push(parseFloat(text.replace(/[^0-9.-]+/g,""))/100)
+                // remove all non numerical characters -> convert to cents
+                columnValues.push(parseFloat(text.replace(/[^0-9]+/g,"")))
         })
         let min = Math.min(...columnValues);
         let max = Math.max(...columnValues);
