@@ -549,7 +549,8 @@ function printMonthlyBudget(){
 }
 
 function monthlyBudget($date){
-    return recursiveMonthlyBudget($date,6, 0);
+    return monthlyTotal(1, $date) - monthlyTotal(0, $date);
+//    return recursiveMonthlyBudget($date,6, 0);
 }
 
 function recursiveMonthlyBudget($start, $offset, $budget){
