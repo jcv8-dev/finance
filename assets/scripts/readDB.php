@@ -590,7 +590,10 @@ function monatAusgabenOhneAnlagen($date){
     $jahr = $date->format("Y");
     $sql = "select SUM(betrag) from buchungen join kategorie on buchungen.kategorieid = kategorie.id where not kategorie.kategorieBezeichnung = 'Anlage' and MONTH(datum) = $monat and YEAR(datum) = $jahr;";
     $result = db()->query($sql);
-    return $result->fetch_assoc()[0];
+    foreach ($result as $key=>$value){
+        return $value;
+    }
+    return 0;
 }
 
 function getAvailableYears(){
