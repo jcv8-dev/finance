@@ -485,13 +485,13 @@ function monthlySaldo(){
     echo "<td>".ff($sum)."</td>";
     echo "</tr>";
 
-    echo "<tr><th scope='row'>Reine Ausgaben</th>";
+    echo "<tr><th scope='row'>Davon Anlagen</th>";
     $date = new DateTime("$y-01-01");
 
     $sum = 0;
     $ausgabenOhneAnlagen = Array();
     for($i = 1; $i <= 12; $i++){
-        $monthlyTotal = monatAusgabenOhneAnlagen($date);
+        $monthlyTotal = anlagenJeMonat($date);
         echo "<td>".ff($monthlyTotal)."</td>";
         $ausgabenOhneAnlagen[$i] = $monthlyTotal;
         $date->modify("+1 month");
@@ -585,10 +585,10 @@ function recursiveMonthlyBudget($start, $offset, $budget){
     return recursiveMonthlyBudget($start,$offset-1, $budget * 0.8 + $offsetBudget);
 }
 
-function monatAusgabenOhneAnlagen($date){
+function anlagenJeMonat($date){
     $monat = $date->format("m");
     $jahr = $date->format("Y");
-    $sql = "select SUM(betrag) from buchungen join kategorie on buchungen.kategorieid = kategorie.id where not kategorie.kategorieBezeichnung = 'Anlagen' and betrag < 0 and MONTH(datum) = $monat and YEAR(datum) = $jahr;";
+    $sql = "select SUM(betrag) from buchungen join kategorie on buchungen.kategorieid = kategorie.id where kategorie.kategorieBezeichnung = 'Anlagen' and betrag < 0 and MONTH(datum) = $monat and YEAR(datum) = $jahr;";
     $result = db()->query($sql)->fetch_assoc();
     foreach ($result as $key=>$value){
         return abs(floatval($value));
