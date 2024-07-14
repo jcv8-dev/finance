@@ -588,12 +588,10 @@ function recursiveMonthlyBudget($start, $offset, $budget){
 function monatAusgabenOhneAnlagen($date){
     $monat = $date->format("m");
     $jahr = $date->format("Y");
-    $sql = "select SUM(betrag) from buchungen join kategorie on buchungen.kategorieid = kategorie.id where not kategorie.kategorieBezeichnung = 'Anlage' and betrag < 0 and MONTH(datum) = $monat and YEAR(datum) = $jahr;";
+    $sql = "select SUM(betrag) from buchungen join kategorie on buchungen.kategorieid = kategorie.id where not kategorie.kategorieBezeichnung = 'Anlagen' and betrag < 0 and MONTH(datum) = $monat and YEAR(datum) = $jahr;";
     $result = db()->query($sql)->fetch_assoc();
     foreach ($result as $key=>$value){
-        print_r($result);
-        print_r($value);
-        return abs(floatval($value[0]));
+        return abs(floatval($value));
     }
     return 0;
 }
