@@ -487,18 +487,18 @@ function monthlySaldo(){
 
     echo "<tr><th scope='row'>Reine Ausgaben</th>";
     $date = new DateTime("$y-01-01");
+
     $sum = 0;
-    $ausgaben = Array();
+    $ausgabenOhneAnlagen = Array();
     for($i = 1; $i <= 12; $i++){
         $monthlyTotal = monatAusgabenOhneAnlagen($date);
         echo "<td>".ff($monthlyTotal)."</td>";
-        $ausgaben[$i] = $monthlyTotal;
+        $ausgabenOhneAnlagen[$i] = $monthlyTotal;
         $date->modify("+1 month");
         $sum += $monthlyTotal;
     }
     echo "<td>".ff($sum)."</td>";
     echo "</tr>";
-
 
     echo "<tr><th scope='row'>Saldo</th>";
     $sum = 0;
@@ -591,6 +591,8 @@ function monatAusgabenOhneAnlagen($date){
     $sql = "select SUM(betrag) from buchungen join kategorie on buchungen.kategorieid = kategorie.id where not kategorie.kategorieBezeichnung = 'Anlage' and betrag < 0 and MONTH(datum) = $monat and YEAR(datum) = $jahr;";
     $result = db()->query($sql)->fetch_assoc();
     foreach ($result as $key=>$value){
+        print_r($result);
+        print_r($value);
         return abs(floatval($value[0]));
     }
     return 0;
