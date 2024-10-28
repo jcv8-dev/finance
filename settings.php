@@ -64,7 +64,7 @@ $startTime = microtime(true);
                 </div>
                 <div class="row">
                     <div class="my-2" style="width: fit-content">
-                        <button type="button" onclick="openInBackground('/finance/assets/scripts/export')" id="submitSettings" class="btn btn-outline-primary">Daten exportieren (CSV)</button>
+                        <button type="button" onclick="openInBackground('/assets/scripts/export')" id="submitSettings" class="btn btn-outline-primary">Daten exportieren (CSV)</button>
                     </div>
                 </div>
             </div>
