@@ -1,7 +1,7 @@
 <?php
 
 if(!file_exists(__DIR__."/assets/scripts/upload/secrets.php")){
-    header("Location: setup");
+    header("Location: /setup");
 }
 
 require_once __DIR__."/assets/scripts/upload/secrets.php";
@@ -33,7 +33,7 @@ if (!$session_valid && !$cookie_valid){
 }
 
 function redirLogin($reason){
-    header("Location: https://$_SERVER[HTTP_HOST]/finance/login?$reason");
+    header("Location: login?$reason");
     exit();
 }
 

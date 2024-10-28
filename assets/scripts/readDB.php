@@ -86,6 +86,58 @@ function kontoCards() {
         }
     }
 }
+
+function kontoSumCard(){
+    $conn = db();
+    $sql = "SELECT * FROM konten";
+    $result = $conn->query($sql);
+    $totalSum = 0;
+    $totalStartbetrag = 0;
+    $totalEinnahme = 0;
+    $totalAusgabe = 0;
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $ausgabensql = "SELECT SUM(betrag) from buchungen where betrag < 0 and kontoid = ".$row["id"];
+            $einnahmensql = "SELECT SUM(betrag) from buchungen where betrag > 0 and kontoid = ".$row["id"];
+            $ausgaben = $conn->query($ausgabensql);
+            $einnahmen = $conn->query($einnahmensql);
+            $ausgaben = $ausgaben->fetch_assoc()["SUM(betrag)"];
+            $ausgaben = $ausgaben != 0 ? abs($ausgaben) : 0;
+            $einnahmen = $einnahmen->fetch_assoc()["SUM(betrag)"];
+            $einnahmen = $einnahmen != 0 ? abs($einnahmen) : 0;
+            $startbetrag = $row["startbetrag"];
+            $totalStartbetrag += $startbetrag;
+            $totalEinnahme += $einnahmen;
+//            if(!str_contains($row["kontoBezeichnung"], "[Anlage]")){
+//                $totalAusgabe += $ausgaben;
+//            } else {
+//                $ausgaben = 0;
+//            }
+            $totalAusgabe += $ausgaben;
+            $totalSum += ($startbetrag + $einnahmen - abs($ausgaben));
+        }
+    }
+    echo '<div class="col-6 col-sm-6 col-md-4 col-lg-3 p-1">
+            <div class="card shadow-box-sm" style="width: auto;" id="total">
+            <div class="card-header"><b>Total</b></div>
+            <div class="card-body p-2">
+            <div class="row">
+            <div class="col-6 text-end pe-2 ps-1"><p>Jahresbeginn</p></div>
+            <div class="col-6 text-end pe-3 ps-0 pe-1"><p>'.ff($totalStartbetrag).'&nbsp;€</p></div>
+            <div class="col-6 text-end pe-2 ps-1"><p>Einnahmen</p></div>
+            <div class="col-6 text-end pe-3 ps-0 pe-1"><p>'.ff($totalEinnahme).'&nbsp;€</p></div>
+            <div class="col-6 text-end pe-2 ps-1"><p>Ausgaben</p></div>
+            <div class="col-6 text-end pe-3 ps-0 pe-1"><p>'.ff($totalAusgabe).'&nbsp;€</p></div>
+            <div class="col-6 text-end pe-2 ps-1"><p></p></div>
+            <div class="col-6 text-end pe-3 ps-0 pe-1"><p style="height: ">&nbsp;</p></div>
+            <div class="col-6 text-end pe-2 ps-1"><p class="fw-bold">Aktuell</p></div>
+            <div class="col-6 text-end pe-3 ps-0 pe-1"><p class="fw-bold">'.ff($totalSum).'&nbsp;€</p></div>
+            </div>
+            </div>
+            </div>
+            </div>';
+}
+
 function getUebertrag($id, $conn){
     $eingangquery = "SELECT SUM(betrag) from uebertrag where zielid = $id";
     $ausgangquery = "SELECT SUM(betrag) from uebertrag where quelleid = $id";
@@ -367,11 +419,14 @@ function monthlyCategory($einnahme, $id="monthlyTable"){
     }
     echo "<tr><th scope='row'>Summe</th>";
     $date = new DateTime();
+    $year_sum = 0;
     for($monat = 1; $monat <= 12; $monat++){
         $date = $date->setDate($date->format("Y"), $monat, $date->format("d"));
         $sum = monthlyTotal($einnahme, $date);
         echo "<td>".ff($sum)."&nbsp;€</td>";
+        $year_sum += $sum;
     }
+    echo "<td>".ff($year_sum)."&nbsp;€</td>";
     echo "</tr>";
     echo "</tbody></table></div></div>";
 }
@@ -430,6 +485,21 @@ function monthlySaldo(){
     echo "<td>".ff($sum)."</td>";
     echo "</tr>";
 
+    echo "<tr><th scope='row'>Davon Anlagen</th>";
+    $date = new DateTime("$y-01-01");
+
+    $sum = 0;
+    $ausgabenOhneAnlagen = Array();
+    for($i = 1; $i <= 12; $i++){
+        $monthlyTotal = anlagenJeMonat($date);
+        echo "<td>".ff($monthlyTotal)."</td>";
+        $ausgabenOhneAnlagen[$i] = $monthlyTotal;
+        $date->modify("+1 month");
+        $sum += $monthlyTotal;
+    }
+    echo "<td>".ff($sum)."</td>";
+    echo "</tr>";
+
     echo "<tr><th scope='row'>Saldo</th>";
     $sum = 0;
     for($i = 1; $i <= 12; $i++){
@@ -479,7 +549,9 @@ function monthlyTotal($einnahme, $date){
     $jahr = $date->format("Y");
     // konten, deren Bezeichnung diesen String enthält werden bei der Berechnung des monatlichen Gesamtbetrags nicht berücksichtigt.
     $exclude = "[Anlage]";
-    $sql = "SELECT betrag, kommentar, datum from buchungen inner join konten on buchungen.kontoid = konten.id where betrag $einnahmeModifier and MONTH(datum) = $monat and YEAR(datum) = $jahr and kontoBezeichnung not like '%$exclude%'";
+//    $sql = "SELECT betrag, kommentar, datum from buchungen inner join konten on buchungen.kontoid = konten.id where betrag $einnahmeModifier and MONTH(datum) = $monat and YEAR(datum) = $jahr and kontoBezeichnung not like '%$exclude%'";
+    $sql = "SELECT betrag, kommentar, datum from buchungen inner join konten on buchungen.kontoid = konten.id where betrag $einnahmeModifier and MONTH(datum) = $monat and YEAR(datum) = $jahr";
+
     $result = $conn->query($sql);
     $sum = 0;
     foreach ($result as $key=>$value){
@@ -495,7 +567,8 @@ function printMonthlyBudget(){
 }
 
 function monthlyBudget($date){
-    return recursiveMonthlyBudget($date,6, 0);
+    return monthlyTotal(1, $date) - monthlyTotal(0, $date) + anlagenJeMonat($date);
+//    return recursiveMonthlyBudget($date,6, 0);
 }
 
 function recursiveMonthlyBudget($start, $offset, $budget){
@@ -507,9 +580,20 @@ function recursiveMonthlyBudget($start, $offset, $budget){
     $offsetBudget = monthlyTotal(1, $offsetDate) - monthlyTotal(0, $offsetDate);
     // no need to save if monthly budget is 0
     if($offsetBudget != 0){
-        return recursiveMonthlyBudget($start,$offset-1, $budget * 0.8 + $offsetBudget - 200);
+        return recursiveMonthlyBudget($start,$offset-1, $budget * 0.8 + $offsetBudget - 100);
     }
     return recursiveMonthlyBudget($start,$offset-1, $budget * 0.8 + $offsetBudget);
+}
+
+function anlagenJeMonat($date){
+    $monat = $date->format("m");
+    $jahr = $date->format("Y");
+    $sql = "select SUM(betrag) from buchungen join kategorie on buchungen.kategorieid = kategorie.id where kategorie.kategorieBezeichnung = 'Anlagen' and betrag < 0 and MONTH(datum) = $monat and YEAR(datum) = $jahr;";
+    $result = db()->query($sql)->fetch_assoc();
+    foreach ($result as $key=>$value){
+        return abs(floatval($value));
+    }
+    return 0;
 }
 
 function getAvailableYears(){

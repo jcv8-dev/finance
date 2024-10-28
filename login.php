@@ -1,7 +1,7 @@
 <?php
 
 if(!file_exists(__DIR__."/assets/scripts/upload/secrets.php")){
-    header("Location: setup");
+    header("Location: /setup");
 }
 
 require "check.php";

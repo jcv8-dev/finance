@@ -57,6 +57,7 @@ function head($title){
         <title>'.$title.'</title>
         <link rel="stylesheet" href="assets/styles.css">
         <link rel="stylesheet" href="assets/theme.css">
+        <link rel="icon" href="favicon.png">
     </head>';
 }
 
