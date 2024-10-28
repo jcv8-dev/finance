@@ -567,7 +567,7 @@ function printMonthlyBudget(){
 }
 
 function monthlyBudget($date){
-    return monthlyTotal(1, $date) - monthlyTotal(0, $date);
+    return monthlyTotal(1, $date) - monthlyTotal(0, $date) + anlagenJeMonat($date);
 //    return recursiveMonthlyBudget($date,6, 0);
 }
 
